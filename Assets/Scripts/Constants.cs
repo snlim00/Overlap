@@ -73,24 +73,18 @@ public static class DIF
     }
 }
 
-public interface A
-{
-
-}
-
 public static class KEY
 {
     public const int TIMING = 0;
     public const int TYPE = 1;
-    public const int NOTE_TYPE = 2;
-    public const int ANGLE = 3;
-    public const int EVENT_TYPE = 4;
-    public const int DURATION = 5;
-    public static readonly int[] VALUE = { 6, 7, 8, 9, 10 };
+    public const int GRID_NUM = 2;
+    public const int NOTE_TYPE = 3;
+    public const int ANGLE = 4;
+    public const int EVENT_TYPE = 5;
+    public const int DURATION = 6;
+    public static readonly int[] VALUE = { 7, 8, 9, 10, 11 };
 
-    public const int COUNT = 11;
-
-    public static readonly int[] KEY_TYPE = { 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0 };
+    public const int COUNT = 12;
 
     public static string FindName(int value)
     {
@@ -101,6 +95,9 @@ public static class KEY
 
             case TYPE:
                 return nameof(TYPE);
+
+            case GRID_NUM:
+                return nameof(GRID_NUM);
 
             case NOTE_TYPE:
                 return nameof(NOTE_TYPE);

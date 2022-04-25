@@ -66,6 +66,8 @@ public class GridManager : MonoBehaviour
         RenewalBeatUI();
     }
 
+
+
     #region 그리드 생성 관련 함수
     private void AllGridGeneration()
     {
