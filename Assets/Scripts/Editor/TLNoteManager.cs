@@ -8,10 +8,13 @@ public class TLNoteManager : MonoBehaviour
 {
     private EditorManager editorMgr;
 
-    [SerializeField] private GameObject tlNotePrefab;
+    [SerializeField] private GameObject[] tlNotePrefab;
 
     //노트의 부모 오브젝트
     private Transform noteParents;
+
+    //노트 배치 관련 변수
+    private int noteType = NOTE_TYPE.TAP;
 
     private void Awake()
     {
@@ -53,9 +56,9 @@ public class TLNoteManager : MonoBehaviour
         return tlNote;
     }
 
-    private TimeLineNote InstantiateTLNote()
+    private TimeLineNote InstantiateTLNote(int noteType = 0)
     {
-        TimeLineNote tlNote = Instantiate(tlNotePrefab).GetComponent<TimeLineNote>();
+        TimeLineNote tlNote = Instantiate(tlNotePrefab[noteType]).GetComponent<TimeLineNote>();
 
         tlNote.transform.SetParent(noteParents);
 
@@ -242,4 +245,36 @@ public class TLNoteManager : MonoBehaviour
         return EventSystem.current.currentSelectedGameObject.GetComponent<TimeLineNote>();
     }
     #endregion
+
+
+    public void PutNote()
+    {
+        if (Input.GetMouseButtonDown(0) == false)
+            return;
+
+
+        GameObject nearGrid = FindNearGrid();
+
+        TimeLineNote tlNote = InstantiateTLNote(noteType).GetComponent<TimeLineNote>();
+
+        tlNote.transform.position = nearGrid.transform.position;
+    }
+
+    private GameObject FindNearGrid()
+    {
+        GameObject nearGrid = editorMgr.gridList[0];
+        float nearDis = Mathf.Abs(nearGrid.transform.position.x - Input.mousePosition.x);
+
+        for (int i = 0; i < editorMgr.gridList.Count; ++i)
+        {
+            if (editorMgr.gridList[i].activeSelf == true
+                && Mathf.Abs(editorMgr.gridList[i].transform.position.x - Input.mousePosition.x) < nearDis)
+            {
+                nearGrid = editorMgr.gridList[i];
+                nearDis = Mathf.Abs(nearGrid.transform.position.x - Input.mousePosition.x);
+            }
+        }
+
+        return nearGrid;
+    }
 }

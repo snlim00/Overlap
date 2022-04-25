@@ -58,6 +58,8 @@ public class EditorTouchManager : MonoBehaviour
             Scroll();
 
             SetInterval();
+
+            tlNoteMgr.PutNote();
         }
     }
 

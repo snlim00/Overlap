@@ -1160,7 +1160,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1005257988
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2162,7 +2162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cae6d0d3cc8cbf41a40a1bf95360491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tlNotePrefab: {fileID: 723441008041081751, guid: d3ddb8b13965eeb429f8e2cc3bfca2e5, type: 3}
+  tlNotePrefab:
+  - {fileID: 723441008041081751, guid: d3ddb8b13965eeb429f8e2cc3bfca2e5, type: 3}
+  - {fileID: 723441008041081751, guid: d3ddb8b13965eeb429f8e2cc3bfca2e5, type: 3}
+  - {fileID: 723441008041081751, guid: d3ddb8b13965eeb429f8e2cc3bfca2e5, type: 3}
 --- !u!1 &1836626257
 GameObject:
   m_ObjectHideFlags: 0

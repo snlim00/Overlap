@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Text beatText;
 
     //타이밍 설정 관련 변수
-    private float offset = -934;
+    private float offset = 2.5f;
 
     //비트 나눗수 관련 변수
     public int selectedBeat = 2;
@@ -71,7 +71,7 @@ public class GridManager : MonoBehaviour
     {
         //가장 작은 비트의 음악에서의 길이를 측정하고, 해당 길이를 통해 생성할 그리드 수 결정
         float minBeatLength = (60 / Level.S.bpm) * (1 / maxBeat);
-        int gridCount = (int)(Level.S.songLength / minBeatLength) + 1;
+        int gridCount = (int)((Level.S.songLength + (offset / editorMgr.interval)) / minBeatLength) + 1;
 
         for (int i = 0; i < gridCount; ++i)
         {
@@ -85,6 +85,8 @@ public class GridManager : MonoBehaviour
 
         grid.transform.SetParent(gridParents);
         grid.transform.localScale = Vector3.one;
+
+        grid.name = num.ToString();
 
         return grid;
     }
