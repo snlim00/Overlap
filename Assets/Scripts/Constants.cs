@@ -169,11 +169,13 @@ public static class TYPE
 
 public static class NOTE_TYPE
 {
+    public const int NONE = -1;
     public const int TAP = 0;
     public const int DOUBLE = 1;
     public const int SLIDE = 2;
+    public const int EVENT = 3;
 
-    public const int COUNT = 3;
+    public const int COUNT = 4;
 
     public static string FindName(int value)
     {
@@ -187,6 +189,9 @@ public static class NOTE_TYPE
 
             case SLIDE:
                 return nameof(SLIDE);
+
+            case EVENT:
+                return nameof(EVENT);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");

@@ -60,6 +60,11 @@ public class EditorTouchManager : MonoBehaviour
             SetInterval();
 
             tlNoteMgr.PutNote();
+
+            tlNoteMgr.SetNoteType();
+
+            if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
+                tlNoteMgr.SaveLevel();
         }
     }
 

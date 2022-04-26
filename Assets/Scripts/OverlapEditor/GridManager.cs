@@ -81,9 +81,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private GameObject InstantiateGrid(int num)
+    private GridInfo InstantiateGrid(int num)
     {
-        GameObject grid = Instantiate(gridPrefab) as GameObject;
+        GridInfo grid = Instantiate(gridPrefab).GetComponent<GridInfo>();
 
         grid.transform.SetParent(gridParents);
         grid.transform.localScale = Vector3.one;
@@ -132,7 +132,7 @@ public class GridManager : MonoBehaviour
 
 
 
-    private void SetGridPosition(GameObject grid, int num)
+    private void SetGridPosition(GridInfo grid, int num)
     {
         float gridPosition = ((60f / Level.S.bpm) * (1 / maxBeat) * editorMgr.interval) * num + offset;
 
@@ -143,21 +143,21 @@ public class GridManager : MonoBehaviour
     {
         for (int i = 0; i < editorMgr.gridList.Count; ++i)
         {
-            GameObject grid = editorMgr.gridList[i];
+            GridInfo grid = editorMgr.gridList[i];
 
             //해당 노트가 비트에 해당하지 않는다면 비활성화, 해당한다면 활성화
             if (i % (32 / beat) != 0)
             {
-                grid.SetActive(false);
+                grid.gameObject.SetActive(false);
             }
             else
             {
-                grid.SetActive(true);
+                grid.gameObject.SetActive(true);
             }
         }
 
         //첫번째 그리드는 항상 활성화
-        editorMgr.gridList[0].SetActive(true);
+        editorMgr.gridList[0].gameObject.SetActive(true);
     }
 
 

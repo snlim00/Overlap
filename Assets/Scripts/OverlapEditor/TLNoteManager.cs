@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class TLNoteManager : MonoBehaviour
     private Transform noteParents;
 
     //노트 배치 관련 변수
-    private int noteType = NOTE_TYPE.TAP;
+    private int noteType = NOTE_TYPE.NONE;
 
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class TLNoteManager : MonoBehaviour
     {
         for (int row = 0; row < Level.S.level.Count; ++row)
         {
-            editorMgr.tlNoteList.Add(TLNoteGeneration(row));
+            TLNoteGeneration(row);
         }
     }
 
@@ -65,6 +66,11 @@ public class TLNoteManager : MonoBehaviour
         tlNote.transform.localScale = Vector3.one;
 
         tlNote.GetComponent<Button>().onClick.AddListener(NoteSelect);
+
+        Dictionary<int, int> info = new Dictionary<int, int>(Level.S.levelFormat); //here
+        tlNote.Setting(info);
+
+        editorMgr.tlNoteList.Add(tlNote);
 
         return tlNote;
     }
@@ -92,6 +98,7 @@ public class TLNoteManager : MonoBehaviour
         for (int i = 0; i < editorMgr.tlNoteList.Count; ++i)
         {
             editorMgr.tlNoteList[i].num = i;
+            editorMgr.tlNoteList[i].gameObject.name = i.ToString();
         }
     }
     #endregion
@@ -246,28 +253,59 @@ public class TLNoteManager : MonoBehaviour
     }
     #endregion
 
+    public void SetNoteType()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1) == true)
+        {
+            noteType = NOTE_TYPE.NONE;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+        {
+            noteType = NOTE_TYPE.TAP;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) == true)
+        {
+            noteType = NOTE_TYPE.DOUBLE;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) == true)
+        {
+            noteType = NOTE_TYPE.SLIDE;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5) == true)
+        {
+            noteType = NOTE_TYPE.EVENT;
+        }
+    }
 
     public void PutNote()
     {
-        if (Input.GetMouseButtonDown(0) == false)
+        if (Input.GetMouseButtonDown(0) == false || noteType == NOTE_TYPE.NONE)
             return;
 
 
-        GameObject nearGrid = FindNearGrid();
+        GridInfo nearGrid = FindNearGrid();
+
+        if (noteType != NOTE_TYPE.EVENT && nearGrid.haveNote == true) //해당 그리드가 이미 노트를 가지고 있다면 노트 설치 안함
+            return;
+
 
         TimeLineNote tlNote = InstantiateTLNote(noteType).GetComponent<TimeLineNote>();
 
         tlNote.transform.position = nearGrid.transform.position;
+        tlNote.info[KEY.GRID_NUM] = editorMgr.gridList.IndexOf(nearGrid);
+        nearGrid.haveNote = true;
+
+        SortNoteNum();
     }
 
-    private GameObject FindNearGrid()
+    private GridInfo FindNearGrid()
     {
-        GameObject nearGrid = editorMgr.gridList[0];
+        GridInfo nearGrid = editorMgr.gridList[0];
         float nearDis = Mathf.Abs(nearGrid.transform.position.x - Input.mousePosition.x);
 
         for (int i = 0; i < editorMgr.gridList.Count; ++i)
         {
-            if (editorMgr.gridList[i].activeSelf == true
+            if (editorMgr.gridList[i].gameObject.activeSelf == true
                 && Mathf.Abs(editorMgr.gridList[i].transform.position.x - Input.mousePosition.x) < nearDis)
             {
                 nearGrid = editorMgr.gridList[i];
@@ -276,5 +314,21 @@ public class TLNoteManager : MonoBehaviour
         }
 
         return nearGrid;
+    }
+
+
+
+    public void SaveLevel()
+    {
+        SortNoteNum();
+
+        Level.S.level.Clear();
+        for(int i = 0; i < editorMgr.tlNoteList.Count; ++i)
+        {
+            editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval * 1000);
+            Level.S.level.Add(editorMgr.tlNoteList[i].info);
+        }
+        Debug.Log("Saved!");
+        Level.S.WriteLevel();
     }
 }

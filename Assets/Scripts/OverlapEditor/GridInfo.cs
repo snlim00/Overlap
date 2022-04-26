@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridInfo : MonoBehaviour
 {
-    private bool _haveNote = false;
+    [SerializeField] private bool _haveNote = false;
     
     public bool haveNote
     {

@@ -9,7 +9,7 @@ public class TimeLineNote : MonoBehaviour
 
     public int num;
 
-    public Dictionary<int, int> info = new Dictionary<int, int>();
+    public Dictionary<int, int> info;
 
     [HideInInspector] public Image image;
 

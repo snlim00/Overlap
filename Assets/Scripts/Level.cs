@@ -19,6 +19,11 @@ public class Level : MonoBehaviour
         Level.S = this;
 
         judgRange = new float[3];
+
+        for(int i = 0; i < KEY.COUNT; ++i)
+        {
+            levelFormat[i] = -1;
+        }
     }
 
 
@@ -26,6 +31,8 @@ public class Level : MonoBehaviour
     public List<Dictionary<int, int>> levelInfo = new List<Dictionary<int, int>>(); //레벨의 기본 정보들을 담아둠 (오프셋, 딜레이, BPM 등)
 
     public List<Note> noteList = new List<Note>();
+
+    public Dictionary<int, int> levelFormat = new Dictionary<int, int>();
 
     //선택된 레벨의 이름과 난이도
     public string levelName;
@@ -148,14 +155,14 @@ public class Level : MonoBehaviour
 
     public void WriteLevel()
     {
-        Debug.Log("Write");
-        using(var writer = new CsvFileWriter("Assets/Levels/" + levelName + "/Resources/" + levelName + "_" + DIF.FindName(levelDifficulty)))
+        string a = ("Assets/Levels/" + levelName + "/Resources/" + levelName + "_" + DIF.FindName(levelDifficulty)) + ".csv";
+        using (var writer = new CsvFileWriter(a))
         {
             List<string> colums = new List<string>();
             string[] keyList = new string[KEY.COUNT];
             for(int i = 0; i < KEY.COUNT; ++i)
             {
-                keyList[i] = i.ToString();
+                keyList[i] = KEY.FindName(i);
             }
 
             colums.AddRange(keyList);
@@ -172,7 +179,10 @@ public class Level : MonoBehaviour
 
                 writer.WriteRow(colums);
                 colums.Clear();
+
+                Debug.Log("Write");
             }
         }
+
     }
 }

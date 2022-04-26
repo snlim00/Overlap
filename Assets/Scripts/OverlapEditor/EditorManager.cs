@@ -16,7 +16,7 @@ public class EditorManager : MonoBehaviour
 
     //생성된 노트와 그리드를 담아두는 리스트
     public List<TimeLineNote> tlNoteList = new List<TimeLineNote>();
-    public List<GameObject> gridList = new List<GameObject>();
+    public List<GridInfo> gridList = new List<GridInfo>();
 
     //그리드와 리스트의 간격 배율
     public float interval;
