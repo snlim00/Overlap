@@ -41,6 +41,7 @@ public class TouchManager : MonoBehaviour
             return;
 
         //퍼펙트 판정인 노트가 있는지 확인
+        //각 판정에 해당하는 노트가 있다면 다음 판정을 확인하지 않는 방식.
         if (CheckJudg(JUDG.PERFECT) == true)
         {
             ClearNote(JUDG.PERFECT);
@@ -61,7 +62,8 @@ public class TouchManager : MonoBehaviour
 
         for(int i = 0; ; ++i)
         {
-            if (Level.S.noteList[i].timing - levelPlayer.t <= Level.S.judgRange[JUDG.MISS] * 1.3f)
+            //Level.S.noteList의 배열을 벗어나는 오류 있음. 원인 ㅁㄹ
+            if (Level.S.noteList[i].timing - levelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
             {
                 hitNoteList.Add(Level.S.noteList[i]);
             }
@@ -77,7 +79,7 @@ public class TouchManager : MonoBehaviour
 
         for (int i = 0; i < hitNoteList.Count; ++i)
         {
-            if (Mathf.Abs(hitNoteList[i].timing - (float)levelPlayer.t) <= Level.S.judgRange[judg])
+            if (Mathf.Abs(hitNoteList[i].timing - (float)levelPlayer.timer) <= Level.S.judgRange[judg])
             {
                 clearedNoteList.Add(hitNoteList[i]);
                 //Debug.Log(hitNoteArr[i].timing - levelPlayer.t);

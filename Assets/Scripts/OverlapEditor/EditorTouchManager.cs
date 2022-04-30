@@ -9,11 +9,13 @@ public class EditorTouchManager : MonoBehaviour
     private EditorManager editorMgr;
     private GridManager gridMgr;
     private TLNoteManager tlNoteMgr;
+    private LevelPlayer levelPlayer;
 
     //
     [SerializeField] private Toggle editingToggle;
 
     //스크롤 구현에 필요한 변수
+    private bool canScroll = true;
     private float lastMousePos;
     private bool isScrolling = false;
     private Vector2 tlPos;
@@ -23,12 +25,17 @@ public class EditorTouchManager : MonoBehaviour
     [SerializeField] private Slider tlSlider;
     private float tlLength;
 
+    private bool isPlaying = false;
+    private Coroutine corTimeLinePlay;
+
     // Start is called before the first frame update
     void Awake()
     {        
         editorMgr = FindObjectOfType<EditorManager>();
 
         editorMgr.InitEvent.AddListener(Init);
+
+        levelPlayer = FindObjectOfType<LevelPlayer>();
     }
 
     private void Init()
@@ -65,6 +72,21 @@ public class EditorTouchManager : MonoBehaviour
 
             if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
                 tlNoteMgr.SaveLevel();
+
+            if (Input.GetKey(KeyCode.Delete))
+                tlNoteMgr.DeleteAllSelectedNote();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(isPlaying == false)
+            {
+                LevelPlay();
+            }
+            else
+            {
+                LevelStop();
+            }
         }
     }
 
@@ -92,7 +114,7 @@ public class EditorTouchManager : MonoBehaviour
     {
         SetActiveScroll();
         
-        if(isScrolling == true)
+        if(isScrolling == true && canScroll == true)
         {
             ScrollTimeLine();
             BlockScroll();
@@ -149,6 +171,11 @@ public class EditorTouchManager : MonoBehaviour
     {
         tlSlider.value = -editorMgr.timeLine.transform.position.x + centerPos;
     }
+
+    public void OnTLSliderValueChange()
+    {
+        editorMgr.timeLine.transform.position = new Vector2(-tlSlider.value + centerPos, editorMgr.timeLine.transform.position.y);
+    }
     #endregion
 
 
@@ -175,13 +202,52 @@ public class EditorTouchManager : MonoBehaviour
     {
         tlLength = Mathf.Abs(-editorMgr.gridList[editorMgr.gridList.Count - 1].transform.position.x + centerPos);
         tlSlider.maxValue = tlLength;
+
+        //Debug.Log(centerPos);
+        //Debug.Log(tlSlider.maxValue);
+        //Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.position.x);
     }
     #endregion
 
-    //private void CheckSongTime()
-    //{
-    //    float tlRatio = tlSlider.value / tlSlider.maxValue;
-    //    float musicTime = FindObjectOfType<AudioSource>().clip.length * tlRatio;
-    //    Debug.Log(musicTime);
-    //}
+
+
+    #region 에디터에서 레벨 재생 관련 함수
+    private void LevelPlay()
+    {
+        float startTimeRaito = tlSlider.value / tlSlider.maxValue;
+
+        levelPlayer.GameStart(startTimeRaito);
+
+        corTimeLinePlay = StartCoroutine(TimeLinePlay());
+
+        isPlaying = true;
+    }
+
+    private void LevelStop()
+    {
+        levelPlayer.GameStop();
+
+        StopCoroutine(corTimeLinePlay);
+
+        isPlaying = false;
+    }
+
+    private IEnumerator TimeLinePlay()
+    {
+        tlNoteMgr.SaveLevel();
+
+        float speed = editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / FindObjectOfType<LevelPlayer>().audioSource.clip.length;
+
+        Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
+
+        while (true)
+        {
+            editorMgr.timeLine.transform.Translate(-speed * Time.deltaTime * 2.34f, 0, 0);
+
+            SetTLSliderValue();
+
+            yield return null;
+        }
+    }
+    #endregion
 }

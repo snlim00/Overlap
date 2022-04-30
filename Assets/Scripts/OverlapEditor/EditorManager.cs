@@ -26,6 +26,8 @@ public class EditorManager : MonoBehaviour
     public List<TimeLineNote> selectedNoteList = new List<TimeLineNote>();
     public TimeLineNote standardNote = null;
 
+    public float offset;
+
     void Start()
     {
         Init();

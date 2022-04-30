@@ -34,7 +34,7 @@ public class TimeLineNote : MonoBehaviour
 
         image.color = subSelectColor;
     }
-
+    
     public void Deselect()
     {
         //Debug.Log(name + " Deselect");

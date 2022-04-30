@@ -37,6 +37,8 @@ public class TLNoteManager : MonoBehaviour
         SortNoteNum();
     }
 
+
+
     #region 노트 생성 관련 함수
     private void AllTLNoteGeneration()
     {
@@ -48,7 +50,7 @@ public class TLNoteManager : MonoBehaviour
 
     private TimeLineNote TLNoteGeneration(int row)
     {
-        TimeLineNote tlNote = InstantiateTLNote();
+        TimeLineNote tlNote = InstantiateTLNote(Level.S.level[row][KEY.NOTE_TYPE]);
 
         tlNote.Setting(Level.S.level[row]);
 
@@ -57,7 +59,7 @@ public class TLNoteManager : MonoBehaviour
         return tlNote;
     }
 
-    private TimeLineNote InstantiateTLNote(int noteType = 0)
+    private TimeLineNote InstantiateTLNote(int noteType = NOTE_TYPE.TAP)
     {
         TimeLineNote tlNote = Instantiate(tlNotePrefab[noteType]).GetComponent<TimeLineNote>();
 
@@ -67,8 +69,7 @@ public class TLNoteManager : MonoBehaviour
 
         tlNote.GetComponent<Button>().onClick.AddListener(NoteSelect);
 
-        Dictionary<int, int> info = new Dictionary<int, int>(Level.S.levelFormat); //here
-        tlNote.Setting(info);
+        tlNote.Setting(new Dictionary<int, int>(Level.S.levelFormat));
 
         editorMgr.tlNoteList.Add(tlNote);
 
@@ -80,14 +81,25 @@ public class TLNoteManager : MonoBehaviour
         for (int row = 0; row < editorMgr.tlNoteList.Count; ++row)
         {
             TimeLineNote tlNote = editorMgr.tlNoteList[row];
-
-            SetNotePosition(tlNote);
+            SetTLNotePosition(tlNote, editorMgr.gridList[tlNote.info[KEY.GRID_NUM]]);
         }
     }
 
-    private void SetNotePosition(TimeLineNote tlNote)
+    private void SetTLNotePosition(TimeLineNote tlNote, GridInfo grid)
     {
-        tlNote.transform.localPosition = new Vector2(tlNote.info[KEY.TIMING] * 0.001f * editorMgr.interval, 0);
+        if (tlNote.info[KEY.TYPE] != TYPE.EVENT)
+        {
+            tlNote.transform.localPosition = grid.transform.localPosition;
+            grid.haveNote = tlNote;
+            grid.isHaveNote = true;
+        }
+        else
+        {
+            grid.eventCount += 1;
+            tlNote.transform.localPosition = new Vector2(grid.transform.localPosition.x, grid.eventCount * -22f - 40f);
+        }
+
+        tlNote.info[KEY.GRID_NUM] = editorMgr.gridList.IndexOf(grid);
     }
 
     private void SortNoteNum()
@@ -102,7 +114,6 @@ public class TLNoteManager : MonoBehaviour
         }
     }
     #endregion
-
 
 
 
@@ -253,27 +264,46 @@ public class TLNoteManager : MonoBehaviour
     }
     #endregion
 
+
+
+    #region 노트 설치/제거 관련 함수
     public void SetNoteType()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1) == true)
-        {
-            noteType = NOTE_TYPE.NONE;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
+        //노트 타입 변경
+        if (Input.GetKeyDown(KeyCode.Alpha1) == true)
         {
             noteType = NOTE_TYPE.TAP;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) == true)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) == true)
         {
             noteType = NOTE_TYPE.DOUBLE;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) == true)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) == true)
         {
             noteType = NOTE_TYPE.SLIDE;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5) == true)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) == true)
         {
             noteType = NOTE_TYPE.EVENT;
+        }
+        else if(Input.GetKeyDown(KeyCode.Tilde) == true)
+        {
+            noteType = NOTE_TYPE.NONE;
+        }
+
+        Level.S.levelFormat[KEY.TYPE] = NOTE_TYPE.NONE;
+        Level.S.levelFormat[KEY.NOTE_TYPE] = NOTE_TYPE.NONE;
+
+        //변경된 노트 타입 적용
+        if (noteType != NOTE_TYPE.EVENT)
+        {
+            Level.S.levelFormat[KEY.TYPE] = TYPE.NOTE;
+            Level.S.levelFormat[KEY.NOTE_TYPE] = noteType;
+        }
+        else
+        {
+            Level.S.levelFormat[KEY.TYPE] = TYPE.EVENT;
+            Level.S.levelFormat[KEY.NOTE_TYPE] = noteType;
         }
     }
 
@@ -285,15 +315,22 @@ public class TLNoteManager : MonoBehaviour
 
         GridInfo nearGrid = FindNearGrid();
 
-        if (noteType != NOTE_TYPE.EVENT && nearGrid.haveNote == true) //해당 그리드가 이미 노트를 가지고 있다면 노트 설치 안함
-            return;
+        if (noteType != NOTE_TYPE.EVENT && nearGrid.isHaveNote == true) 
+        {
+            if (nearGrid.haveNote.info[KEY.NOTE_TYPE] != noteType) //설치하려는 그리드가 가진 노트와 타입이 다르다면 기존 노트 파괴
+            {
+                DeleteNote(nearGrid.haveNote);
+            }
+            else if (nearGrid.haveNote.info[KEY.NOTE_TYPE] == noteType) //설치하려는 그리드가 가진 노트와 타입이 같다면 함수 종료
+            {
+                return;
+            }
+        }
 
 
         TimeLineNote tlNote = InstantiateTLNote(noteType).GetComponent<TimeLineNote>();
 
-        tlNote.transform.position = nearGrid.transform.position;
-        tlNote.info[KEY.GRID_NUM] = editorMgr.gridList.IndexOf(nearGrid);
-        nearGrid.haveNote = true;
+        SetTLNotePosition(tlNote, nearGrid);
 
         SortNoteNum();
     }
@@ -316,6 +353,27 @@ public class TLNoteManager : MonoBehaviour
         return nearGrid;
     }
 
+    public void DeleteAllSelectedNote()
+    {
+        //첫번째 배열이 사라지며 다음 요소가 첫번째 배열로 이동하므로 항상 첫번째 배열만 삭제하면 됨.
+        for (int i = 0; i < editorMgr.selectedNoteList.Count; ++i)
+        {
+            DeleteNote(editorMgr.selectedNoteList[0]);
+        }
+    }
+
+    private void DeleteNote(TimeLineNote tlNote)
+    {
+        Deselect(tlNote);
+
+        editorMgr.tlNoteList.Remove(tlNote);
+
+        Destroy(tlNote.gameObject);
+
+        editorMgr.gridList[tlNote.info[KEY.GRID_NUM]].isHaveNote = false;
+    }
+    #endregion
+
 
 
     public void SaveLevel()
@@ -325,7 +383,8 @@ public class TLNoteManager : MonoBehaviour
         Level.S.level.Clear();
         for(int i = 0; i < editorMgr.tlNoteList.Count; ++i)
         {
-            editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval * 1000);
+            //interval만큼 나누고 ms단위로 변환해주기 위해 위해 1000을 곱해줌.
+            editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(((editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval) * 1000) + editorMgr.offset);
             Level.S.level.Add(editorMgr.tlNoteList[i].info);
         }
         Debug.Log("Saved!");

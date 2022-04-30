@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 723441008041081753}
   - component: {fileID: 8588905273358468583}
   m_Layer: 5
-  m_Name: TimeLineNote
+  m_Name: TimeLineTap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -378.2682, y: 120}
-  m_SizeDelta: {x: 11.6348, y: 51.0472}
+  m_SizeDelta: {x: 11.6348, y: 54.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &723441008041081755
 CanvasRenderer:
@@ -133,4 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b974d4f41edc64e45bb1f3ef57150060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSelected: 0
   num: 0
+  image: {fileID: 0}

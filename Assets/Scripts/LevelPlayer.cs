@@ -8,11 +8,13 @@ public class LevelPlayer : MonoBehaviour
 
     private EditorManager editorMgr;
 
-    public double t;
+    public double timer;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
-    private bool didEditorMgrInit = false;
+    //게임을 진행하는 코루틴들
+    private bool isCorNoteTimer = false;
+    private Coroutine corNoteTimer;
 
     // Start is called before the first frame update
     void Awake()
@@ -27,9 +29,8 @@ public class LevelPlayer : MonoBehaviour
         Level.S.songLength = audioSource.clip.length;
 
 
-        NoteGeneration();
 
-        GameStart();
+        //GameStart();
     }
 
     void Start()
@@ -37,11 +38,43 @@ public class LevelPlayer : MonoBehaviour
         
     }
 
-    private void GameStart()
+    public void GameStart(float startTimeRaito = 0)
     {
-        StartCoroutine(SongPlay());
+        float startTime = audioSource.clip.length * startTimeRaito;
+        int startRow = 0;
 
-        StartCoroutine(NoteTimer());
+        for (int i = 0; ; ++i)
+        {
+            if (Level.S.level[i][KEY.TIMING] * 0.001f >= startTime)
+            {
+                startRow = i;
+                break;
+            }
+        }
+
+
+        NoteGeneration(startTime, startRow);
+
+        corNoteTimer = StartCoroutine(NoteTimer(startTime, startRow));
+        StartCoroutine(SongPlay(startTime));
+    }
+
+    public void GameStop()
+    {
+        audioSource.Stop();
+
+        if(isCorNoteTimer == true)
+        {
+            isCorNoteTimer = false;
+            StopCoroutine(corNoteTimer);
+        }
+
+
+        for(int i = 0; i < Level.S.noteList.Count; ++i)
+        {
+            Destroy(Level.S.noteList[i].gameObject);
+        }
+        Level.S.noteList.Clear();
     }
 
     // Update is called once per frame
@@ -50,23 +83,38 @@ public class LevelPlayer : MonoBehaviour
 
     }
 
-    IEnumerator NoteTimer()
+    private IEnumerator NoteTimer(float startTime = 0, int startRow = 0)
     {
+        isCorNoteTimer = true;
+
+        int row;
+
+        if(PlayerSetting.S.editerMode == true)
+        {
+            if (startRow >= Level.S.level.Count)
+                yield break;
+
+            timer = startTime;
+
+            row = startRow;
+        }
+        else
+        {
+            row = 0;
+            timer = 0; 
+        }
+
         //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침)
         yield return new WaitForSeconds(Level.S.startDelay);
 
-        audioSource.Play();
-
-        t = 0;
-        int row = 0;
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f;
         Dictionary<int, int> thisRow = Level.S.level[row];
 
-        while (t < lastNoteTiming)
+        while (timer < lastNoteTiming && row < Level.S.level.Count)
         {
-            t += Time.deltaTime;
+            timer += Time.deltaTime;
 
-            if(t >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
+            if(timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
             {
                 if(thisRow[KEY.TYPE] == TYPE.EVENT) //다음 행이 EVENT라면 실행
                 {
@@ -79,18 +127,29 @@ public class LevelPlayer : MonoBehaviour
 
             yield return null;
         }
+
+        isCorNoteTimer = false;
     }
 
-    IEnumerator SongPlay()
+    private IEnumerator SongPlay(float startTime = 0)
     {
-        yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+        if(PlayerSetting.S.editerMode == true)
+        {
+            audioSource.time = startTime;
+        }
+        else
+        {
+            audioSource.time = 0;
+            yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+        }
 
         audioSource.Play();
+        //Debug.Log("audioSource Start");
     }
 
-    void NoteGeneration()
+    private void NoteGeneration(float startTime = 0, int startRow = 0)
     {
-        for(int row = 0; row < Level.S.level.Count; ++row)
+        for(int row = startRow; row < Level.S.level.Count; ++row)
         {
             Dictionary<int, int> thisRow = Level.S.level[row];
             
@@ -105,7 +164,18 @@ public class LevelPlayer : MonoBehaviour
                             note = Instantiate(notePref[NOTE_TYPE.TAP]).GetComponent<Note>();
 
                             int angle = thisRow[KEY.ANGLE];
-                            float timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;
+
+                            float timing = 0;
+
+                            if(PlayerSetting.S.editerMode == true)
+                            {
+                                timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
+                            }
+                            else
+                            {
+                                timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;
+                            }
+
                             float spawnDis = Level.S.noteSpeed * timing;
 
                             note.num = row;
@@ -119,7 +189,7 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    void EventExecute(Dictionary<int, int> thisRow)
+    private void EventExecute(Dictionary<int, int> thisRow)
     {
         switch (thisRow[KEY.EVENT_TYPE]) //각 이벤트 호출
         {
@@ -132,7 +202,7 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    void SetSpeed(float speed)
+    private void SetSpeed(float speed)
     {
         Level.S.noteSpeed = speed;
     }
