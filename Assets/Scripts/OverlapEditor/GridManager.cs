@@ -45,10 +45,7 @@ public class GridManager : MonoBehaviour
 
     void Update()
     {
-        if (editorMgr.editingMode == true)
-        {
-            SetBeat();
-        }
+        
     }
 
     public void GridInit()
@@ -160,7 +157,7 @@ public class GridManager : MonoBehaviour
 
 
     #region 비트 나눗수 설정 관련 함수
-    private void SetBeat()
+    public void SetBeat()
     {
         if (_SetBeat() == false)
             return;

@@ -75,6 +75,9 @@ public class EditorTouchManager : MonoBehaviour
 
             if (Input.GetKey(KeyCode.Delete))
                 tlNoteMgr.DeleteAllSelectedNote();
+
+            gridMgr.SetBeat();
+
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
@@ -214,6 +217,9 @@ public class EditorTouchManager : MonoBehaviour
     #region 에디터에서 레벨 재생 관련 함수
     private void LevelPlay()
     {
+        tlNoteMgr.SaveLevel();
+
+
         float startTimeRaito = tlSlider.value / tlSlider.maxValue;
 
         levelPlayer.GameStart(startTimeRaito);
@@ -234,15 +240,13 @@ public class EditorTouchManager : MonoBehaviour
 
     private IEnumerator TimeLinePlay()
     {
-        tlNoteMgr.SaveLevel();
-
         float speed = editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / FindObjectOfType<LevelPlayer>().audioSource.clip.length;
 
         Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
 
         while (true)
         {
-            editorMgr.timeLine.transform.Translate(-speed * Time.deltaTime * 2.34f, 0, 0);
+            editorMgr.timeLine.transform.Translate(-speed * Time.deltaTime * 2.37f, 0, 0);
 
             SetTLSliderValue();
 

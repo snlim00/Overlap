@@ -15,11 +15,13 @@ public class TimeLineNote : MonoBehaviour
 
     public static Color32 subSelectColor = new Color32(255, 83, 83, 180);
     public static Color32 stdSelectColor = Color.red;
-    public static Color32 defaultColor = Color.white;
+    private Color32 defaultColor;
 
     void Awake()
     {
         image = GetComponent<Image>();
+
+        defaultColor = image.color;
     }
 
     public void Setting(Dictionary<int, int> info)

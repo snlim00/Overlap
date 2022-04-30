@@ -29,8 +29,8 @@ public class LevelPlayer : MonoBehaviour
         Level.S.songLength = audioSource.clip.length;
 
 
-
-        //GameStart();
+        if(PlayerSetting.S.editerMode == false)
+            GameStart();
     }
 
     void Start()
@@ -72,7 +72,8 @@ public class LevelPlayer : MonoBehaviour
 
         for(int i = 0; i < Level.S.noteList.Count; ++i)
         {
-            Destroy(Level.S.noteList[i].gameObject);
+            if(Level.S.noteList[i] != null)
+                Destroy(Level.S.noteList[i].gameObject);
         }
         Level.S.noteList.Clear();
     }
@@ -140,7 +141,7 @@ public class LevelPlayer : MonoBehaviour
         else
         {
             audioSource.time = 0;
-            yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+            yield return new WaitForSeconds(Level.S.startDelay + PlayerSetting.S.offset + Level.S.offset);
         }
 
         audioSource.Play();

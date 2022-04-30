@@ -15,7 +15,7 @@ public class TLNoteManager : MonoBehaviour
     private Transform noteParents;
 
     //노트 배치 관련 변수
-    private int noteType = NOTE_TYPE.NONE;
+    [SerializeField] private int noteType = NOTE_TYPE.NONE;
 
     private void Awake()
     {
@@ -286,7 +286,7 @@ public class TLNoteManager : MonoBehaviour
         {
             noteType = NOTE_TYPE.EVENT;
         }
-        else if(Input.GetKeyDown(KeyCode.Tilde) == true)
+        else if(Input.GetKeyDown(KeyCode.BackQuote) == true)
         {
             noteType = NOTE_TYPE.NONE;
         }
@@ -311,7 +311,6 @@ public class TLNoteManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) == false || noteType == NOTE_TYPE.NONE)
             return;
-
 
         GridInfo nearGrid = FindNearGrid();
 
