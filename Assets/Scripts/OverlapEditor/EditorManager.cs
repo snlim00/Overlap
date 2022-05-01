@@ -35,6 +35,7 @@ public class EditorManager : MonoBehaviour
 
     public void Init()
     {
-        InitEvent.Invoke();
+        if(PlayerSetting.S.editerMode == true)
+            InitEvent.Invoke();
     }
 }

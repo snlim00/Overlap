@@ -244,6 +244,8 @@ public class EditorTouchManager : MonoBehaviour
 
         Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
 
+        //yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+
         while (true)
         {
             editorMgr.timeLine.transform.Translate(-speed * Time.deltaTime * 2.37f, 0, 0);

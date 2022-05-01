@@ -78,12 +78,6 @@ public class LevelPlayer : MonoBehaviour
         Level.S.noteList.Clear();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private IEnumerator NoteTimer(float startTime = 0, int startRow = 0)
     {
         isCorNoteTimer = true;
@@ -103,10 +97,10 @@ public class LevelPlayer : MonoBehaviour
         {
             row = 0;
             timer = 0; 
+            //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침 -> 음악 재생을 늦추는 방식으로 오프셋 맞추기)
+            yield return new WaitForSeconds(Level.S.startDelay);
         }
 
-        //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침)
-        yield return new WaitForSeconds(Level.S.startDelay);
 
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f;
         Dictionary<int, int> thisRow = Level.S.level[row];
@@ -141,11 +135,14 @@ public class LevelPlayer : MonoBehaviour
         else
         {
             audioSource.time = 0;
-            yield return new WaitForSeconds(Level.S.startDelay + PlayerSetting.S.offset + Level.S.offset);
+            yield return new WaitForSeconds(Level.S.startDelay);
+            Debug.Log(Level.S.startDelay);
         }
 
+        yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+
         audioSource.Play();
-        //Debug.Log("audioSource Start");
+        Debug.Log("audioSource Start");
     }
 
     private void NoteGeneration(float startTime = 0, int startRow = 0)
@@ -157,11 +154,14 @@ public class LevelPlayer : MonoBehaviour
             if (thisRow[KEY.TYPE] == TYPE.NOTE) //노트 생성
             {
                 Note note = null;
+                bool successInstantiate = false;
 
                 switch (thisRow[KEY.NOTE_TYPE])
                 {
                     case NOTE_TYPE.TAP:
                         {
+                            successInstantiate = true;
+
                             note = Instantiate(notePref[NOTE_TYPE.TAP]).GetComponent<Note>();
 
                             int angle = thisRow[KEY.ANGLE];
@@ -185,7 +185,8 @@ public class LevelPlayer : MonoBehaviour
                         break;
                 }
 
-                Level.S.noteList.Add(note);
+                if(successInstantiate == true)
+                    Level.S.noteList.Add(note);
             }
         }
     }

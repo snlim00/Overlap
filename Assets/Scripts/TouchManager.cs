@@ -60,9 +60,8 @@ public class TouchManager : MonoBehaviour
     {
         hitNoteList.Clear();
 
-        for(int i = 0; ; ++i)
+        for(int i = 0; i < Level.S.noteList.Count; ++i)
         {
-            //Level.S.noteList의 배열을 벗어나는 오류 있음. 원인 ㅁㄹ
             if (Level.S.noteList[i].timing - levelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
             {
                 hitNoteList.Add(Level.S.noteList[i]);
