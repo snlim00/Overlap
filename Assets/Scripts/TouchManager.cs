@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-    [SerializeField] private LevelPlayer levelPlayer;
     [SerializeField] private ParticleManager particleMgr;
 
 
@@ -13,6 +12,13 @@ public class TouchManager : MonoBehaviour
 
 
     [SerializeField] private int inputCount = 0;
+
+    [SerializeField] private GameObject center;
+    private int judgAngle = 45;
+
+    public static bool holding = false;
+    private bool isEndHolding = false;
+    private Coroutine corEndHolding;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +33,31 @@ public class TouchManager : MonoBehaviour
         {
             Touch();
         }
+
+        if (Input.anyKey)
+        {
+            holding = true;
+        }
+        else if (holding == true)
+        {
+            if(isEndHolding == true)
+            {
+                StopCoroutine(corEndHolding);
+                holding = false;
+                isEndHolding = false;
+            }
+
+            corEndHolding = StartCoroutine(EndHolding());
+        }
+    }
+
+    private IEnumerator EndHolding()
+    {
+        isEndHolding = true;
+        yield return new WaitForSeconds(Level.S.judgRange[JUDG.PERFECT] * 0.5f);
+
+        holding = false;
+        isEndHolding = false;
     }
 
     private void Touch()
@@ -62,9 +93,10 @@ public class TouchManager : MonoBehaviour
 
         for(int i = 0; i < Level.S.noteList.Count; ++i)
         {
-            if (Level.S.noteList[i].timing - levelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
+            if (Level.S.noteList[i].timing - LevelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
             {
-                hitNoteList.Add(Level.S.noteList[i]);
+                if(Level.S.noteList[i].type == NOTE_TYPE.TAP || Level.S.noteList[i].type == NOTE_TYPE.DOUBLE)
+                    hitNoteList.Add(Level.S.noteList[i]);
             }
             else break;
         }
@@ -78,11 +110,17 @@ public class TouchManager : MonoBehaviour
 
         for (int i = 0; i < hitNoteList.Count; ++i)
         {
-            if (Mathf.Abs(hitNoteList[i].timing - (float)levelPlayer.timer) <= Level.S.judgRange[judg])
+            //魄沥 贸府
+            if (Mathf.Abs(hitNoteList[i].timing - LevelPlayer.timer) <= Level.S.judgRange[judg])
             {
-                clearedNoteList.Add(hitNoteList[i]);
-                //Debug.Log(hitNoteArr[i].timing - levelPlayer.t);
-                isClear = true;
+                //阿档 贸府
+                if(Mathf.Abs(hitNoteList[i].transform.eulerAngles.z - (center.transform.eulerAngles.z - 90)) < judgAngle
+                    || Mathf.Abs(hitNoteList[i].transform.eulerAngles.z - (center.transform.eulerAngles.z - 90) - 360) < judgAngle)
+                {
+                    clearedNoteList.Add(hitNoteList[i]);
+                    //Debug.Log(hitNoteArr[i].timing - levelPlayer.t);
+                    isClear = true;
+                }
             }
         }
 

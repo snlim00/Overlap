@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editerMode: 0
-  offset: 0.05
+  offset: 0.2
 --- !u!4 &655672820
 Transform:
   m_ObjectHideFlags: 0
@@ -712,7 +712,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &820778152
 GameObject:
@@ -971,7 +971,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &959123838
 GameObject:
@@ -1241,10 +1241,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d4ba356c83e684d8de1fc56ad29b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelPlayer: {fileID: 1915597298}
   particleMgr: {fileID: 856940894}
   hitNoteList: []
   inputCount: 0
+  center: {fileID: 2088479318}
 --- !u!1 &1129219582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,9 +2142,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notePref:
   - {fileID: 543233845408928514, guid: 013fc5e770b1e8b4b9684059055cdf4f, type: 3}
-  - {fileID: 543233845408928514, guid: 013fc5e770b1e8b4b9684059055cdf4f, type: 3}
-  - {fileID: 543233845408928514, guid: 013fc5e770b1e8b4b9684059055cdf4f, type: 3}
-  timer: 0
+  - {fileID: 543233845408928514, guid: af5556c810940b648b99e674c3817a32, type: 3}
+  - {fileID: 543233845408928514, guid: ebc57d3d129c2064ab14f2aceceebe1b, type: 3}
   audioSource: {fileID: 0}
 --- !u!4 &1915597299
 Transform:
@@ -2158,7 +2157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1915597300
 AudioSource:

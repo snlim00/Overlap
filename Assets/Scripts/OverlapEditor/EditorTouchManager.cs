@@ -242,7 +242,7 @@ public class EditorTouchManager : MonoBehaviour
     {
         float speed = editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / FindObjectOfType<LevelPlayer>().audioSource.clip.length;
 
-        Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
+        //Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
 
         //yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
 

@@ -67,7 +67,7 @@ public class TLNoteManager : MonoBehaviour
 
         tlNote.transform.localScale = Vector3.one;
 
-        tlNote.GetComponent<Button>().onClick.AddListener(NoteSelect);
+        tlNote.GetComponent<Button>().onClick.AddListener(delegate { NoteSelect(); });
 
         tlNote.Setting(new Dictionary<int, int>(Level.S.levelFormat));
 
@@ -239,6 +239,13 @@ public class TLNoteManager : MonoBehaviour
     //기준 노트 설정
     private void SetStandardNote(TimeLineNote tlNote, bool doRelease = false)
     {
+        _SetStandardNote(tlNote, doRelease);
+
+
+    }
+
+    private void _SetStandardNote(TimeLineNote tlNote, bool doRelease = false)
+    {
         //기존 기준 노트를 기준 해제
         if (editorMgr.standardNote != null)
         {
@@ -389,4 +396,13 @@ public class TLNoteManager : MonoBehaviour
         Debug.Log("Saved!");
         Level.S.WriteLevel();
     }
+
+
+
+    #region 노트 정보 변경 관련 함수
+    private void ShowInfo()
+    {
+
+    }
+    #endregion
 }

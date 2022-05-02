@@ -17,5 +17,7 @@ public class CenterController : MonoBehaviour
         mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         angle = Mathf.Atan2(mouse.y - target.y, mouse.x - target.x) * Mathf.Rad2Deg;
         this.transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+
+        Debug.Log(transform.eulerAngles.z - 90);
     }
 }

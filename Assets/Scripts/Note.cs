@@ -6,15 +6,19 @@ public class Note : MonoBehaviour
 {
     public int num;
 
-    public int angle;
+    public int type;
+
+    protected int angle;
     public float timing;
 
     protected bool doMove = false;
 
-    public void Execute(int angle, float timing, float spawnDis)
+    public void Execute(int num, int angle, float timing, float spawnDis, int type)
     {
+        this.num = num;
         this.angle = angle + 90;
         this.timing = timing;
+        this.type = type;
 
         transform.position = Vector3.zero;
         transform.eulerAngles = new Vector3(0, 0, this.angle);
@@ -29,7 +33,7 @@ public class Note : MonoBehaviour
         Move();
     }
 
-    private void Move()
+    protected void Move()
     {
         if (doMove == false)
             return;

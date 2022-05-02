@@ -24,6 +24,7 @@ public class Level : MonoBehaviour
         {
             levelFormat[i] = -1;
         }
+        levelFormat[KEY.ANGLE] = 90;
     }
 
 
@@ -180,7 +181,7 @@ public class Level : MonoBehaviour
                 writer.WriteRow(colums);
                 colums.Clear();
 
-                Debug.Log("Write");
+                //Debug.Log("Write");
             }
         }
 

@@ -30,6 +30,11 @@ public class EditorManager : MonoBehaviour
 
     void Start()
     {
+        if(PlayerSetting.S.editerMode == false)
+        {
+            this.gameObject.SetActive(false);
+        }
+
         Init();
     }
 

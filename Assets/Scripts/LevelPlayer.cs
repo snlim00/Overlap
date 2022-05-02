@@ -8,7 +8,7 @@ public class LevelPlayer : MonoBehaviour
 
     private EditorManager editorMgr;
 
-    public double timer;
+    public static float timer { get; private set; } = 0;
 
     public AudioSource audioSource;
 
@@ -31,11 +31,6 @@ public class LevelPlayer : MonoBehaviour
 
         if(PlayerSetting.S.editerMode == false)
             GameStart();
-    }
-
-    void Start()
-    {
-        
     }
 
     public void GameStart(float startTimeRaito = 0)
@@ -136,13 +131,13 @@ public class LevelPlayer : MonoBehaviour
         {
             audioSource.time = 0;
             yield return new WaitForSeconds(Level.S.startDelay);
-            Debug.Log(Level.S.startDelay);
+            //Debug.Log(Level.S.startDelay);
         }
 
         yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
 
         audioSource.Play();
-        Debug.Log("audioSource Start");
+        //Debug.Log("audioSource Start");
     }
 
     private void NoteGeneration(float startTime = 0, int startRow = 0)
@@ -153,42 +148,54 @@ public class LevelPlayer : MonoBehaviour
             
             if (thisRow[KEY.TYPE] == TYPE.NOTE) //노트 생성
             {
-                Note note = null;
-                bool successInstantiate = false;
-
-                switch (thisRow[KEY.NOTE_TYPE])
+                if(thisRow[KEY.NOTE_TYPE] == NOTE_TYPE.DOUBLE)
                 {
-                    case NOTE_TYPE.TAP:
-                        {
-                            successInstantiate = true;
-
-                            note = Instantiate(notePref[NOTE_TYPE.TAP]).GetComponent<Note>();
-
-                            int angle = thisRow[KEY.ANGLE];
-
-                            float timing = 0;
-
-                            if(PlayerSetting.S.editerMode == true)
-                            {
-                                timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
-                            }
-                            else
-                            {
-                                timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;
-                            }
-
-                            float spawnDis = Level.S.noteSpeed * timing;
-
-                            note.num = row;
-                            note.Execute(angle, thisRow[KEY.TIMING] * 0.001f, spawnDis);
-                        }
-                        break;
+                    for(int i = 0; i < 2; ++i)
+                    {
+                        InstantiateNote(row, startTime, thisRow);
+                    }
                 }
-
-                if(successInstantiate == true)
-                    Level.S.noteList.Add(note);
+                else if(thisRow[KEY.TYPE] != NOTE_TYPE.EVENT)
+                {
+                    InstantiateNote(row, startTime, thisRow);
+                }
             }
         }
+    }
+
+    private void InstantiateNote(int row, float startTime, Dictionary<int, int> thisRow)
+    {
+        Note note;
+
+        note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
+
+        int angle = thisRow[KEY.ANGLE];
+
+        if(angle > 0)
+        {
+            angle = angle % 360;
+        }
+        else
+        {
+            angle = 360 + (angle % -360);
+        }
+
+        float timing;
+
+        if (PlayerSetting.S.editerMode == true)
+        {
+            timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
+        }
+        else
+        {
+            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;
+        }
+
+        float spawnDis = Level.S.noteSpeed * timing;
+
+        note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, spawnDis, thisRow[KEY.NOTE_TYPE]);
+
+        Level.S.noteList.Add(note);
     }
 
     private void EventExecute(Dictionary<int, int> thisRow)
