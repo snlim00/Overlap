@@ -17,6 +17,12 @@ public class TLNoteManager : MonoBehaviour
     //노트 배치 관련 변수
     [SerializeField] private int noteType = NOTE_TYPE.NONE;
 
+    //노트 정보 수정 관련 변수
+    [SerializeField] private GameObject infoPanel;
+    [SerializeField] private GameObject[] infoUI = new GameObject[2];
+    private int noteInfoStartNum = 2;
+    private NoteInfo[] noteInfo = new NoteInfo[13];
+
     private void Awake()
     {
         editorMgr = FindObjectOfType<EditorManager>();
@@ -28,6 +34,8 @@ public class TLNoteManager : MonoBehaviour
         noteParents = editorMgr.timeLine.transform.Find("Notes");
 
         TLNoteInit();
+
+        AllInfoUIGeneration();
     }
 
     private void TLNoteInit()
@@ -241,7 +249,7 @@ public class TLNoteManager : MonoBehaviour
     {
         _SetStandardNote(tlNote, doRelease);
 
-
+        ShowInfo(tlNote);
     }
 
     private void _SetStandardNote(TimeLineNote tlNote, bool doRelease = false)
@@ -340,7 +348,7 @@ public class TLNoteManager : MonoBehaviour
 
         SortNoteNum();
     }
-
+    //sexking
     private GridInfo FindNearGrid()
     {
         GridInfo nearGrid = editorMgr.gridList[0];
@@ -397,12 +405,63 @@ public class TLNoteManager : MonoBehaviour
         Level.S.WriteLevel();
     }
 
-
-
     #region 노트 정보 변경 관련 함수
-    private void ShowInfo()
+    private void AllInfoUIGeneration()
     {
+        for(int i = noteInfoStartNum; i < KEY.COUNT; ++i)
+        {
+            noteInfo[i] = InfoUIGeneration(i);
+        }
+    }
 
+    private NoteInfo InfoUIGeneration(int num)
+    {
+        NoteInfo noteInfo = new NoteInfo();
+
+        GameObject go = Instantiate(infoUI[KEY.KEY_TYPE[num]]);
+
+        noteInfo.InitInfo(go, num, delegate { ChangeInfo(); }, delegate { ChangeInfo(); });
+
+        go.transform.SetParent(infoPanel.transform);
+        go.transform.localPosition = new Vector2(0, 170 - (34 * (num - noteInfoStartNum)));
+        go.transform.localScale = Vector3.one;
+        //go.transform.localScale = new Vector2(0.9f, 0.9f);
+
+        return noteInfo;
+    }
+
+    private void ShowInfo(TimeLineNote stdNote)
+    {
+        SetInfoValue(stdNote.info);
+
+
+    }
+
+    private void SetInfoValue(Dictionary<int, int> info)
+    {
+        for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
+        {
+            noteInfo[i].SetInfo(info[i]);
+        }
+    }
+
+    private void HideInfo(Dictionary<int, int> info)
+    {
+        if(info[KEY.TYPE] == TYPE.NOTE)
+        {
+            
+        }
+    }
+
+    private void ChangeInfo()
+    {
+        for (int j = 0; j < editorMgr.selectedNoteList.Count; ++j)
+        {
+            for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
+            {
+                //editorMgr.selectedNoteList[j].info[i] = noteInfo[i].GetInfo(); //here
+            }
+        }
     }
     #endregion
 }

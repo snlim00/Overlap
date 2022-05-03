@@ -6,7 +6,7 @@ public class GridInfo : MonoBehaviour
 {
     [SerializeField] private bool _isHaveNote = false;
     public bool isHaveNote
-    {
+    {//sexking
         get { return _isHaveNote; }
         set { _isHaveNote = value; }
     }

@@ -200,7 +200,7 @@ public class LevelPlayer : MonoBehaviour
 
     private void EventExecute(Dictionary<int, int> thisRow)
     {
-        switch (thisRow[KEY.EVENT_TYPE]) //각 이벤트 호출
+        switch (thisRow[KEY.EVENT_NAME]) //각 이벤트 호출
         {
             case EVENT_TYPE.SET_SPEED:
                 {

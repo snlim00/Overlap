@@ -698,8 +698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c469d8546aeb0cd4f853ca632d77fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editerMode: 0
-  offset: 0.2
+  editerMode: 1
+  offset: 0
 --- !u!4 &655672820
 Transform:
   m_ObjectHideFlags: 0
@@ -1060,12 +1060,12 @@ GameObject:
   - component: {fileID: 1005257990}
   - component: {fileID: 1005257989}
   m_Layer: 5
-  m_Name: InfoPanel
+  m_Name: asdInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1005257988
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2074,6 +2074,10 @@ MonoBehaviour:
   - {fileID: 723441008041081751, guid: be6658e531e0c294f9ae6821a1fcf959, type: 3}
   - {fileID: 723441008041081751, guid: f89da93083b645b45a3e259872616263, type: 3}
   noteType: -1
+  infoPanel: {fileID: 1005257987}
+  infoUI:
+  - {fileID: 7738207666113251759, guid: 05b458b0a6f4ce14980096d9f7513b40, type: 3}
+  - {fileID: 3153759090950674942, guid: 71f71c0349efbf848b0f7f8f6ac4ad29, type: 3}
 --- !u!1 &1836626257
 GameObject:
   m_ObjectHideFlags: 0

@@ -76,15 +76,17 @@ public static class DIF
 public static class KEY
 {
     public const int TIMING = 0;
-    public const int TYPE = 1;
-    public const int GRID_NUM = 2;
+    public const int GRID_NUM = 1;
+    public const int TYPE = 2;
     public const int NOTE_TYPE = 3;
     public const int ANGLE = 4;
-    public const int EVENT_TYPE = 5;
+    public const int EVENT_NAME = 5;
     public const int DURATION = 6;
-    public static readonly int[] VALUE = { 7, 8, 9, 10, 11 };
+    public const int EVENT_TYPE = 7;
+    public static readonly int[] VALUE = {  8, 9, 10, 11, 12 };
 
-    public const int COUNT = 12;
+    public static readonly int[] KEY_TYPE = { 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 };
+    public const int COUNT = 13;
 
     public static string FindName(int value)
     {
@@ -99,11 +101,15 @@ public static class KEY
             case GRID_NUM:
                 return nameof(GRID_NUM);
 
+
             case NOTE_TYPE:
                 return nameof(NOTE_TYPE);
 
             case ANGLE:
                 return nameof(ANGLE);
+
+            case EVENT_NAME:
+                return nameof(EVENT_NAME);
 
             case EVENT_TYPE:
                 return nameof(EVENT_TYPE);
@@ -175,7 +181,7 @@ public static class NOTE_TYPE
     public const int SLIDE = 2;
     public const int EVENT = 3;
 
-    public const int COUNT = 4;
+    public const int COUNT = 3;
 
     public static string FindName(int value)
     {
@@ -289,4 +295,10 @@ public static class INFO_KEY
                 return "";
         }
     }
+}
+
+public static class NOTE_INFO_TYPE
+{
+    public const int INPUT_FIELD = 0;
+    public const int DROPDOWN = 1;
 }

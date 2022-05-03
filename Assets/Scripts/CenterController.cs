@@ -18,6 +18,6 @@ public class CenterController : MonoBehaviour
         angle = Mathf.Atan2(mouse.y - target.y, mouse.x - target.x) * Mathf.Rad2Deg;
         this.transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
 
-        Debug.Log(transform.eulerAngles.z - 90);
+        //Debug.Log(transform.eulerAngles.z - 90);
     }
 }

@@ -36,7 +36,7 @@ public class EditorManager : MonoBehaviour
         }
 
         Init();
-    }
+    }//sexking
 
     public void Init()
     {
