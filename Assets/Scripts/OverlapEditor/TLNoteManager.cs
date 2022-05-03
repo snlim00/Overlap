@@ -20,8 +20,9 @@ public class TLNoteManager : MonoBehaviour
     //노트 정보 수정 관련 변수
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject[] infoUI = new GameObject[2];
-    private int noteInfoStartNum = 2;
-    private NoteInfo[] noteInfo = new NoteInfo[13];
+    private int noteInfoStartNum = 4;
+    private float infoUIInterval = 40;
+    private NoteInfo[] noteInfo = new NoteInfo[KEY.COUNT];
 
     private void Awake()
     {
@@ -423,7 +424,7 @@ public class TLNoteManager : MonoBehaviour
         noteInfo.InitInfo(go, num, delegate { ChangeInfo(); }, delegate { ChangeInfo(); });
 
         go.transform.SetParent(infoPanel.transform);
-        go.transform.localPosition = new Vector2(0, 170 - (34 * (num - noteInfoStartNum)));
+        go.transform.localPosition = new Vector2(0, 170 - (infoUIInterval * (num - noteInfoStartNum)));
         go.transform.localScale = Vector3.one;
         //go.transform.localScale = new Vector2(0.9f, 0.9f);
 
@@ -434,7 +435,7 @@ public class TLNoteManager : MonoBehaviour
     {
         SetInfoValue(stdNote.info);
 
-
+        HideInfo(stdNote.info);
     }
 
     private void SetInfoValue(Dictionary<int, int> info)
@@ -447,10 +448,40 @@ public class TLNoteManager : MonoBehaviour
 
     private void HideInfo(Dictionary<int, int> info)
     {
-        if(info[KEY.TYPE] == TYPE.NOTE)
+        _HideInfo(info, info[KEY.TYPE]);
+    }
+
+    private void _HideInfo(Dictionary<int, int> info, int type)
+    {
+        if (type == TYPE.NOTE)
         {
-            
+            for (int i = noteInfoStartNum; i < KEY.EVENT_NAME; ++i)
+            {
+                noteInfo[i].gameObject.SetActive(true);
+            }
+
+            for (int i = KEY.EVENT_NAME; i < KEY.COUNT; ++i)
+            {
+                noteInfo[i].gameObject.SetActive(false);
+            }
         }
+        else if (type == TYPE.EVENT)
+        {
+            for (int i = noteInfoStartNum; i < KEY.EVENT_NAME; ++i)
+            {
+                noteInfo[i].gameObject.SetActive(false);
+            }
+
+            for (int i = KEY.EVENT_NAME; i < KEY.COUNT; ++i)
+            {
+                noteInfo[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void SetInfoName()
+    {
+
     }
 
     private void ChangeInfo()

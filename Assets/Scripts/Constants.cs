@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -228,9 +229,26 @@ public static class NOTE_TYPE
 
 public static class EVENT_TYPE
 {
+    public static List<Dictionary<int, string>> VALUES = new List<Dictionary<int, string>>();
+
     public const int SET_SPEED = 0;
 
     public const int COUNT = 1;
+
+    public static void ReadEventTypeName()
+    {
+        List<Dictionary<string, object>> tempValues = CSVReader.Read("EventValues");
+
+        for(int i = 0; i < tempValues.Count; ++i)
+        {
+            Dictionary<int, string> temp = new Dictionary<int, string>();
+
+            for(int j = 0; j < KEY.VALUE.Length; ++j)
+            {
+                //temp[j] = tempValues[i];
+            }
+        }
+    }
 
     public static string FindName(int value)
     {
