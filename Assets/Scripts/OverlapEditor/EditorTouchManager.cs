@@ -11,7 +11,7 @@ public class EditorTouchManager : MonoBehaviour
     private TLNoteManager tlNoteMgr;
     private LevelPlayer levelPlayer;
 
-    ////sexking
+    //
     [SerializeField] private Toggle editingToggle;
     
     //스크롤 구현에 필요한 변수

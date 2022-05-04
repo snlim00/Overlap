@@ -227,26 +227,30 @@ public static class NOTE_TYPE
     }
 }
 
-public static class EVENT_TYPE
+public static class EVENT_NAME
 {
     public static List<Dictionary<int, string>> VALUES = new List<Dictionary<int, string>>();
 
     public const int SET_SPEED = 0;
 
-    public const int COUNT = 1;
+    public const int CAMERA_MOVE = 1;
+
+    public const int COUNT = 2;
 
     public static void ReadEventTypeName()
     {
         List<Dictionary<string, object>> tempValues = CSVReader.Read("EventValues");
 
-        for(int i = 0; i < tempValues.Count; ++i)
+        for(int i = 0; i < tempValues[0].Count; ++i)
         {
             Dictionary<int, string> temp = new Dictionary<int, string>();
 
             for(int j = 0; j < KEY.VALUE.Length; ++j)
             {
-                //temp[j] = tempValues[i];
+                
             }
+
+            VALUES.Add(temp);
         }
     }
 
@@ -257,24 +261,27 @@ public static class EVENT_TYPE
             case SET_SPEED:
                 return nameof(SET_SPEED);
 
+            case CAMERA_MOVE:
+                return nameof(CAMERA_MOVE);
+
             default:
-                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");
+                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);
                 return "";
         }
     }
 
-    public static int FindValue(string name)
-    {
-        switch (name)
-        {
-            case nameof(SET_SPEED):
-                return SET_SPEED;
+    //public static int FindValue(string name)
+    //{
+    //    switch (name)
+    //    {
+    //        case nameof(SET_SPEED):
+    //            return SET_SPEED;
 
-            default:
-                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
-                return -1;
-        }
-    }
+    //        default:
+    //            Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
+    //            return -1;
+    //    }
+    //}
 }
 
 public static class INFO_KEY

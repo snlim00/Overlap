@@ -37,6 +37,8 @@ public class TLNoteManager : MonoBehaviour
         TLNoteInit();
 
         AllInfoUIGeneration();
+
+        EVENT_NAME.ReadEventTypeName();
     }
 
     private void TLNoteInit()
@@ -349,7 +351,7 @@ public class TLNoteManager : MonoBehaviour
 
         SortNoteNum();
     }
-    //sexking
+    
     private GridInfo FindNearGrid()
     {
         GridInfo nearGrid = editorMgr.gridList[0];
@@ -435,13 +437,17 @@ public class TLNoteManager : MonoBehaviour
     {
         SetInfoValue(stdNote.info);
 
-        HideInfo(stdNote.info);
+        //HideInfo(stdNote.info);
+
+        //SetInfoName(stdNote.info);
+        Debug.Log("ShowInfo");
     }
 
     private void SetInfoValue(Dictionary<int, int> info)
     {
         for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
         {
+            Debug.Log(i + "_" + noteInfo[i].GetInfo().ToString());
             noteInfo[i].SetInfo(info[i]);
         }
     }
@@ -479,20 +485,28 @@ public class TLNoteManager : MonoBehaviour
         }
     }
 
-    private void SetInfoName()
+    private void SetInfoName(Dictionary<int, int> info)
     {
-
+        if(info[KEY.TYPE] == TYPE.EVENT)
+        {
+            for(int i = 0; i < KEY.COUNT; ++i)
+            {
+                //Debug.Log(EVENT_NAME.VALUES[i][info[KEY.EVENT_NAME]]);
+                //Debug.Log(i);
+                //noteInfo[KEY.VALUE[i]].SetName(EVENT_NAME.VALUES[KEY.EVENT_NAME][i]);
+            }
+        }
     }
 
     private void ChangeInfo()
     {
-        for (int j = 0; j < editorMgr.selectedNoteList.Count; ++j)
-        {
-            for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
-            {
-                //editorMgr.selectedNoteList[j].info[i] = noteInfo[i].GetInfo(); //here
-            }
-        }
+        //for (int j = 0; j < editorMgr.selectedNoteList.Count; ++j)
+        //{
+        //    for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
+        //    {
+        //        editorMgr.selectedNoteList[j].info[i] = noteInfo[i].GetInfo();
+        //    }
+        //}
     }
     #endregion
 }

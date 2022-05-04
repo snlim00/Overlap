@@ -73,4 +73,10 @@ public class NoteInfo
             return dropdown.value - 1;
         }
     }
+
+    public void SetName(string name)
+    {
+        infoName.text = name;
+    }
+
 }
