@@ -202,12 +202,12 @@ public class LevelPlayer : MonoBehaviour
     {
         switch (thisRow[KEY.EVENT_NAME]) //각 이벤트 호출
         {
-            case EVENT_NAME.SET_SPEED:
-                {
-                    float speed = thisRow[KEY.VALUE[0]];
-                    SetSpeed(speed);
-                }
-                break;
+            //case EVENT_NAME.SET_SPEED:
+            //    {
+            //        float speed = thisRow[KEY.VALUE[0]];
+            //        SetSpeed(speed);
+            //    }
+            //    break;
         }
     }
 

@@ -24,15 +24,15 @@ public class NoteInfo
             case NOTE_INFO_TYPE.INPUT_FIELD:
                 inputField = info.transform.GetChild(1).GetComponent<InputField>();
 
-                inputField.onEndEdit.AddListener(onEndEdit);
+                //inputField.onEndEdit.AddListener(onEndEdit);
 
                 inputField.contentType = InputField.ContentType.IntegerNumber;
                 break;
 
-            case 1:
+            case NOTE_INFO_TYPE.DROPDOWN:
                 dropdown = info.transform.GetChild(1).GetComponent<Dropdown>();
 
-                dropdown.onValueChanged.AddListener(onValueChange);
+                //dropdown.onValueChanged.AddListener(onValueChange);
 
                 //dropdown.ClearOptions();
 
@@ -79,4 +79,8 @@ public class NoteInfo
         infoName.text = name;
     }
 
+    public void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
+    }
 }

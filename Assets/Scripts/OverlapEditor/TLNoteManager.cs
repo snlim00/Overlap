@@ -70,7 +70,7 @@ public class TLNoteManager : MonoBehaviour
         return tlNote;
     }
 
-    private TimeLineNote InstantiateTLNote(int noteType = NOTE_TYPE.TAP)
+    private TimeLineNote InstantiateTLNote(int noteType)
     {
         TimeLineNote tlNote = Instantiate(tlNotePrefab[noteType]).GetComponent<TimeLineNote>();
 
@@ -81,7 +81,7 @@ public class TLNoteManager : MonoBehaviour
         tlNote.GetComponent<Button>().onClick.AddListener(delegate { NoteSelect(); });
 
         tlNote.Setting(new Dictionary<int, int>(Level.S.levelFormat));
-
+        
         editorMgr.tlNoteList.Add(tlNote);
 
         return tlNote;
@@ -96,7 +96,7 @@ public class TLNoteManager : MonoBehaviour
         }
     }
 
-    private void SetTLNotePosition(TimeLineNote tlNote, GridInfo grid)
+    private void SetTLNotePosition(in TimeLineNote tlNote, GridInfo grid)
     {
         if (tlNote.info[KEY.TYPE] != TYPE.EVENT)
         {
@@ -153,6 +153,8 @@ public class TLNoteManager : MonoBehaviour
     //단일 노트 선택
     private void SingleNoteSelect()
     {
+        ApplyInfoValue();
+
         DeselectAll();
 
 
@@ -160,7 +162,7 @@ public class TLNoteManager : MonoBehaviour
 
         AddSelectedNote(tlNote);
 
-        SetStandardNote(tlNote); //노트 두개식 선택되는거 여기가 문제임. 원인은 모름.
+        SetStandardNote(tlNote);
     }
 
     //단일 노트 토글
@@ -204,7 +206,7 @@ public class TLNoteManager : MonoBehaviour
     }
 
     //노트 토글
-    private void NoteToggle(TimeLineNote tlNote)
+    private void NoteToggle(in TimeLineNote tlNote)
     {
         //standardNote는 선택 해제할 수 없으므로 함수 종료.
         if (tlNote == editorMgr.standardNote)
@@ -230,7 +232,7 @@ public class TLNoteManager : MonoBehaviour
     }
 
     //노트 선택 해제
-    private void Deselect(TimeLineNote tlNote)
+    private void Deselect(in TimeLineNote tlNote)
     {
         editorMgr.selectedNoteList.Remove(tlNote);
 
@@ -238,17 +240,18 @@ public class TLNoteManager : MonoBehaviour
     }
 
     //selectedNoteList에 노트 추가
-    private void AddSelectedNote(TimeLineNote tlNote)
+    private void AddSelectedNote(in TimeLineNote tlNote)
     {
         if (editorMgr.selectedNoteList.IndexOf(tlNote) != -1)
             return;
 
         tlNote.Select();
         editorMgr.selectedNoteList.Add(tlNote);
+        //Debug.Log(nameof(AddSelectedNote));
     }
 
     //기준 노트 설정
-    private void SetStandardNote(TimeLineNote tlNote, bool doRelease = false)
+    private void SetStandardNote(in TimeLineNote tlNote, bool doRelease = false)
     {
         _SetStandardNote(tlNote, doRelease);
 
@@ -272,6 +275,8 @@ public class TLNoteManager : MonoBehaviour
 
         editorMgr.standardNote = tlNote;
         editorMgr.standardNote.SetStandardNote();
+
+        //Debug.Log(nameof(_SetStandardNote));
     }
 
 
@@ -408,6 +413,7 @@ public class TLNoteManager : MonoBehaviour
         Level.S.WriteLevel();
     }
 
+
     #region 노트 정보 변경 관련 함수
     private void AllInfoUIGeneration()
     {
@@ -423,7 +429,7 @@ public class TLNoteManager : MonoBehaviour
 
         GameObject go = Instantiate(infoUI[KEY.KEY_TYPE[num]]);
 
-        noteInfo.InitInfo(go, num, delegate { ChangeInfo(); }, delegate { ChangeInfo(); });
+        noteInfo.InitInfo(go, num, delegate { ApplyInfoValue(); }, delegate { ApplyInfoValue(); });
 
         go.transform.SetParent(infoPanel.transform);
         go.transform.localPosition = new Vector2(0, 170 - (infoUIInterval * (num - noteInfoStartNum)));
@@ -433,80 +439,65 @@ public class TLNoteManager : MonoBehaviour
         return noteInfo;
     }
 
-    private void ShowInfo(TimeLineNote stdNote)
+    private void ShowInfo(in TimeLineNote tlNote)
     {
-        SetInfoValue(stdNote.info);
+        SetInfoValue(tlNote.info);
 
-        //HideInfo(stdNote.info);
+        HideUselessInfo(tlNote.info[KEY.NOTE_TYPE]);
 
-        //SetInfoName(stdNote.info);
-        Debug.Log("ShowInfo");
+        SetValueName(tlNote.info);
     }
 
-    private void SetInfoValue(Dictionary<int, int> info)
+    private void HideUselessInfo(int noteType)
+    {
+        if(noteType == NOTE_TYPE.EVENT)
+        {
+            for(int i = noteInfoStartNum; i < noteInfo.Length; ++i)
+            {
+                noteInfo[i].SetActive(true);
+            }
+            noteInfo[KEY.ANGLE].SetActive(false);
+        }
+        else
+        {
+            for (int i = noteInfoStartNum; i < noteInfo.Length; ++i)
+            {
+                noteInfo[i].SetActive(false);
+            }
+            noteInfo[KEY.ANGLE].SetActive(true);
+        }
+    }
+
+    private void SetInfoValue(in Dictionary<int, int> info)
     {
         for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
         {
-            Debug.Log(i + "_" + noteInfo[i].GetInfo().ToString());
             noteInfo[i].SetInfo(info[i]);
         }
     }
 
-    private void HideInfo(Dictionary<int, int> info)
+    private void SetValueName(in Dictionary<int, int> info)
     {
-        _HideInfo(info, info[KEY.TYPE]);
-    }
+        if (info[KEY.NOTE_TYPE] != NOTE_TYPE.EVENT)
+            return;
 
-    private void _HideInfo(Dictionary<int, int> info, int type)
-    {
-        if (type == TYPE.NOTE)
+        for(int i = 0; i < KEY.VALUE.Length; ++i)
         {
-            for (int i = noteInfoStartNum; i < KEY.EVENT_NAME; ++i)
-            {
-                noteInfo[i].gameObject.SetActive(true);
-            }
-
-            for (int i = KEY.EVENT_NAME; i < KEY.COUNT; ++i)
-            {
-                noteInfo[i].gameObject.SetActive(false);
-            }
-        }
-        else if (type == TYPE.EVENT)
-        {
-            for (int i = noteInfoStartNum; i < KEY.EVENT_NAME; ++i)
-            {
-                noteInfo[i].gameObject.SetActive(false);
-            }
-
-            for (int i = KEY.EVENT_NAME; i < KEY.COUNT; ++i)
-            {
-                noteInfo[i].gameObject.SetActive(true);
-            }
+            //noteInfo[i + noteInfoStartNum].SetName(EVENT_NAME.VALUES[i][info[KEY.EVENT_NAME]]);
         }
     }
 
-    private void SetInfoName(Dictionary<int, int> info)
+    private void ApplyInfoValue()
     {
-        if(info[KEY.TYPE] == TYPE.EVENT)
+        for (int i = 0; i < editorMgr.selectedNoteList.Count; ++i)
         {
-            for(int i = 0; i < KEY.COUNT; ++i)
+            for (int j = noteInfoStartNum; j < noteInfo.Length; ++j)
             {
-                //Debug.Log(EVENT_NAME.VALUES[i][info[KEY.EVENT_NAME]]);
-                //Debug.Log(i);
-                //noteInfo[KEY.VALUE[i]].SetName(EVENT_NAME.VALUES[KEY.EVENT_NAME][i]);
+                editorMgr.selectedNoteList[i].info[j] = noteInfo[j].GetInfo();
             }
         }
-    }
 
-    private void ChangeInfo()
-    {
-        //for (int j = 0; j < editorMgr.selectedNoteList.Count; ++j)
-        //{
-        //    for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
-        //    {
-        //        editorMgr.selectedNoteList[j].info[i] = noteInfo[i].GetInfo();
-        //    }
-        //}
+        //Debug.Log(nameof(ApplyInfoValue));
     }
     #endregion
 }

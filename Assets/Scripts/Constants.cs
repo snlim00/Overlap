@@ -247,7 +247,8 @@ public static class EVENT_NAME
 
             for(int j = 0; j < KEY.VALUE.Length; ++j)
             {
-                
+                temp[i] = tempValues[j][FindName(i)].ToString();
+                //Debug.Log(temp[i]);
             }
 
             VALUES.Add(temp);
@@ -270,18 +271,18 @@ public static class EVENT_NAME
         }
     }
 
-    //public static int FindValue(string name)
-    //{
-    //    switch (name)
-    //    {
-    //        case nameof(SET_SPEED):
-    //            return SET_SPEED;
+    public static int FindValue(string name)
+    {
+        switch (name)
+        {
+            case nameof(SET_SPEED):
+                return SET_SPEED;
 
-    //        default:
-    //            Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
-    //            return -1;
-    //    }
-    //}
+            default:
+                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
+                return -1;
+        }
+    }
 }
 
 public static class INFO_KEY
