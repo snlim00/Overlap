@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class SlideNote : Note
 {
-    private static ParticleManager particleMgr;
+    private static TouchManager touchMgr;
 
     void Awake()
     {
-        particleMgr = FindObjectOfType<ParticleManager>();
+        if(touchMgr == null)
+            touchMgr = FindObjectOfType<TouchManager>();
     }
 
     // Update is called once per frame
@@ -18,8 +19,11 @@ public class SlideNote : Note
 
         if(TouchManager.holding == true && Mathf.Abs(timing - LevelPlayer.timer) <= Level.S.judgRange[JUDG.PERFECT] * 0.5f)
         {
-            Clear(JUDG.PERFECT);
-            particleMgr.ParticleGeneration(-1);
+            if(touchMgr.CheckAngle(transform.eulerAngles.z) == true)
+            {
+                Clear(JUDG.PERFECT);
+                touchMgr.particleMgr.ParticleGeneration(-1);
+            }
         }
     }
 }

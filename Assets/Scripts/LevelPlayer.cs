@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +9,21 @@ public class LevelPlayer : MonoBehaviour
 
     private EditorManager editorMgr;
 
-    public static float timer { get; private set; } = 0;
 
     public AudioSource audioSource;
+
+
+    private SpriteRenderer bg;
+
+    private Camera mainCam;
+    private float camSize = 5;
 
     //게임을 진행하는 코루틴들
     private bool isCorNoteTimer = false;
     private Coroutine corNoteTimer;
+
+    public static float timer { get; private set; } = 0;
+    public Dictionary<int, int> thisRow;
 
     // Start is called before the first frame update
     void Awake()
@@ -22,6 +31,8 @@ public class LevelPlayer : MonoBehaviour
         editorMgr = FindObjectOfType<EditorManager>();
 
         audioSource = GetComponent<AudioSource>();
+
+        mainCam = Camera.main;
 
         //ReadLevel이 곡의 이름에서 공백을 제거하여 string으로 반환, 이후 해당 문자열로 곡 파일 탐색
         audioSource.clip = Resources.Load<AudioClip>(Level.S.ReadLevel("MeteorStream", DIF.X));
@@ -37,6 +48,9 @@ public class LevelPlayer : MonoBehaviour
     {
         float startTime = audioSource.clip.length * startTimeRaito;
         int startRow = 0;
+
+        mainCam.orthographicSize = camSize;
+        mainCam.transform.position = new Vector3(0, 0, -10);
 
         for (int i = 0; ; ++i)
         {
@@ -98,7 +112,8 @@ public class LevelPlayer : MonoBehaviour
 
 
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f;
-        Dictionary<int, int> thisRow = Level.S.level[row];
+
+        thisRow = Level.S.level[row];
 
         while (timer < lastNoteTiming && row < Level.S.level.Count)
         {
@@ -108,7 +123,7 @@ public class LevelPlayer : MonoBehaviour
             {
                 if(thisRow[KEY.TYPE] == TYPE.EVENT) //다음 행이 EVENT라면 실행
                 {
-                    EventExecute(thisRow);
+                    EventExecute();
                 }
 
                 ++row;
@@ -163,7 +178,7 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    private void InstantiateNote(int row, float startTime, Dictionary<int, int> thisRow)
+    private void InstantiateNote(int row, float startTime, in Dictionary<int, int> thisRow)
     {
         Note note;
 
@@ -198,21 +213,76 @@ public class LevelPlayer : MonoBehaviour
         Level.S.noteList.Add(note);
     }
 
-    private void EventExecute(Dictionary<int, int> thisRow)
+    private void EventExecute()
     {
-        switch (thisRow[KEY.EVENT_NAME]) //각 이벤트 호출
+        StartCoroutine(EVENT_NAME.FindName(thisRow[KEY.EVENT_NAME]));
+
+        //switch (thisRow[KEY.EVENT_NAME]) //각 이벤트 호출
+        //{
+        //    case EVENT_NAME.SET_SPEED:
+        //        SetSpeed(thisRow);
+        //        break;
+        //}
+    }
+
+    private void SET_SPEED()
+    {
+        int speed = thisRow[KEY.VALUE[0]];
+
+        Level.S.noteSpeed = speed;
+    }
+
+    private IEnumerator CAMERA_MOVE()
+    {
+        Vector3 targetPos = new Vector3(thisRow[KEY.VALUE[0]], thisRow[KEY.VALUE[1]], -10);
+        bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
+        float duration = thisRow[KEY.DURATION];
+        int type = thisRow[KEY.EVENT_TYPE];
+
+        Vector3 curPos = mainCam.transform.position;
+        Vector3 bgPos;
+        float t = 0;
+        float p = 0;
+
+        while(t <= 1)
         {
-            //case EVENT_NAME.SET_SPEED:
-            //    {
-            //        float speed = thisRow[KEY.VALUE[0]];
-            //        SetSpeed(speed);
-            //    }
-            //    break;
+            t += Time.deltaTime / duration;
+
+            p = LerpValue(t, type);
+
+            mainCam.transform.position = Vector3.Lerp(curPos, targetPos, p);
+
+
+            if(withBG == true)
+            {
+                bgPos = mainCam.transform.position;
+                bgPos.z = 0;
+                //bg.transform.position = bgPos;
+            }
+
+            yield return null;
         }
     }
 
-    private void SetSpeed(float speed)
+    private float LerpValue(float t, int type)
     {
-        Level.S.noteSpeed = speed;
+        float p = 0;
+
+        switch (type)
+        {
+            case 0:
+                p = t;
+                break;
+
+            case 1:
+                p = t * t;
+                break;
+
+            case 2:
+                p = -((2 * t - 1) * (2 * t - 1)) + 1;
+                break;
+        }
+
+        return p;
     }
 }

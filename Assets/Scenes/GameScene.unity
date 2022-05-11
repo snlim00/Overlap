@@ -1245,6 +1245,7 @@ MonoBehaviour:
   hitNoteList: []
   inputCount: 0
   center: {fileID: 2088479318}
+  judgAngle: 45
 --- !u!1 &1129219582
 GameObject:
   m_ObjectHideFlags: 0

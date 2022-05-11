@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-    [SerializeField] private ParticleManager particleMgr;
+    public ParticleManager particleMgr;
 
 
     [SerializeField] private List<Note> hitNoteList = new List<Note>();
@@ -14,7 +14,7 @@ public class TouchManager : MonoBehaviour
     [SerializeField] private int inputCount = 0;
 
     [SerializeField] private GameObject center;
-    private int judgAngle = 45;
+    [SerializeField] private int judgAngle = 35;
 
     public static bool holding = false;
     private bool isEndHolding = false;
@@ -114,8 +114,7 @@ public class TouchManager : MonoBehaviour
             if (Mathf.Abs(hitNoteList[i].timing - LevelPlayer.timer) <= Level.S.judgRange[judg])
             {
                 //각도 처리
-                if(Mathf.Abs(hitNoteList[i].transform.eulerAngles.z - (center.transform.eulerAngles.z - 90)) < judgAngle
-                    || Mathf.Abs(hitNoteList[i].transform.eulerAngles.z - (center.transform.eulerAngles.z - 90) - 360) < judgAngle)
+                if(CheckAngle(hitNoteList[i].transform.eulerAngles.z) == true)
                 {
                     clearedNoteList.Add(hitNoteList[i]);
                     //Debug.Log(hitNoteArr[i].timing - levelPlayer.t);
@@ -125,6 +124,16 @@ public class TouchManager : MonoBehaviour
         }
 
         return isClear;
+    }
+
+    public bool CheckAngle(float angle)
+    {
+        if(Mathf.Abs(angle - (center.transform.eulerAngles.z - 90)) < judgAngle || Mathf.Abs(angle - (center.transform.eulerAngles.z - 90) - 360) < judgAngle)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void ClearNote(int judg)

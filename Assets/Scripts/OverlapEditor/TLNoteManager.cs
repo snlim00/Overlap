@@ -24,6 +24,8 @@ public class TLNoteManager : MonoBehaviour
     private float infoUIInterval = 40;
     private NoteInfo[] noteInfo = new NoteInfo[KEY.COUNT];
 
+    public static bool editInputFieldNow = false;
+
     private void Awake()
     {
         editorMgr = FindObjectOfType<EditorManager>();
@@ -292,6 +294,9 @@ public class TLNoteManager : MonoBehaviour
     #region 노트 설치/제거 관련 함수
     public void SetNoteType()
     {
+        if (editInputFieldNow == true)
+            return;
+
         //노트 타입 변경
         if (Input.GetKeyDown(KeyCode.Alpha1) == true)
         {
@@ -400,6 +405,8 @@ public class TLNoteManager : MonoBehaviour
 
     public void SaveLevel()
     {
+        ApplyInfoValue();
+
         SortNoteNum();
 
         Level.S.level.Clear();
@@ -429,7 +436,7 @@ public class TLNoteManager : MonoBehaviour
 
         GameObject go = Instantiate(infoUI[KEY.KEY_TYPE[num]]);
 
-        noteInfo.InitInfo(go, num, delegate { ApplyInfoValue(); }, delegate { ApplyInfoValue(); });
+        noteInfo.InitInfo(go, num, delegate { SetValueName(); });
 
         go.transform.SetParent(infoPanel.transform);
         go.transform.localPosition = new Vector2(0, 170 - (infoUIInterval * (num - noteInfoStartNum)));
@@ -476,14 +483,27 @@ public class TLNoteManager : MonoBehaviour
         }
     }
 
-    private void SetValueName(in Dictionary<int, int> info)
+    private void SetValueName(Dictionary<int, int> info)
     {
-        if (info[KEY.NOTE_TYPE] != NOTE_TYPE.EVENT)
+        if (info[KEY.NOTE_TYPE] != NOTE_TYPE.EVENT || noteInfo[KEY.EVENT_NAME].GetInfo() == EVENT_NAME.NONE)
+        {
             return;
+        }
 
         for(int i = 0; i < KEY.VALUE.Length; ++i)
         {
-            //noteInfo[i + noteInfoStartNum].SetName(EVENT_NAME.VALUES[i][info[KEY.EVENT_NAME]]);
+            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[info[KEY.EVENT_NAME]][i]);
+        }
+    }
+
+    private void SetValueName()
+    {
+        if (noteInfo[KEY.EVENT_NAME].GetInfo() == EVENT_NAME.NONE)
+            return;
+
+        for (int i = 0; i < KEY.VALUE.Length; ++i)
+        {
+            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[noteInfo[KEY.EVENT_NAME].GetInfo()][i]);
         }
     }
 
@@ -498,6 +518,14 @@ public class TLNoteManager : MonoBehaviour
         }
 
         //Debug.Log(nameof(ApplyInfoValue));
+
     }
     #endregion
+
+    public static void SetEditInputFieldNow(bool value)
+    {
+        editInputFieldNow = value;
+
+        Debug.Log(value);
+    }
 }

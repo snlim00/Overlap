@@ -16,7 +16,7 @@ public class Note : MonoBehaviour
     public void Execute(int num, int angle, float timing, float spawnDis, int type)
     {
         this.num = num;
-        this.angle = angle + 90;
+        this.angle = -(angle + 90);
         this.timing = timing;
         this.type = type;
 

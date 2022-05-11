@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 [Serializable]
 public class NoteInfo
@@ -17,32 +18,49 @@ public class NoteInfo
     private InputField inputField;
     private Dropdown dropdown;
 
-    public void InitInfo(GameObject info, int num, UnityAction<string> onEndEdit, UnityAction<int> onValueChange)
-    {
+    public void InitInfo(GameObject info, int num, UnityAction<int> onValueChanged)
+    { 
+        this.type = KEY.KEY_TYPE[num];
+
         switch(KEY.KEY_TYPE[num])
         {
             case NOTE_INFO_TYPE.INPUT_FIELD:
                 inputField = info.transform.GetChild(1).GetComponent<InputField>();
 
-                //inputField.onEndEdit.AddListener(onEndEdit);
-
                 inputField.contentType = InputField.ContentType.IntegerNumber;
+
+                inputField.onEndEdit.AddListener((data) => { TLNoteManager.SetEditInputFieldNow(false); });
+
+
+                EventTrigger.Entry entry_Select = new EventTrigger.Entry();
+                entry_Select.eventID = EventTriggerType.Select;
+                entry_Select.callback.AddListener((data) => { TLNoteManager.SetEditInputFieldNow(true); });
+                inputField.GetComponent<EventTrigger>().triggers.Add(entry_Select);
+                
                 break;
 
             case NOTE_INFO_TYPE.DROPDOWN:
+
                 dropdown = info.transform.GetChild(1).GetComponent<Dropdown>();
 
-                //dropdown.onValueChanged.AddListener(onValueChange);
+                dropdown.onValueChanged.AddListener(onValueChanged);
+                
 
-                //dropdown.ClearOptions();
+                dropdown.ClearOptions();
 
-                //List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
+                List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
 
-                //dropdown.AddOptions(options);
+                options.Add(new Dropdown.OptionData("none"));
+
+                for (int i = 0; i < EVENT_NAME.COUNT; ++i)
+                {
+                    options.Add(new Dropdown.OptionData(EVENT_NAME.FindName(i)));
+                }
+
+                dropdown.AddOptions(options);
 
                 break;
         }
-        this.type = KEY.KEY_TYPE[num];
 
         infoName = info.transform.GetChild(0).GetComponent<Text>();
         infoName.text = KEY.FindName(num);

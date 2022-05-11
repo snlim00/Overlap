@@ -231,11 +231,21 @@ public static class EVENT_NAME
 {
     public static List<Dictionary<int, string>> VALUES = new List<Dictionary<int, string>>();
 
+    public const int NONE = -1;
+
     public const int SET_SPEED = 0;
 
     public const int CAMERA_MOVE = 1;
 
-    public const int COUNT = 2;
+    public const int CAMERA_ZOOM = 2;
+
+    public const int CAMERA_ROTATE = 3;
+
+    public const int SET_BG_IMAGE = 4;
+
+    public const int SET_BG_SCALE = 5;
+
+    public const int COUNT = 6;
 
     public static void ReadEventTypeName()
     {
@@ -247,12 +257,20 @@ public static class EVENT_NAME
 
             for(int j = 0; j < KEY.VALUE.Length; ++j)
             {
-                temp[i] = tempValues[j][FindName(i)].ToString();
+                temp[j] = tempValues[j][FindName(i)].ToString();
                 //Debug.Log(temp[i]);
             }
 
             VALUES.Add(temp);
         }
+
+        //for(int i = 0; i < VALUES.Count; ++i)
+        //{
+        //    for(int j = 0; j < KEY.VALUE.Length; ++j)
+        //    {
+        //        Debug.Log(VALUES[i][j]);
+        //    }
+        //}
     }
 
     public static string FindName(int value)
@@ -264,6 +282,18 @@ public static class EVENT_NAME
 
             case CAMERA_MOVE:
                 return nameof(CAMERA_MOVE);
+
+            case CAMERA_ZOOM:
+                return nameof(CAMERA_ZOOM);
+
+            case CAMERA_ROTATE:
+                return nameof(CAMERA_ROTATE);
+
+            case SET_BG_IMAGE:
+                return nameof(SET_BG_IMAGE);
+
+            case SET_BG_SCALE:
+                return nameof(SET_BG_SCALE);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);
