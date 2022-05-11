@@ -52,7 +52,7 @@ public class LevelPlayer : MonoBehaviour
         mainCam.orthographicSize = camSize;
         mainCam.transform.position = new Vector3(0, 0, -10);
 
-        for (int i = 0; ; ++i)
+        for (int i = 0; i < Level.S.level.Count; ++i)
         {
             if (Level.S.level[i][KEY.TIMING] * 0.001f >= startTime)
             {
@@ -149,7 +149,7 @@ public class LevelPlayer : MonoBehaviour
             //Debug.Log(Level.S.startDelay);
         }
 
-        yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+        yield return new WaitForSeconds(PlayerSetting.S.offset);
 
         audioSource.Play();
         //Debug.Log("audioSource Start");
@@ -225,6 +225,35 @@ public class LevelPlayer : MonoBehaviour
         //}
     }
 
+    private float LerpValue(float t, int type)
+    {
+        float p = 0;
+
+        switch (type)
+        {
+            case 0:
+                p = t;
+                break;
+
+            case 1:
+                p = t * t;
+                break;
+
+            case 2:
+                p = -((2 * t - 1) * (2 * t - 1)) + 1;
+                break;
+        }
+
+        return p;
+    }
+
+    private float BeatToDuration(float beat)
+    {
+        float duration = (60f / Level.S.bpm) / beat;
+
+        return duration;
+    }
+
     private void SET_SPEED()
     {
         int speed = thisRow[KEY.VALUE[0]];
@@ -236,7 +265,7 @@ public class LevelPlayer : MonoBehaviour
     {
         Vector3 targetPos = new Vector3(thisRow[KEY.VALUE[0]], thisRow[KEY.VALUE[1]], -10);
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
-        float duration = thisRow[KEY.DURATION];
+        float duration = BeatToDuration(thisRow[KEY.DURATION]);
         int type = thisRow[KEY.EVENT_TYPE];
 
         Vector3 curPos = mainCam.transform.position;
@@ -262,27 +291,5 @@ public class LevelPlayer : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private float LerpValue(float t, int type)
-    {
-        float p = 0;
-
-        switch (type)
-        {
-            case 0:
-                p = t;
-                break;
-
-            case 1:
-                p = t * t;
-                break;
-
-            case 2:
-                p = -((2 * t - 1) * (2 * t - 1)) + 1;
-                break;
-        }
-
-        return p;
     }
 }

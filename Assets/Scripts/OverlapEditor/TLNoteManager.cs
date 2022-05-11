@@ -100,17 +100,20 @@ public class TLNoteManager : MonoBehaviour
 
     private void SetTLNotePosition(in TimeLineNote tlNote, GridInfo grid)
     {
+        Vector2 pos = grid.transform.localPosition;
+
         if (tlNote.info[KEY.TYPE] != TYPE.EVENT)
         {
-            tlNote.transform.localPosition = grid.transform.localPosition;
             grid.haveNote = tlNote;
             grid.isHaveNote = true;
         }
         else
         {
             grid.eventCount += 1;
-            tlNote.transform.localPosition = new Vector2(grid.transform.localPosition.x, grid.eventCount * -22f - 40f);
+            pos.y = -40f + (-22f * grid.eventCount);
         }
+
+        tlNote.transform.localPosition = pos;
 
         tlNote.info[KEY.GRID_NUM] = editorMgr.gridList.IndexOf(grid);
     }
@@ -413,7 +416,7 @@ public class TLNoteManager : MonoBehaviour
         for(int i = 0; i < editorMgr.tlNoteList.Count; ++i)
         {
             //interval만큼 나누고 ms단위로 변환해주기 위해 위해 1000을 곱해줌.
-            editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(((editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval) * 1000) + editorMgr.offset);
+            editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(((editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval) * 1000)/* + editorMgr.offset*/);
             Level.S.level.Add(editorMgr.tlNoteList[i].info);
         }
         Debug.Log("Saved!");

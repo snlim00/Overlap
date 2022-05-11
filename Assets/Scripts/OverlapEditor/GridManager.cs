@@ -128,7 +128,8 @@ public class GridManager : MonoBehaviour
 
     private void SetGridPosition(GridInfo grid, int num)
     {
-        float gridPosition = ((60f / Level.S.bpm) * (1 / maxBeat) * editorMgr.interval) * num;
+        //Debug.Log(PlayerSetting.S.offset / editorMgr.interval * 1000);
+        float gridPosition = ((60f / Level.S.bpm) * (1 / maxBeat) * editorMgr.interval) * num + (Level.S.offset * editorMgr.interval);
 
         grid.transform.localPosition = new Vector2(gridPosition, 0);
     }
@@ -140,7 +141,7 @@ public class GridManager : MonoBehaviour
             GridInfo grid = editorMgr.gridList[i];
 
             //해당 노트가 비트에 해당하지 않는다면 비활성화, 해당한다면 활성화
-            if (i % (32 / beat) != 0)
+            if (i % (maxBeat / beat) != 0)
             {
                 grid.gameObject.SetActive(false);
             }
