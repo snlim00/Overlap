@@ -1,6 +1,6 @@
 SET_SPEED,CAMERA_MOVE,CAMERA_ZOOM,CAMERA_ROTATE,SET_BG_IMAGE,SET_BG_SCALE
 speed,x pos,scale,rotation,bg num,scale
- ,y pos,,relative,,
- ,with BG,,,,
+ ,y pos,withBG,relative,,
+ ,with BG,,withBG,,
  ,,,,,
  ,,,,,

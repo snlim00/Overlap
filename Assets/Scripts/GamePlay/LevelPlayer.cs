@@ -46,6 +46,8 @@ public class LevelPlayer : MonoBehaviour
 
     public void GameStart(float startTimeRaito = 0)
     {
+        BackgroundManager.S.SetBgImage(Level.S.levelName, 0);   
+
         float startTime = audioSource.clip.length * startTimeRaito;
         int startRow = 0;
 
@@ -254,6 +256,7 @@ public class LevelPlayer : MonoBehaviour
         return duration;
     }
 
+    #region 레벨 이벤트 함수
     private void SET_SPEED()
     {
         int speed = thisRow[KEY.VALUE[0]];
@@ -268,7 +271,7 @@ public class LevelPlayer : MonoBehaviour
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
         int type = thisRow[KEY.EVENT_TYPE];
 
-        Vector3 curPos = mainCam.transform.position;
+        Vector3 startPos = mainCam.transform.position;
         Vector3 bgPos;
         float t = 0;
         float p = 0;
@@ -279,7 +282,7 @@ public class LevelPlayer : MonoBehaviour
 
             p = LerpValue(t, type);
 
-            mainCam.transform.position = Vector3.Lerp(curPos, targetPos, p);
+            mainCam.transform.position = Vector3.Lerp(startPos, targetPos, p);
 
 
             if(withBG == true)
@@ -292,4 +295,74 @@ public class LevelPlayer : MonoBehaviour
             yield return null;
         }
     }
+
+    private IEnumerator CAMERA_ZOOM()
+    {
+        float targetScale = thisRow[KEY.VALUE[0]];
+        int type = thisRow[KEY.EVENT_TYPE];
+        float duration = BeatToDuration(thisRow[KEY.DURATION]);
+        bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
+
+        float startScale = mainCam.orthographicSize;
+
+        float t = 0;
+        float p = 0;
+
+        while(t <= 1)
+        {
+            t += Time.deltaTime / duration;
+
+            p = LerpValue(t, type);
+
+            mainCam.orthographicSize = Mathf.Lerp(startScale, startScale * (targetScale / 100f), p);
+
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator CAMERA_ROTATE()
+    {
+        bool relative = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
+        float targetAngle;
+        bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
+        int type = thisRow[KEY.EVENT_TYPE];
+        float duration = BeatToDuration(thisRow[KEY.DURATION]);
+
+        float startAngle = mainCam.transform.eulerAngles.y;
+            
+
+        if(relative == true)
+        {
+            targetAngle = startAngle + thisRow[KEY.VALUE[0]];
+        }
+        else
+        {
+            targetAngle = thisRow[KEY.VALUE[0]];
+        }
+
+        float t = 0;
+        float p = 0;
+
+        while(t <= 1)
+        {
+            t += Time.deltaTime / duration;
+
+            p = LerpValue(t, type);
+
+            mainCam.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(startAngle, targetAngle, p));
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator SET_BG_IMAGE()
+    {
+        int num = thisRow[KEY.VALUE[0]];
+
+        BackgroundManager.S.SetBgImage(Level.S.levelName, num);
+
+        yield break;
+    }
+    #endregion
 }

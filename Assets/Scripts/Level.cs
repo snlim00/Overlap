@@ -13,9 +13,18 @@ public static class PLAY_INFO
 
 public class Level : MonoBehaviour
 {
-    public static Level S;
+    public static Level S = null;
     private void Awake()
     {
+        if(S != null)
+        {
+            Destroy(this.gameObject);
+
+            return;
+        }
+
+        DontDestroyOnLoad(this.gameObject);
+
         Level.S = this;
 
         judgRange = new float[3];
@@ -66,7 +75,8 @@ public class Level : MonoBehaviour
         List<Dictionary<string, object>> tempLevel = CSVReader.Read(this.levelName + "_" + DIF.FindName(dif));
 
         //레벨 파일 변환
-        ConvertLevel(tempLevel);
+        //ConvertLevel(tempLevel);
+        CSVReader.ConvertDicInt(tempLevel, ref level, KEY.FindName);
 
         //레벨 파일에서 필요한 값 저장
         //노트 개수 세기
@@ -99,28 +109,28 @@ public class Level : MonoBehaviour
     }
 
     //List<Dictionary<string, object>>인 레벨을 List<Dictionary<int, int>> 로 변경
-    private void ConvertLevel(List<Dictionary<string, object>> tempLevel)
-    {
-        //각 행을 담아둘 변수 temp 생성
-        Dictionary<int, int> temp;
+    //private void ConvertLevel(List<Dictionary<string, object>> tempLevel)
+    //{
+    //    //각 행을 담아둘 변수 temp 생성
+    //    Dictionary<int, int> temp;
 
-        for (int i = 0; i < tempLevel.Count; ++i)
-        {
-            //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
-            temp = new Dictionary<int, int>();
+    //    for (int i = 0; i < tempLevel.Count; ++i)
+    //    {
+    //        //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
+    //        temp = new Dictionary<int, int>();
 
-            for (int j = 0; j < tempLevel[0].Count; ++j)
-            {
-                //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
-                string value = Convert.ToString(tempLevel[i][KEY.FindName(j)]);
-                if (value == "")
-                    value = "-1";
+    //        for (int j = 0; j < tempLevel[0].Count; ++j)
+    //        {
+    //            //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
+    //            string value = Convert.ToString(tempLevel[i][KEY.FindName(j)]);
+    //            if (value == "")
+    //                value = "-1";
 
-                temp[j] = Convert.ToInt32(value);
-            }
-            this.level.Add(temp);
-        }
-    }
+    //            temp[j] = Convert.ToInt32(value);
+    //        }
+    //        this.level.Add(temp);
+    //    }
+    //}
 
     private void ReadLevelInfo()
     {
@@ -128,31 +138,32 @@ public class Level : MonoBehaviour
         List<Dictionary<string, object>> tempLevelInfo = CSVReader.Read(this.levelName + "_" + DIF.FindName(DIF.I));
 
         //레벨 정보 파일 자료형 변환 List<Dictionary<string, object>> -> List<Dictionary<int,int>>
-        ConvertLevelInfo(tempLevelInfo);
+        //ConvertLevelInfo(tempLevelInfo);
+        CSVReader.ConvertDicInt(tempLevelInfo, ref levelInfo, INFO_KEY.FindName);
     }
 
-    private void ConvertLevelInfo(List<Dictionary<string, object>> tempLevelInfo)
-    {
-        //각 행을 담아둘 변수 temp 생성
-        Dictionary<int, int> temp;
+    //private void ConvertLevelInfo(List<Dictionary<string, object>> tempLevelInfo)
+    //{
+    //    //각 행을 담아둘 변수 temp 생성
+    //    Dictionary<int, int> temp;
 
-        for (int i = 0; i < tempLevelInfo.Count; ++i)
-        {
-            //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
-            temp = new Dictionary<int, int>();
+    //    for (int i = 0; i < tempLevelInfo.Count; ++i)
+    //    {
+    //        //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
+    //        temp = new Dictionary<int, int>();
 
-            for (int j = 0; j < tempLevelInfo[0].Count; ++j)
-            {
-                //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
-                string value = Convert.ToString(tempLevelInfo[i][INFO_KEY.FindName(j)]);
-                if (value == "")
-                    value = "-1";
+    //        for (int j = 0; j < tempLevelInfo[0].Count; ++j)
+    //        {
+    //            //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
+    //            string value = Convert.ToString(tempLevelInfo[i][INFO_KEY.FindName(j)]);
+    //            if (value == "")
+    //                value = "-1";
 
-                temp[j] = Convert.ToInt32(value);
-            }
-            this.levelInfo.Add(temp);
-        }
-    }
+    //            temp[j] = Convert.ToInt32(value);
+    //        }
+    //        this.levelInfo.Add(temp);
+    //    }
+    //}
 
     public void WriteLevel()
     {
@@ -186,4 +197,6 @@ public class Level : MonoBehaviour
         }
 
     }
+
+    
 }

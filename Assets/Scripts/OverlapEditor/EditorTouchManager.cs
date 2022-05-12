@@ -240,15 +240,11 @@ public class EditorTouchManager : MonoBehaviour
 
     private IEnumerator TimeLinePlay()
     {
-        float speed = -editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / levelPlayer.audioSource.clip.length;
-
-        //Debug.Log(editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x + "_" + FindObjectOfType<LevelPlayer>().audioSource.clip.length + "_" + speed);
-
-        //yield return new WaitForSeconds(PlayerSetting.S.offset + Level.S.offset);
+        float speed = -editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / levelPlayer.audioSource.clip.length * (Screen.width / 800f); ;
 
         while (true)
         {
-            editorMgr.timeLine.transform.Translate(speed * Time.deltaTime * 2.39f/*1.157f*/, 0, 0);
+            editorMgr.timeLine.transform.Translate(speed * Time.deltaTime, 0, 0);
 
             SetTLSliderValue();
 

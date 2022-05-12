@@ -358,3 +358,21 @@ public static class NOTE_INFO_TYPE
     public const int INPUT_FIELD = 0;
     public const int DROPDOWN = 1;
 }
+
+public static class SONG_LIST_KEY
+{
+    public const int SONG_NAME = 0;
+
+    public static string FindName(int value)
+    {
+        switch (value)
+        {
+            case SONG_NAME:
+                return nameof(SONG_NAME);
+
+            default:
+                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");
+                return "";
+        }
+    }
+}

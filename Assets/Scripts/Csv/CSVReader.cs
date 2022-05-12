@@ -52,4 +52,59 @@ public class CSVReader
         }
         return list;
     }
+
+    public delegate string A(int a);
+    public static void ConvertDicInt(List<Dictionary<string, object>> dic, ref List<Dictionary<int, int>> original, A FindName)
+    {
+        Dictionary<int, int> temp;
+
+        for (int i = 0; i < dic.Count; ++i)
+        {
+            temp = new Dictionary<int, int>();
+
+            for (int j = 0; j < dic[0].Count; ++j)
+            {
+                int value;
+                try
+                {
+                    value = Convert.ToInt32(dic[i][FindName(j)]);
+                }
+                catch
+                {
+                    value = -1;
+                }
+
+                temp[j] = value;
+            }
+
+            original.Add(temp);
+        }
+    }
+
+    public static void ConvertDIcString(List<Dictionary<string, object>> dic, ref List<Dictionary<int, string>> original, A FindName)
+    {
+        Dictionary<int, string> temp;
+
+        for (int i = 0; i < dic.Count; ++i)
+        {
+            temp = new Dictionary<int, string>();
+
+            for (int j = 0; j < dic[0].Count; ++j)
+            {
+                string value;
+                try
+                {
+                    value = Convert.ToString(dic[i][FindName(j)]);
+                }
+                catch
+                {
+                    value = "";
+                }
+
+                temp[j] = value;
+            }
+
+            original.Add(temp);
+        }
+    }
 }
