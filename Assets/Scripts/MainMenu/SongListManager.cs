@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text.RegularExpressions;
+using UnityEngine.Events;
 
 public class SongListManager : MonoBehaviour
 {
@@ -36,6 +38,10 @@ public class SongListManager : MonoBehaviour
     private Coroutine corSlide;
     #endregion
 
+    #region 레벨 플레이 관련 변수
+
+    #endregion
+
     private void Awake()
     {
 
@@ -59,6 +65,8 @@ public class SongListManager : MonoBehaviour
         AllItemGeneration();
 
         SetAllItemPosition();
+
+        SongSelect();
     }
 
     // Start is called before the first frame update
@@ -91,17 +99,19 @@ public class SongListManager : MonoBehaviour
 
     private TMP_Text InstantiateItem(int num)
     {
-        TMP_Text text = Instantiate(itemPref).GetComponent<TMP_Text>();
+        TMP_Text tmp = Instantiate(itemPref).GetComponent<TMP_Text>();
 
-        text.transform.SetParent(this.transform);
+        tmp.transform.SetParent(this.transform);
 
-        text.text = songList[num][SONG_LIST_KEY.SONG_NAME];
+        tmp.text = songList[num][SONG_LIST_KEY.SONG_NAME];
 
-        text.fontSize = textSize;
+        tmp.fontSize = textSize;
 
-        text.transform.localScale = Vector3.one;
+        tmp.transform.localScale = Vector3.one;
 
-        return text;
+        tmp.gameObject.name = Level.RemoveSapce(songList[num][SONG_LIST_KEY.SONG_NAME]);
+
+        return tmp;
     }
 
     private void SetAllItemPosition()
@@ -118,6 +128,7 @@ public class SongListManager : MonoBehaviour
     }
     #endregion
 
+    #region 스크롤
     private void Scroll()
     {
         if (canScroll == false)
@@ -131,10 +142,6 @@ public class SongListManager : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             StopScroll();
-        }
-        else
-        {
-            SongSelect();
         }
 
         Scrolling();
@@ -152,6 +159,13 @@ public class SongListManager : MonoBehaviour
 
     private void StopScroll()
     {
+        if (scrolling == false)
+        {
+            Debug.Log(nameof(StopScroll));
+            return;
+        }
+
+
         scrolling = false;
 
         StopSliding();
@@ -185,11 +199,15 @@ public class SongListManager : MonoBehaviour
     {
         if(itemList[0].transform.position.y < centerPos)
         {
-            SetPosition(0);
+            StopSliding();
+
+            SongSelect(0);
         }
         else if (itemList[itemList.Length - 1].transform.position.y > centerPos)
         {
-            SetPosition(itemList.Length - 1);
+            StopSliding();
+
+            SongSelect(itemList.Length - 1);
         }
     }
 
@@ -207,7 +225,7 @@ public class SongListManager : MonoBehaviour
 
         float scrollDis = touchStartMousePos - slideStartPos;
 
-        float startSlideSpeed = Mathf.Pow((scrollDis / scrollTime), 2) / 5000;
+        float startSlideSpeed = Mathf.Pow((scrollDis / scrollTime), 2) / 10000;
         if (touchStartMousePos > slideStartPos)
         {
             startSlideSpeed *= -1f;
@@ -218,14 +236,14 @@ public class SongListManager : MonoBehaviour
         
 
         float duration = Mathf.Abs(scrollDis / scrollTime / 1000);
-        Debug.Log(duration);
+        //Debug.Log(duration);
         float t = 0;
 
-        while(t <= 1 && Mathf.Abs(slideSpeed) > 1)
+        while(t <= 1 && Mathf.Abs(slideSpeed) > 5)
         {
             t += Time.deltaTime / duration;
 
-            slideSpeed = Mathf.Lerp(startSlideSpeed, 0, (t * t) * 2);
+            slideSpeed = Mathf.Lerp(startSlideSpeed, 0, (t * t) * 10);
 
             //Debug.Log(slideSpeed);
 
@@ -236,6 +254,7 @@ public class SongListManager : MonoBehaviour
             yield return null;
         }
 
+        SongSelect();
         isSliding = false;
     }
 
@@ -254,9 +273,50 @@ public class SongListManager : MonoBehaviour
 
     private void SongSelect()
     {
+        int nearItem = FindNearItem();
+
+        SetPosition(nearItem);
+
+        PointItem(nearItem);
+    }
+
+    private void SongSelect(int num)
+    {
+        SetPosition(num);
+
+        PointItem(num);
+    }
+
+    private int FindNearItem()
+    {
+        int nearItem = 0;
+
+        for (int i = 1; i < itemList.Length; ++i)
+        {
+            if (Mathf.Abs(itemList[nearItem].transform.position.y - centerPos) > Mathf.Abs(itemList[i].transform.position.y - centerPos))
+            {
+                nearItem = i;
+            }
+        }
+
+        return nearItem;
+    }
+
+    private void PointItem(int num)
+    {
         for(int i = 0; i < itemList.Length; ++i)
         {
-
+            itemList[i].color = Color.gray;
         }
+
+        itemList[num].color = Color.white;
     }
+    #endregion
+
+    #region 레벨 플레이
+    public void OnButtonClick()
+    {
+        
+    }
+    #endregion
 }

@@ -68,7 +68,7 @@ public class Level : MonoBehaviour
     public string ReadLevel(string levelName, int dif)
     {
         //레벨명에서 공백 제거
-        this.levelName = Regex.Replace(levelName, @"\s", "");
+        this.levelName = RemoveSapce(levelName);
         this.levelDifficulty = dif;
 
         //레벨명_난이도 의 파일 탐색
@@ -142,28 +142,28 @@ public class Level : MonoBehaviour
         CSVReader.ConvertDicInt(tempLevelInfo, ref levelInfo, INFO_KEY.FindName);
     }
 
-    //private void ConvertLevelInfo(List<Dictionary<string, object>> tempLevelInfo)
-    //{
-    //    //각 행을 담아둘 변수 temp 생성
-    //    Dictionary<int, int> temp;
+    private void ConvertLevelInfo(List<Dictionary<string, object>> tempLevelInfo)
+    {
+        //각 행을 담아둘 변수 temp 생성
+        Dictionary<int, int> temp;
 
-    //    for (int i = 0; i < tempLevelInfo.Count; ++i)
-    //    {
-    //        //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
-    //        temp = new Dictionary<int, int>();
+        for (int i = 0; i<tempLevelInfo.Count; ++i)
+        {
+            //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
+            temp = new Dictionary<int, int>();
 
-    //        for (int j = 0; j < tempLevelInfo[0].Count; ++j)
-    //        {
-    //            //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
-    //            string value = Convert.ToString(tempLevelInfo[i][INFO_KEY.FindName(j)]);
-    //            if (value == "")
-    //                value = "-1";
+            for (int j = 0; j<tempLevelInfo[0].Count; ++j)
+            {
+                //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
+                string value = Convert.ToString(tempLevelInfo[i][INFO_KEY.FindName(j)]);
+                if (value == "")
+                    value = "-1";
 
-    //            temp[j] = Convert.ToInt32(value);
-    //        }
-    //        this.levelInfo.Add(temp);
-    //    }
-    //}
+                temp[j] = Convert.ToInt32(value);
+            }
+this.levelInfo.Add(temp);
+        }
+    }
 
     public void WriteLevel()
     {
@@ -198,5 +198,8 @@ public class Level : MonoBehaviour
 
     }
 
-    
+    public static string RemoveSapce(string text)
+    {
+        return Regex.Replace(text, @"\s", "");
+    }
 }
