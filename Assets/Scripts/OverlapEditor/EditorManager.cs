@@ -28,11 +28,20 @@ public class EditorManager : MonoBehaviour
 
     public float offset;
 
+    [SerializeField] private GameObject[] editorObject;
+
     void Start()
     {
         if(PlayerSetting.S.editerMode == false)
         {
+            for(int i = 0; i < editorObject.Length; ++i)
+            {
+                editorObject[i].SetActive(false);
+            }
+
             this.gameObject.SetActive(false);
+
+            return;
         }
 
         Init();

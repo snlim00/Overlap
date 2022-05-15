@@ -322,7 +322,6 @@ public static class INFO_KEY
     public const int BPM = 2;
     public const int NOTE_SPEED = 3;
     public const int JUDG_RANGE = 4;
-    public const int DIFFICULTY = 5;
 
     public static string FindName(int value)
     {
@@ -343,9 +342,6 @@ public static class INFO_KEY
             case JUDG_RANGE:
                 return nameof(JUDG_RANGE);
 
-            case DIFFICULTY:
-                return nameof(DIFFICULTY);
-
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");
                 return "";
@@ -363,6 +359,8 @@ public static class SONG_LIST_KEY
 {
     public const int SONG_NAME = 0;
 
+    public const int E = 1, N = 2, H = 3, X = 4;
+
     public static string FindName(int value)
     {
         switch (value)
@@ -370,9 +368,27 @@ public static class SONG_LIST_KEY
             case SONG_NAME:
                 return nameof(SONG_NAME);
 
+            case E:
+                return nameof(E);
+
+            case N:
+                return nameof(N);
+
+            case H:
+                return nameof(H);
+
+            case X:
+                return nameof(X);
+
             default:
-                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");
+                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);
                 return "";
         }
     }
+}
+
+public static class SCENE
+{
+    public const string MAIN_MENU = "MainMenu";
+    public const string GAME_SCENE = "GameScene";
 }

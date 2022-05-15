@@ -65,12 +65,13 @@ public class Level : MonoBehaviour
     public int isPlaying = PLAY_INFO.STOPPED;
 
     //레벨의 이름과 난이도를 받아 레벨을 읽어옴
-    public string ReadLevel(string levelName, int dif)
+    public void ReadLevel(string levelName, int dif)
     {
         //레벨명에서 공백 제거
         this.levelName = RemoveSapce(levelName);
         this.levelDifficulty = dif;
 
+        Debug.Log(this.levelName+"_"+DIF.FindName(dif));
         //레벨명_난이도 의 파일 탐색
         List<Dictionary<string, object>> tempLevel = CSVReader.Read(this.levelName + "_" + DIF.FindName(dif));
 
@@ -104,33 +105,7 @@ public class Level : MonoBehaviour
         this.judgRange[JUDG.PERFECT] = levelInfo[0][INFO_KEY.JUDG_RANGE] * 0.001f; //판정 범위는 perfect를 기준으로 하여 일정 비율로 다른 판정 범위를 결정함.
         this.judgRange[JUDG.GOOD] = judgRange[JUDG.PERFECT] * 2;
         this.judgRange[JUDG.MISS] = judgRange[JUDG.PERFECT] * 3f;
-
-        return this.levelName;
     }
-
-    //List<Dictionary<string, object>>인 레벨을 List<Dictionary<int, int>> 로 변경
-    //private void ConvertLevel(List<Dictionary<string, object>> tempLevel)
-    //{
-    //    //각 행을 담아둘 변수 temp 생성
-    //    Dictionary<int, int> temp;
-
-    //    for (int i = 0; i < tempLevel.Count; ++i)
-    //    {
-    //        //새로운 행을 마주할 때 마다 temp에 새로운 메모리 할당 (얕은 복사 방지)
-    //        temp = new Dictionary<int, int>();
-
-    //        for (int j = 0; j < tempLevel[0].Count; ++j)
-    //        {
-    //            //해당 값이 비었다면 -1로 변환하여 값을 전달. (오류 방지)
-    //            string value = Convert.ToString(tempLevel[i][KEY.FindName(j)]);
-    //            if (value == "")
-    //                value = "-1";
-
-    //            temp[j] = Convert.ToInt32(value);
-    //        }
-    //        this.level.Add(temp);
-    //    }
-    //}
 
     private void ReadLevelInfo()
     {
@@ -161,7 +136,7 @@ public class Level : MonoBehaviour
 
                 temp[j] = Convert.ToInt32(value);
             }
-this.levelInfo.Add(temp);
+            this.levelInfo.Add(temp);
         }
     }
 

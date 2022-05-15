@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Text.RegularExpressions;
-using UnityEngine.Events;
+using System;
+using UnityEngine.EventSystems;
 
 public class SongListManager : MonoBehaviour
 {
@@ -39,8 +39,9 @@ public class SongListManager : MonoBehaviour
     #endregion
 
     #region 레벨 플레이 관련 변수
-
+    [SerializeField] private Button[] difBtn;
     #endregion
+
 
     private void Awake()
     {
@@ -79,6 +80,11 @@ public class SongListManager : MonoBehaviour
     void Update()
     {
         Scroll();
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            BlockScroll();
+        }
     }
 
     #region 아이템 생성
@@ -160,10 +166,7 @@ public class SongListManager : MonoBehaviour
     private void StopScroll()
     {
         if (scrolling == false)
-        {
-            Debug.Log(nameof(StopScroll));
             return;
-        }
 
 
         scrolling = false;
@@ -176,10 +179,9 @@ public class SongListManager : MonoBehaviour
         }
         else
         {
-            SongSelect();
+            SongSelect(0f);
         }
     }
-
 
     private void Scrolling()
     {
@@ -201,23 +203,39 @@ public class SongListManager : MonoBehaviour
         {
             StopSliding();
 
-            SongSelect(0);
+            SongSelect(0, 0.1f);
         }
         else if (itemList[itemList.Length - 1].transform.position.y > centerPos)
         {
             StopSliding();
 
-            SongSelect(itemList.Length - 1);
+            SongSelect(itemList.Length - 1, 0.1f);
         }
     }
 
-    private void SetPosition(int num)
+    private IEnumerator SetPosition(int num, float duration = 0.1f)
     {
-        transform.Translate(0, -itemList[num].transform.position.y + centerPos, 0);
+        Vector2 startPos = transform.position;
+
+        Vector2 targetPos = startPos;
+        targetPos.y += -itemList[num].transform.position.y + centerPos;
+
+        float t = 0;
+
+        while(t <= 1)
+        {
+            t += Time.deltaTime / duration;
+
+            transform.position = Vector2.Lerp(startPos, targetPos, t);
+
+            yield return null;
+        }
     }
 
     private IEnumerator Slide()
     {
+        Debug.Log("startSLide");
+        
         isSliding = true;
 
         float scrollTime = Time.time - touchStartTime;
@@ -243,6 +261,8 @@ public class SongListManager : MonoBehaviour
         {
             t += Time.deltaTime / duration;
 
+            Debug.Log("sliding");
+
             slideSpeed = Mathf.Lerp(startSlideSpeed, 0, (t * t) * 10);
 
             //Debug.Log(slideSpeed);
@@ -264,27 +284,12 @@ public class SongListManager : MonoBehaviour
             return false;
 
 
-        StopCoroutine(corSlide);
-
         isSliding = false;
+        StopCoroutine(corSlide);
+        Debug.Log("stop");
+
 
         return true;
-    }
-
-    private void SongSelect()
-    {
-        int nearItem = FindNearItem();
-
-        SetPosition(nearItem);
-
-        PointItem(nearItem);
-    }
-
-    private void SongSelect(int num)
-    {
-        SetPosition(num);
-
-        PointItem(num);
     }
 
     private int FindNearItem()
@@ -311,12 +316,43 @@ public class SongListManager : MonoBehaviour
 
         itemList[num].color = Color.white;
     }
+
+    private void SongSelect(float duration = 0.1f)
+    {
+        int nearItem = FindNearItem();
+
+        _SongSelect(nearItem, duration);
+    }
+
+    private void SongSelect(int num, float duration = 0.1f)
+    {
+        _SongSelect(num, duration);
+    }
+
+    private void _SongSelect(int num, float duration)
+    {
+        PointItem(num);
+
+        StopSliding();
+
+        StartCoroutine(SetPosition(num, duration));
+
+        string levelName = Level.RemoveSapce(songList[num][SONG_LIST_KEY.SONG_NAME]);
+
+        for (int i = 0; i < difBtn.Length; ++i)
+        {
+            difBtn[i].name = levelName;
+            difBtn[i].interactable = songList[num][i + 1] == "0" ? false : true;
+        }
+    }
     #endregion
 
     #region 레벨 플레이
     public void OnButtonClick()
     {
-        
+        Button btn = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+
+        GameManager.StartGame(btn.gameObject.name, DIF.FindValue(btn.tag));
     }
     #endregion
 }

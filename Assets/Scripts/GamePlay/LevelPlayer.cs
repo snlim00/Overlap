@@ -18,6 +18,7 @@ public class LevelPlayer : MonoBehaviour
     private Camera mainCam;
     private float camSize = 5;
 
+
     //게임을 진행하는 코루틴들
     private bool isCorNoteTimer = false;
     private Coroutine corNoteTimer;
@@ -35,8 +36,9 @@ public class LevelPlayer : MonoBehaviour
         mainCam = Camera.main;
 
         //ReadLevel이 곡의 이름에서 공백을 제거하여 string으로 반환, 이후 해당 문자열로 곡 파일 탐색
-        audioSource.clip = Resources.Load<AudioClip>(Level.S.ReadLevel("MeteorStream", DIF.X));
+        //audioSource.clip = Resources.Load<AudioClip>(Level.S.ReadLevel("MeteorStream", DIF.X));
 
+        audioSource.clip = Resources.Load<AudioClip>(Level.S.levelName);
         Level.S.songLength = audioSource.clip.length;
 
 
@@ -111,7 +113,7 @@ public class LevelPlayer : MonoBehaviour
             //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침 -> 음악 재생을 늦추는 방식으로 오프셋 맞추기)
             yield return new WaitForSeconds(Level.S.startDelay);
         }
-
+        Debug.Log("Start Timer: " + Time.time);
 
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f;
 
@@ -143,15 +145,15 @@ public class LevelPlayer : MonoBehaviour
         if(PlayerSetting.S.editerMode == true)
         {
             audioSource.time = startTime;
+            yield return new WaitForSeconds(PlayerSetting.S.songOffset);
         }
         else
         {
             audioSource.time = 0;
-            yield return new WaitForSeconds(Level.S.startDelay);
+            yield return new WaitForSeconds(Level.S.startDelay + PlayerSetting.S.songOffset);
             //Debug.Log(Level.S.startDelay);
         }
-
-        yield return new WaitForSeconds(PlayerSetting.S.offset);
+        Debug.Log("Start Song: " + Time.time);
 
         audioSource.Play();
         //Debug.Log("audioSource Start");
@@ -205,10 +207,12 @@ public class LevelPlayer : MonoBehaviour
         }
         else
         {
-            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;
+            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay + PlayerSetting.S.noteOffset;
         }
 
         float spawnDis = Level.S.noteSpeed * timing;
+
+        //timing += Level.S.startDelay;
 
         note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, spawnDis, thisRow[KEY.NOTE_TYPE]);
 

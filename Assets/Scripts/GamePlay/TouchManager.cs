@@ -140,6 +140,7 @@ public class TouchManager : MonoBehaviour
     {
         for (int i = 0; i < inputCount && i < clearedNoteList.Count; ++i)
         {
+            Debug.Log(LevelPlayer.timer - clearedNoteList[i].timing);
             clearedNoteList[i].Clear(judg);
         }
 
