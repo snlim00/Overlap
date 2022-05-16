@@ -247,7 +247,6 @@ public class SongListManager : MonoBehaviour
         {
             startSlideSpeed *= -1f;
         }
-        Debug.Log(startSlideSpeed);// / scrollTime);
 
         float slideSpeed = startSlideSpeed;
 
