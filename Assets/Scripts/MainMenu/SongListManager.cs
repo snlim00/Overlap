@@ -158,7 +158,8 @@ public class SongListManager : MonoBehaviour
         scrolling = false;
 
         StopSlide();
-        corSlide = StartCoroutine(Slide());
+        //corSlide = StartCoroutine(Slide());
+        StartCoroutine(nameof(Slide));
 
         //Select(FindNearItem());
     }
@@ -197,7 +198,7 @@ public class SongListManager : MonoBehaviour
         return false;
     }
 
-    private void Select(int num, float duration = 0.1f)
+    private void Select(int num, float duration = 0.05f)
     {
         StartCoroutine(MoveSelectedItem(num, duration));
 
@@ -284,11 +285,13 @@ public class SongListManager : MonoBehaviour
     {
         //StopCoroutine(nameof(Slide));
 
-        if (isSliding == true)
-        {
-            StopCoroutine(corSlide);
-            isSliding = false;
-        }
+        //if (isSliding == true)
+        //{
+        //    StopCoroutine(corSlide);
+        //    isSliding = false;
+        //}
+
+        StopCoroutine(nameof(Slide));
     }
 
     private void LightingItem(int num)

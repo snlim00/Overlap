@@ -13,6 +13,8 @@ public class Note : MonoBehaviour
 
     protected bool doMove = false;
 
+    Vector2 startPos;
+
     public void Execute(int num, int angle, float timing, float spawnDis, int type)
     {
         this.num = num;
@@ -23,6 +25,8 @@ public class Note : MonoBehaviour
         transform.position = Vector3.zero;
         transform.eulerAngles = new Vector3(0, 0, this.angle);
         transform.Translate(-spawnDis, 0, 0);
+
+        startPos = transform.position;
 
         doMove = true;
     }
@@ -39,6 +43,7 @@ public class Note : MonoBehaviour
             return;
 
         transform.Translate(Level.S.noteSpeed * Time.deltaTime, 0, 0);
+        //transform.position = new Vector3(startPos.x + (Level.S.noteSpeed * (Time.time - LevelPlayer.startTime)), 0, 0);
     }
 
     public void Clear(int judg)

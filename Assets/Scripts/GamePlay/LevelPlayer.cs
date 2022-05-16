@@ -24,11 +24,14 @@ public class LevelPlayer : MonoBehaviour
     private Coroutine corNoteTimer;
 
     public static float timer { get; private set; } = 0;
+    public static float startTime;
     public Dictionary<int, int> thisRow;
 
     // Start is called before the first frame update
     void Awake()
     {
+        startTime = Time.time;
+
         editorMgr = FindObjectOfType<EditorManager>();
 
         audioSource = GetComponent<AudioSource>();
