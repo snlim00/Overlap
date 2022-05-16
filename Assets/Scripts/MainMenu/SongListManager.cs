@@ -30,7 +30,7 @@ public class SongListManager : MonoBehaviour
     private float touchStartTime;
     private float touchStartMousePos;
 
-    private float sensivisity = 0.04f;
+    private float sensivisity = 1.4f;
 
     private float centerPos;
 
@@ -59,6 +59,8 @@ public class SongListManager : MonoBehaviour
         centerPos = transform.position.y;
 
         ItemGeneration();
+
+        Select(0, 0);
     }
 
     private void ItemGeneration()
@@ -66,8 +68,6 @@ public class SongListManager : MonoBehaviour
         AllItemGeneration();
 
         SetAllItemPosition();
-
-        SongSelect();
     }
 
     // Start is called before the first frame update
@@ -80,11 +80,6 @@ public class SongListManager : MonoBehaviour
     void Update()
     {
         Scroll();
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            BlockScroll();
-        }
     }
 
     #region 酒捞袍 积己
@@ -137,83 +132,88 @@ public class SongListManager : MonoBehaviour
     #region 胶农费
     private void Scroll()
     {
-        if (canScroll == false)
-            return;
-
-
         if (Input.GetMouseButtonDown(0))
-        {
             StartScroll();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            StopScroll();
-        }
 
-        Scrolling();
+        else if (Input.GetMouseButtonUp(0))
+            EndScroll();
+
+        if(scrolling == true)
+            Scrolling();
     }
 
     private void StartScroll()
     {
         scrolling = true;
 
-        touchStartTime = Time.time;
+        SetLastMousePos();
+
         touchStartMousePos = Input.mousePosition.y;
 
-        lastMousePos = Input.mousePosition.y;
+        touchStartTime = Time.time;
     }
 
-    private void StopScroll()
+    private void EndScroll()
     {
-        if (scrolling == false)
-            return;
-
-
         scrolling = false;
 
-        StopSliding();
+        StopSlide();
+        corSlide = StartCoroutine(Slide());
 
-        if (lastMousePos != Input.mousePosition.y)
-        {
-            corSlide = StartCoroutine(Slide());
-        }
-        else
-        {
-            SongSelect(0f);
-        }
+        //Select(FindNearItem());
     }
 
     private void Scrolling()
     {
-        if (scrolling == false)
-            return;
-
-        float dir = (lastMousePos - Input.mousePosition.y) * 35f;
+        float dir = (lastMousePos - Input.mousePosition.y);
 
         transform.Translate(Vector2.down * dir * sensivisity);
 
-        BlockScroll();
+        SetLastMousePos();
 
+        BlockScroll();
+    }
+
+    private void SetLastMousePos()
+    {
         lastMousePos = Input.mousePosition.y;
     }
 
-    private void BlockScroll()
+    private bool BlockScroll()
     {
-        if(itemList[0].transform.position.y < centerPos)
+        if (itemList[0].transform.position.y < centerPos)
         {
-            StopSliding();
-
-            SongSelect(0, 0.1f);
+            Select(0, 0);
+            StopSlide();
+            return true;
         }
-        else if (itemList[itemList.Length - 1].transform.position.y > centerPos)
+        else if(itemList[itemList.Length - 1].transform.position.y > centerPos)
         {
-            StopSliding();
+            Select(itemList.Length - 1, 0); 
+            StopSlide();
+            return true;
+        }
 
-            SongSelect(itemList.Length - 1, 0.1f);
+        return false;
+    }
+
+    private void Select(int num, float duration = 0.1f)
+    {
+        StartCoroutine(MoveSelectedItem(num, duration));
+
+        LightingItem(num);
+
+        string levelName = Level.RemoveSapce(songList[num][SONG_LIST_KEY.SONG_NAME]);
+
+        for(int i = 0; i < difBtn.Length; ++i)
+        {
+            difBtn[i].name = levelName;
+
+            difBtn[i].interactable = songList[num][i + 1] == "0" ? false : true;
         }
     }
 
-    private IEnumerator SetPosition(int num, float duration = 0.1f)
+    private IEnumerator MoveSelectedItem(int num, float duration)
     {
         Vector2 startPos = transform.position;
 
@@ -234,8 +234,6 @@ public class SongListManager : MonoBehaviour
 
     private IEnumerator Slide()
     {
-        Debug.Log("startSLide");
-        
         isSliding = true;
 
         float scrollTime = Time.time - touchStartTime;
@@ -248,48 +246,60 @@ public class SongListManager : MonoBehaviour
         {
             startSlideSpeed *= -1f;
         }
+        Debug.Log(startSlideSpeed);// / scrollTime);
 
         float slideSpeed = startSlideSpeed;
 
-        
+        //Debug.Log(startSlideSpeed);
+
 
         float duration = Mathf.Abs(scrollDis / scrollTime / 1000);
-        //Debug.Log(duration);
         float t = 0;
 
-        while(t <= 1 && Mathf.Abs(slideSpeed) > 5)
+        while(t <= 1 && Mathf.Abs(slideSpeed) >= 50)
         {
             t += Time.deltaTime / duration;
 
-            Debug.Log("sliding");
-
             slideSpeed = Mathf.Lerp(startSlideSpeed, 0, (t * t) * 10);
-
-            //Debug.Log(slideSpeed);
 
             transform.Translate(0, slideSpeed * Time.deltaTime, 0);
 
-            BlockScroll();
-            
+            if (BlockScroll())
+            {
+                isSliding = false;
+                yield break;
+            }
+
+            //Debug.Log(slideSpeed);
+
             yield return null;
         }
 
-        SongSelect();
+        Select(FindNearItem());
+
         isSliding = false;
     }
 
-    private bool StopSliding()
+    private void StopSlide()
     {
-        if (isSliding == false)
-            return false;
+        //StopCoroutine(nameof(Slide));
 
+        if (isSliding == true)
+        {
+            StopCoroutine(corSlide);
+            isSliding = false;
+        }
+    }
 
-        isSliding = false;
-        StopCoroutine(corSlide);
-        Debug.Log("stop");
+    private void LightingItem(int num)
+    {
+        for(int i = 0; i < itemList.Length; ++i)
+        {
+            itemList[i].color = new Color(0.7f, 0.7f, 0.7f, 0.8f);
+        }
 
-
-        return true;
+        itemList[num].color = Color.white;
+        //Debug.Log(num);
     }
 
     private int FindNearItem()
@@ -305,45 +315,6 @@ public class SongListManager : MonoBehaviour
         }
 
         return nearItem;
-    }
-
-    private void PointItem(int num)
-    {
-        for(int i = 0; i < itemList.Length; ++i)
-        {
-            itemList[i].color = Color.gray;
-        }
-
-        itemList[num].color = Color.white;
-    }
-
-    private void SongSelect(float duration = 0.1f)
-    {
-        int nearItem = FindNearItem();
-
-        _SongSelect(nearItem, duration);
-    }
-
-    private void SongSelect(int num, float duration = 0.1f)
-    {
-        _SongSelect(num, duration);
-    }
-
-    private void _SongSelect(int num, float duration)
-    {
-        PointItem(num);
-
-        StopSliding();
-
-        StartCoroutine(SetPosition(num, duration));
-
-        string levelName = Level.RemoveSapce(songList[num][SONG_LIST_KEY.SONG_NAME]);
-
-        for (int i = 0; i < difBtn.Length; ++i)
-        {
-            difBtn[i].name = levelName;
-            difBtn[i].interactable = songList[num][i + 1] == "0" ? false : true;
-        }
     }
     #endregion
 
