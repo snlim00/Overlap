@@ -17,12 +17,9 @@ public class ResultManager : MonoBehaviour
     {
         
     }
-<<<<<<< HEAD
 
     private IEnumerator BGFadeOut()
     {
         yield return null;
     }
-=======
->>>>>>> origin/master
 }
