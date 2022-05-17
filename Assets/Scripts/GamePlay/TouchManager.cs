@@ -91,14 +91,42 @@ public class TouchManager : MonoBehaviour
     {
         hitNoteList.Clear();
 
+        int checkedNoteCount = 0;
+        List<Note> missedNoteList = new List<Note>();
+
         for(int i = 0; i < Level.S.noteList.Count; ++i)
         {
-            if (Level.S.noteList[i].timing - LevelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
+            //판정 범위 내의 노트인지 확인하고 리스트에 추가
+            if (Mathf.Abs(Level.S.noteList[i].timing - LevelPlayer.timer) <= Level.S.judgRange[JUDG.MISS])
             {
-                if(Level.S.noteList[i].type == NOTE_TYPE.TAP || Level.S.noteList[i].type == NOTE_TYPE.DOUBLE)
+                if (Level.S.noteList[i].type == NOTE_TYPE.TAP || Level.S.noteList[i].type == NOTE_TYPE.DOUBLE)
+                {
                     hitNoteList.Add(Level.S.noteList[i]);
+                    checkedNoteCount += 1;
+                }
             }
-            else break;
+            //판정 범위를 이미 지나간 노트인지 확인하고 리스트에 추가
+            else if (Level.S.noteList[i].timing - LevelPlayer.timer <= Level.S.judgRange[JUDG.MISS] * 1.3f)
+            {
+                if(checkedNoteCount <= 1)
+                {
+                    missedNoteList.Add(Level.S.noteList[i]);
+                }
+            }
+            //판정 범위보다 뒤에 있는 노트를 마주치면 체크 종료
+            else
+            {
+                break;
+            }
+        }
+
+        //판정 범위를 이미 지나간 노트를 미스 처리(단, 이번 터치로 클리어한 노트가 있을 경우에만 처리)
+        if(checkedNoteCount  > 0 && missedNoteList.Count > 0)
+        {
+            for (int i = 0; i <= missedNoteList.Count; ++i)
+                missedNoteList[0].Clear(JUDG.MISS);
+
+            //GameInfo.S.ClearNote(JUDG.MISS);
         }
 
         clearedNoteList.Clear();
@@ -140,7 +168,7 @@ public class TouchManager : MonoBehaviour
     {
         for (int i = 0; i < inputCount && i < clearedNoteList.Count; ++i)
         {
-            Debug.Log(LevelPlayer.timer - clearedNoteList[i].timing);
+            //Debug.Log(LevelPlayer.timer - clearedNoteList[i].timing);
             clearedNoteList[i].Clear(judg);
         }
 

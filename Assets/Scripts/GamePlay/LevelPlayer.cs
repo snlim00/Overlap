@@ -24,13 +24,16 @@ public class LevelPlayer : MonoBehaviour
     private Coroutine corNoteTimer;
 
     public static float timer { get; private set; } = 0;
+    public float timerForDebug;
     public static float startTime;
     public Dictionary<int, int> thisRow;
+
+    public float playStartTime;
 
     // Start is called before the first frame update
     void Awake()
     {
-        startTime = Time.time;
+        playStartTime = Time.time - Level.S.startDelay;
 
         editorMgr = FindObjectOfType<EditorManager>();
 
@@ -105,7 +108,7 @@ public class LevelPlayer : MonoBehaviour
             if (startRow >= Level.S.level.Count)
                 yield break;
 
-            timer = startTime;
+            playStartTime = Time.time - startTime;
 
             row = startRow;
         }
@@ -124,7 +127,9 @@ public class LevelPlayer : MonoBehaviour
 
         while (timer < lastNoteTiming && row < Level.S.level.Count)
         {
-            timer += Time.deltaTime;
+            //timer += Time.deltaTime;
+            timer = Time.time - playStartTime;
+            timerForDebug = timer;
 
             if(timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
             {
@@ -210,7 +215,7 @@ public class LevelPlayer : MonoBehaviour
         }
         else
         {
-            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay + PlayerSetting.S.noteOffset;
+            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;// + PlayerSetting.S.noteOffset;
         }
 
         float spawnDis = Level.S.noteSpeed * timing;

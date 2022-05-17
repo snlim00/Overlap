@@ -391,4 +391,5 @@ public static class SCENE
 {
     public const string MAIN_MENU = "MainMenu";
     public const string GAME_SCENE = "GameScene";
+    public const string RESULT_SCENE = "ResultScene";
 }
