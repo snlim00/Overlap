@@ -16,4 +16,11 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene(SCENE.GAME_SCENE);
     }
+
+    public static void ResultScene()
+    {
+        SceneManager.LoadScene(SCENE.RESULT_SCENE);
+
+        //GameInfo.S.ShowResult();
+    }
 }

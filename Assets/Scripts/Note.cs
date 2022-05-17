@@ -26,7 +26,7 @@ public class Note : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, this.angle);
         transform.Translate(-spawnDis, 0, 0);
 
-        startPos = transform.position;
+        startPos = transform.position.normalized;
 
         doMove = true;
     }
@@ -42,29 +42,15 @@ public class Note : MonoBehaviour
         if (doMove == false)
             return;
 
-        transform.Translate(Level.S.noteSpeed * Time.deltaTime, 0, 0);
+        //transform.Translate(Level.S.noteSpeed * Time.deltaTime, 0, 0);
         //transform.position = new Vector3(startPos.x + (Level.S.noteSpeed * (Time.time - LevelPlayer.startTime)), 0, 0);
+        transform.position = startPos * (timing - LevelPlayer.timer) * Level.S.noteSpeed;
     }
 
     public void Clear(int judg)
     {
-        switch(judg)
-        {
-            case JUDG.PERFECT:
-
-                Delete();
-                break;
-
-            case JUDG.GOOD:
-
-                Delete();
-                break;
-
-            case JUDG.MISS:
-
-                Delete();
-                break;
-        }
+        GameInfo.S.ClearNote(judg);
+        Delete();
     }
 
     private void Delete()
