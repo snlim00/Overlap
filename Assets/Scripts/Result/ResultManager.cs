@@ -78,11 +78,11 @@ public class ResultManager : MonoBehaviour
                 textArr[i].color = color;
             }
 
-            score.text = Mathf.Lerp(0, GameInfo.S.score, t).ToString();
-            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect, t).ToString();
-            good.text = Mathf.Lerp(0, GameInfo.S.good, t).ToString();
-            miss.text = Mathf.Lerp(0, missCount, t).ToString();
-            combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t).ToString();
+            score.text = Mathf.Lerp(0, GameInfo.S.score, t).ToString("f0");
+            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect, t).ToString("f0");
+            good.text = Mathf.Lerp(0, GameInfo.S.good, t).ToString("f0");
+            miss.text = Mathf.Lerp(0, missCount, t).ToString("f0");
+            combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t).ToString("f0");
             accuracy.text = Mathf.Lerp(0, acc, t).ToString("f2");
 
             yield return null;
