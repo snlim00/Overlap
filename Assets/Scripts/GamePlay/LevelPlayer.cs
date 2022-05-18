@@ -219,25 +219,48 @@ public class LevelPlayer : MonoBehaviour
             angle = 360 + (angle % -360);
         }
 
-        float timing;
-
-        if (PlayerSetting.S.editerMode == true)
-        {
-            timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
-        }
-        else
-        {
-            timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;// + PlayerSetting.S.noteOffset;
-        }
-
-        float spawnDis = Level.S.noteSpeed * timing;
-
-        //timing += Level.S.startDelay;
-
-        note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, spawnDis, thisRow[KEY.NOTE_TYPE]);
+        note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, thisRow[KEY.NOTE_TYPE]);
 
         Level.S.noteList.Add(note);
     }
+
+    //풀링 사용 전 함수
+    //private void InstantiateNote(int row, float startTime, in Dictionary<int, int> thisRow)
+    //{
+    //    Note note;
+
+    //    note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
+
+    //    int angle = thisRow[KEY.ANGLE];
+
+    //    if (angle > 0)
+    //    {
+    //        angle = angle % 360;
+    //    }
+    //    else
+    //    {
+    //        angle = 360 + (angle % -360);
+    //    }
+
+    //    float timing;
+
+    //    if (PlayerSetting.S.editerMode == true)
+    //    {
+    //        timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
+    //    }
+    //    else
+    //    {
+    //        timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;// + PlayerSetting.S.noteOffset;
+    //    }
+
+    //    float spawnDis = Level.S.noteSpeed * timing;
+
+    //    //timing += Level.S.startDelay;
+
+    //    note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, spawnDis, thisRow[KEY.NOTE_TYPE]);
+
+    //    Level.S.noteList.Add(note);
+    //}
 
     private void EventExecute()
     {

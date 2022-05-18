@@ -15,7 +15,9 @@ public class Note : MonoBehaviour
 
     private Vector2 startPos;
 
-    public void Execute(int num, int angle, float timing, float spawnDis, int type)
+    private static float spawnDis = 100;
+
+    public void Execute(int num, int angle, float timing, int type)
     {
         this.num = num;
         this.angle = -(angle + 90);
@@ -27,11 +29,24 @@ public class Note : MonoBehaviour
         transform.Translate(-spawnDis, 0, 0);
 
         startPos = transform.position.normalized;
-
-        doMove = true;
     }
+    //풀링 사용 전 함수
+    //public void Execute(int num, int angle, float timing, float spawnDis, int type)
+    //{
+    //    this.num = num;
+    //    this.angle = -(angle + 90);
+    //    this.timing = timing;
+    //    this.type = type;
+
+    //    transform.position = Vector3.zero;
+    //    transform.eulerAngles = new Vector3(0, 0, this.angle);
+    //    transform.Translate(-spawnDis, 0, 0);
+
+    //    startPos = transform.position.normalized;
+    //}
 
     // Update is called once per frame
+
     void Update()
     {
         Move();
@@ -39,11 +54,21 @@ public class Note : MonoBehaviour
 
     protected void Move()
     {
+        //노트가 20초 이내로 등장해야 하는 상황이 되면 움직이기 시작
+        if (timing <= LevelPlayer.timer + 5)
+            doMove = true;
+
         if (doMove == false)
             return;
 
-        //transform.Translate(Level.S.noteSpeed * Time.deltaTime, 0, 0);
         transform.position = startPos * (timing - LevelPlayer.timer) * Level.S.noteSpeed;
+
+        //MISS 판정범위 밖으로 벗어나면 그냥 MISS처리
+        if (timing <= LevelPlayer.timer - Level.S.judgRange[JUDG.MISS])
+        {
+            Debug.Log("D");
+            Clear(JUDG.MISS);
+        }
     }
 
     public void Clear(int judg)
