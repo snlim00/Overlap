@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c469d8546aeb0cd4f853ca632d77fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorImg: {fileID: 2800000, guid: e992c1f5d3303b64896628555b155f9b, type: 3}
   editerMode: 0
   songOffset: 0
   noteOffset: 0

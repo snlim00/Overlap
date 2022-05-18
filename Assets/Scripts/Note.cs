@@ -74,10 +74,10 @@ public class Note : MonoBehaviour
     public void Clear(int judg)
     {
         GameInfo.S.ClearNote(judg);
-        Delete();
+        Delete(judg);
     }
 
-    private void Delete()
+    private void Delete(int judg)
     {
         Level.S.noteList.Remove(this);
 
