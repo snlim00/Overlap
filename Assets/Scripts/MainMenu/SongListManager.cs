@@ -42,8 +42,8 @@ public class SongListManager : MonoBehaviour
     [SerializeField] private Button[] difBtn;
     #endregion
 
-
-    private void Awake()
+    //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
+    private void Start()
     {
 
         //interval = (Screen.height * interval) / 634;
@@ -68,12 +68,6 @@ public class SongListManager : MonoBehaviour
         AllItemGeneration();
 
         SetAllItemPosition();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -210,8 +204,10 @@ public class SongListManager : MonoBehaviour
         {
             difBtn[i].name = levelName;
 
-            difBtn[i].interactable = songList[num][i + 1] == "0" ? false : true;
+            difBtn[i].interactable = songList[num][i + SONG_LIST_KEY.E] == "0" ? false : true;
         }
+
+        BackgroundManager.S.SetBgImage(levelName);
     }
 
     private IEnumerator MoveSelectedItem(int num, float duration)

@@ -17,6 +17,9 @@ public class GameInfo : MonoBehaviour
     public int combo = 0;
     [SerializeField] private TMP_Text comboText;
 
+    public int perfect = 0;
+    public int good = 0;
+
     public int maxCombo = 0;
 
     private void Awake()
@@ -39,6 +42,8 @@ public class GameInfo : MonoBehaviour
                 score += perfectScore / Level.S.noteCount;
 
                 combo += 1;
+                perfect += 1;
+
                 if (combo > maxCombo)
                     maxCombo = combo;
                 break;
@@ -47,6 +52,8 @@ public class GameInfo : MonoBehaviour
                 score += goodScore / Level.S.noteCount;
 
                 combo += 1;
+                good += 1;
+
                 if (combo > maxCombo)
                     maxCombo = combo;
                 break;

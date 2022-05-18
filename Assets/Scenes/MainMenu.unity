@@ -664,7 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c469d8546aeb0cd4f853ca632d77fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editerMode: 1
+  editerMode: 0
   songOffset: 0
   noteOffset: 0
 --- !u!4 &765004252

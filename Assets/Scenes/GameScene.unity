@@ -177,7 +177,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &62234289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2090,6 +2090,8 @@ MonoBehaviour:
   scoreText: {fileID: 1066187588}
   combo: 0
   comboText: {fileID: 578172032}
+  perfect: 0
+  good: 0
   maxCombo: 0
 --- !u!4 &1332813893
 Transform:
@@ -2671,6 +2673,7 @@ MonoBehaviour:
   - {fileID: 543233845408928514, guid: af5556c810940b648b99e674c3817a32, type: 3}
   - {fileID: 543233845408928514, guid: ebc57d3d129c2064ab14f2aceceebe1b, type: 3}
   audioSource: {fileID: 0}
+  timerForDebug: 0
   playStartTime: 0
 --- !u!4 &1915597299
 Transform:

@@ -33,7 +33,7 @@ public class LevelPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        playStartTime = Time.time - Level.S.startDelay;
+        playStartTime = Time.time;
 
         editorMgr = FindObjectOfType<EditorManager>();
 
@@ -117,34 +117,46 @@ public class LevelPlayer : MonoBehaviour
             row = 0;
             timer = 0; 
             //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침 -> 음악 재생을 늦추는 방식으로 오프셋 맞추기)
-            yield return new WaitForSeconds(Level.S.startDelay);
+            //yield return new WaitForSeconds(Level.S.startDelay);
         }
         Debug.Log("Start Timer: " + Time.time);
 
-        float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f;
+        float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f + 0;
 
-        thisRow = Level.S.level[row];
+        thisRow = Level.S.level[row]; 
 
-        while (timer < lastNoteTiming && row < Level.S.level.Count)
+        while (timer < audioSource.clip.length)// && row < Level.S.level.Count)
+        //while (timer < lastNoteTiming && row < Level.S.level.Count)
         {
             //timer += Time.deltaTime;
-            timer = Time.time - playStartTime;
+            timer = Time.time - playStartTime - Level.S.startDelay;
+
+            if (PlayerSetting.S.editerMode == true)
+                timer += Level.S.startDelay;
+
             timerForDebug = timer;
 
-            if(timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
+            if(row < Level.S.level.Count)
             {
-                if(thisRow[KEY.TYPE] == TYPE.EVENT) //다음 행이 EVENT라면 실행
+                if (timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
                 {
-                    EventExecute();
-                }
+                    thisRow = Level.S.level[row];
 
-                ++row;
-                thisRow = Level.S.level[row];
+                    if (thisRow[KEY.TYPE] == TYPE.EVENT) //다음 행이 EVENT라면 실행
+                    {
+                        EventExecute();
+                    }
+
+                    ++row;
+                }
             }
+            
 
             yield return null;
         }
 
+        Debug.Log("END");
+        GameManager.ResultScene();
         isCorNoteTimer = false;
     }
 
@@ -153,7 +165,7 @@ public class LevelPlayer : MonoBehaviour
         if(PlayerSetting.S.editerMode == true)
         {
             audioSource.time = startTime;
-            yield return new WaitForSeconds(PlayerSetting.S.songOffset);
+            //yield return new WaitForSeconds(PlayerSetting.S.songOffset);
         }
         else
         {

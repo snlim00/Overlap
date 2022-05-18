@@ -13,7 +13,7 @@ public class Note : MonoBehaviour
 
     protected bool doMove = false;
 
-    Vector2 startPos;
+    private Vector2 startPos;
 
     public void Execute(int num, int angle, float timing, float spawnDis, int type)
     {
@@ -43,7 +43,6 @@ public class Note : MonoBehaviour
             return;
 
         //transform.Translate(Level.S.noteSpeed * Time.deltaTime, 0, 0);
-        //transform.position = new Vector3(startPos.x + (Level.S.noteSpeed * (Time.time - LevelPlayer.startTime)), 0, 0);
         transform.position = startPos * (timing - LevelPlayer.timer) * Level.S.noteSpeed;
     }
 

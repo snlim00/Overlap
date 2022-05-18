@@ -19,6 +19,6 @@ public class PlayerSetting : MonoBehaviour
         PlayerSetting.S = this;
     }
 
-    public float songOffset = -0.05f;
-    public float noteOffset = 0.15f;
+    public float songOffset;
+    public float noteOffset;
 }

@@ -24,7 +24,7 @@ public class BackgroundManager : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
     }
 
-    public void SetBgImage(string levelName, int num)
+    public void SetBgImage(string levelName, int num = 0)
     {
         _SetBgImage(levelName, num);
     }
