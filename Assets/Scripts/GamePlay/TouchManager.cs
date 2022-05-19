@@ -53,7 +53,7 @@ public class TouchManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
             GameManager.ResultScene();
     }
-
+    
     private IEnumerator EndHolding()
     {
         isEndHolding = true;

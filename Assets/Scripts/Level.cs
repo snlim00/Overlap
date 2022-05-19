@@ -4,12 +4,6 @@ using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
 
-public static class PLAY_INFO
-{
-    public const int STOPPED = 0;
-    public const int PLAYING = 1;
-    public const int WAIT = 2;
-}
 
 public class Level : MonoBehaviour
 {
@@ -34,6 +28,13 @@ public class Level : MonoBehaviour
             levelFormat[i] = -1;
         }
         levelFormat[KEY.ANGLE] = 90;
+    }
+
+    public static class PLAY_INFO
+    {
+        public const int STOPPED = 0;
+        public const int PLAYING = 1;
+        public const int WAIT = 2;
     }
 
 

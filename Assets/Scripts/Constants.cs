@@ -365,6 +365,8 @@ public static class SONG_LIST_KEY
 
     public const int E_SCORE = 6, N_SCORE = 7, H_SCORE = 8, X_SCORE = 9;
 
+    public const int COUNT = 10;
+
     public static string FindName(int value)
     {
         switch (value)
@@ -402,6 +404,46 @@ public static class SONG_LIST_KEY
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);
                 return "";
+        }
+    }
+
+    public static int FindValue(string name)
+    {
+        switch (name)
+        {
+            case nameof(SONG_NAME):
+                return SONG_NAME;
+
+            case nameof(ARTIST):
+                return ARTIST;
+
+            case nameof(E):
+                return E;
+
+            case nameof(N):
+                return N;
+
+            case nameof(H):
+                return H;
+
+            case nameof(X):
+                return X;
+
+            case nameof(E_SCORE):
+                return E_SCORE;
+
+            case nameof(N_SCORE):
+                return N_SCORE;
+
+            case nameof(H_SCORE):
+                return H_SCORE;
+
+            case nameof(X_SCORE):
+                return X_SCORE;
+
+            default:
+                Debug.LogError("FindValue: 해당 값을 가진 변수를 찾을 수 없습니다." + name);
+                return -1;
         }
     }
 }

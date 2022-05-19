@@ -8,8 +8,8 @@ public class GameInfo : MonoBehaviour
 {
     public static GameInfo S = null;
 
-    private const int perfectScore = 1000000;
-    private const int goodScore = 500000;
+    private const float perfectScore = 1000000;
+    private const float goodScore = 500000;
 
     public float score = 0;
     [SerializeField] private TMP_Text scoreText;
@@ -63,7 +63,7 @@ public class GameInfo : MonoBehaviour
                 break;
         }
 
-        scoreText.text = Convert.ToString((int)score);
+        scoreText.text = Convert.ToString(Math.Ceiling(score));
         comboText.text = combo.ToString();
     }
 }

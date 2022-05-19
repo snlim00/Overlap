@@ -38,10 +38,11 @@ public class SongListManager : MonoBehaviour
     private Coroutine corSlide;
     #endregion
 
-    private int selectedNum;
+    public static int selectedNum;
 
     #region 레벨 플레이 관련 변수
     [SerializeField] private Button[] difBtn;
+    [SerializeField] private TMP_Text[] bestScore;
     #endregion
 
     //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
@@ -220,6 +221,11 @@ public class SongListManager : MonoBehaviour
             difBtn[i].name = levelName;
 
             difBtn[i].interactable = songList[num][i + SONG_LIST_KEY.E] == "0" ? false : true;
+        }
+
+        for(int i = 0; i < bestScore.Length; ++i)
+        {
+            bestScore[i].text = songList[num][i + SONG_LIST_KEY.E_SCORE];
         }
 
         BackgroundManager.S.SetBgImage(levelName);

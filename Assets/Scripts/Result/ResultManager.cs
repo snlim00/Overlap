@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,14 @@ public class ResultManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < textArr.Length; ++i)
+        ShowResult();
+
+        SaveResult();
+    }
+
+    private void ShowResult()
+    {
+        for (int i = 0; i < textArr.Length; ++i)
         {
             textArr[i].color = new Color(textArr[i].color.r, textArr[i].color.g, textArr[i].color.b, 0);
         }
@@ -43,6 +51,23 @@ public class ResultManager : MonoBehaviour
         accuracy.color = color;
 
         StartCoroutine(BGFadeOut());
+    }
+    
+    private bool SaveResult()
+    {
+        int selectedNum = SongListManager.selectedNum;
+        int dif = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
+
+        if (SongListManager.songList[selectedNum][dif] == "")
+            SongListManager.songList[selectedNum][dif] = "0";
+
+        if (GameInfo.S.score <= Convert.ToInt32(SongListManager.songList[selectedNum][dif]))
+            return false;
+
+        SongListManager.songList[selectedNum][dif] = GameInfo.S.score.ToString();
+        WriteUserData();
+
+        return true;
     }
 
     // Update is called once per frame
@@ -110,5 +135,37 @@ public class ResultManager : MonoBehaviour
         rc.a = a;
 
         return rc;
+    }
+
+    public void WriteUserData()
+    {
+        string a = "Assets/Levels/Resources/SongList.csv";
+        using (var writer = new CsvFileWriter(a))
+        {
+            List<string> colums = new List<string>();
+            string[] keyList = new string[SONG_LIST_KEY.COUNT];
+            for (int i = 0; i < SONG_LIST_KEY.COUNT; ++i)
+            {
+                keyList[i] = SONG_LIST_KEY.FindName(i);
+            }
+
+            colums.AddRange(keyList);
+
+            writer.WriteRow(colums);
+            colums.Clear();
+
+            for (int i = 0; i < SongListManager.songList.Count; ++i)
+            {
+                for (int j = 0; j < SONG_LIST_KEY.COUNT; ++j)
+                {
+                    colums.Add(SongListManager.songList[i][j].ToString());
+                }
+
+                writer.WriteRow(colums);
+                colums.Clear();
+
+                //Debug.Log("Write");
+            }
+        }
     }
 }

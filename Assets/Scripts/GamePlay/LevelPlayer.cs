@@ -13,9 +13,9 @@ public class LevelPlayer : MonoBehaviour
     public AudioSource audioSource;
 
     private Camera mainCam;
-    private float camSize = 5;
+    private const float camSize = 5;
 
-
+    
     //게임을 진행하는 코루틴들
     private bool isCorNoteTimer = false;
     private Coroutine corNoteTimer;
@@ -69,7 +69,7 @@ public class LevelPlayer : MonoBehaviour
         }
 
 
-        NoteGeneration(startTime, startRow);
+        NoteGeneration(startRow);
 
         corNoteTimer = StartCoroutine(NoteTimer(startTime, startRow));
         StartCoroutine(SongPlay(startTime));
@@ -175,7 +175,7 @@ public class LevelPlayer : MonoBehaviour
         //Debug.Log("audioSource Start");
     }
 
-    private void NoteGeneration(float startTime = 0, int startRow = 0)
+    private void NoteGeneration(int startRow = 0)
     {
         for(int row = startRow; row < Level.S.level.Count; ++row)
         {
