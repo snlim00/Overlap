@@ -359,7 +359,11 @@ public static class SONG_LIST_KEY
 {
     public const int SONG_NAME = 0;
 
-    public const int E = 1, N = 2, H = 3, X = 4;
+    public const int ARTIST = 1;
+
+    public const int E = 2, N = 3, H = 4, X = 5;
+
+    public const int E_SCORE = 6, N_SCORE = 7, H_SCORE = 8, X_SCORE = 9;
 
     public static string FindName(int value)
     {
@@ -367,6 +371,9 @@ public static class SONG_LIST_KEY
         {
             case SONG_NAME:
                 return nameof(SONG_NAME);
+
+            case ARTIST:
+                return nameof(ARTIST);
 
             case E:
                 return nameof(E);
@@ -379,6 +386,18 @@ public static class SONG_LIST_KEY
 
             case X:
                 return nameof(X);
+
+            case E_SCORE:
+                return nameof(E_SCORE);
+
+            case N_SCORE:
+                return nameof(N_SCORE);
+
+            case H_SCORE:
+                return nameof(H_SCORE);
+
+            case X_SCORE:
+                return nameof(X_SCORE);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);

@@ -139,7 +139,7 @@ public class TLNoteManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftControl) == true)
         {
-            SingleNoteToggle();
+            ToggleSingleNote();
         }
         else if (Input.GetKey(KeyCode.LeftAlt) == true)
         {
@@ -147,16 +147,16 @@ public class TLNoteManager : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.LeftShift) == true)
         {
-            MultiNoteSelect();
+            SelectMultiNote();
         }
         else
         {
-            SingleNoteSelect();
+            SelectSingleNote();
         }
     }
 
     //단일 노트 선택
-    private void SingleNoteSelect()
+    private void SelectSingleNote()
     {
         ApplyInfoValue();
 
@@ -171,7 +171,7 @@ public class TLNoteManager : MonoBehaviour
     }
 
     //단일 노트 토글
-    private void SingleNoteToggle()
+    private void ToggleSingleNote()
     {
         TimeLineNote tlNote = GetCurrentSelectedNote();
 
@@ -179,7 +179,7 @@ public class TLNoteManager : MonoBehaviour
     }
 
     //다중 노트 선택
-    private void MultiNoteSelect()
+    private void SelectMultiNote()
     {
         TimeLineNote tlNote = GetCurrentSelectedNote();
 

@@ -28,6 +28,20 @@ public class ResultManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for(int i = 0; i < textArr.Length; ++i)
+        {
+            textArr[i].color = new Color(textArr[i].color.r, textArr[i].color.g, textArr[i].color.b, 0);
+        }
+
+        Color color = new Color(1, 1, 1, 0);
+
+        score.color = color;
+        perfect.color = color;
+        good.color = color;
+        miss.color = color;
+        combo.color = color;
+        accuracy.color = color;
+
         StartCoroutine(BGFadeOut());
     }
 
@@ -53,7 +67,7 @@ public class ResultManager : MonoBehaviour
         audioSource.Play();
 
         int missCount = Level.S.noteCount - GameInfo.S.perfect - GameInfo.S.good;
-        float acc = ((100 * GameInfo.S.perfect) + (50 * GameInfo.S.good)) / Level.S.noteCount;
+        float acc = ((100f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
 
         yield return new WaitForSeconds(1f);
 
@@ -64,28 +78,37 @@ public class ResultManager : MonoBehaviour
 
             cover.color = Color.Lerp(black, none, t);
 
-            Color color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, t);
+            float alpha = Mathf.Lerp(0, 1, t);
 
-            score.color = color;
-            perfect.color = color;
-            good.color = color;
-            miss.color = color;
-            combo.color = color;
-            accuracy.color = color;
+            score.color = SetColorAlpha(score.color, alpha);
+            combo.color = SetColorAlpha(combo.color, alpha);
+            accuracy.color = SetColorAlpha(accuracy.color, alpha);
 
-            for(int i = 0; i < textArr.Length; ++i)
+            perfect.color = SetColorAlpha(perfect.color, alpha);
+            good.color = SetColorAlpha(good.color, alpha);
+            miss.color = SetColorAlpha(miss.color, alpha);
+
+            for (int i = 0; i < textArr.Length; ++i)
             {
-                textArr[i].color = color;
+                textArr[i].color = SetColorAlpha(textArr[i].color, alpha);
             }
 
-            score.text = Mathf.Lerp(0, GameInfo.S.score, t).ToString("f0");
-            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect, t).ToString("f0");
-            good.text = Mathf.Lerp(0, GameInfo.S.good, t).ToString("f0");
-            miss.text = Mathf.Lerp(0, missCount, t).ToString("f0");
-            combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t).ToString("f0");
-            accuracy.text = Mathf.Lerp(0, acc, t).ToString("f2");
+            score.text = Mathf.Lerp(0, GameInfo.S.score, t * t).ToString("f0");
+            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect, t * t).ToString("f0");
+            good.text = Mathf.Lerp(0, GameInfo.S.good, t * t).ToString("f0");
+            miss.text = Mathf.Lerp(0, missCount, t * t).ToString("f0");
+            combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t * t).ToString("f0");
+            accuracy.text = Mathf.Lerp(0, acc, t * t).ToString("f2") + "%";
 
             yield return null;
         }
+    }
+
+    private Color SetColorAlpha(Color color, float a)
+    {
+        Color rc = color;
+        rc.a = a;
+
+        return rc;
     }
 }

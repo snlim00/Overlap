@@ -8,6 +8,8 @@ public class BackgroundManager : MonoBehaviour
 
     private SpriteRenderer spr;
 
+    public Vector2 defaultScale;
+
     private void Awake()
     {
         if (S != null)
@@ -40,6 +42,8 @@ public class BackgroundManager : MonoBehaviour
 
         float scale = Screen.width / spr.sprite.rect.width;
 
-        spr.transform.localScale = new Vector2(scale, scale);
+        transform.localScale = new Vector2(scale, scale);
+
+        defaultScale = transform.localScale;
     }
 }

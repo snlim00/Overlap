@@ -12,9 +12,6 @@ public class LevelPlayer : MonoBehaviour
 
     public AudioSource audioSource;
 
-
-    private SpriteRenderer bg;
-
     private Camera mainCam;
     private float camSize = 5;
 
@@ -126,7 +123,6 @@ public class LevelPlayer : MonoBehaviour
         thisRow = Level.S.level[row]; 
 
         while (timer < audioSource.clip.length)// && row < Level.S.level.Count)
-        //while (timer < lastNoteTiming && row < Level.S.level.Count)
         {
             //timer += Time.deltaTime;
             timer = Time.time - playStartTime - Level.S.startDelay;
@@ -191,18 +187,18 @@ public class LevelPlayer : MonoBehaviour
                 {
                     for(int i = 0; i < 2; ++i)
                     {
-                        InstantiateNote(row, startTime, thisRow);
+                        InstantiateNote(row, thisRow);
                     }
                 }
                 else if(thisRow[KEY.TYPE] != NOTE_TYPE.EVENT)
                 {
-                    InstantiateNote(row, startTime, thisRow);
+                    InstantiateNote(row, thisRow);
                 }
             }
         }
     }
 
-    private void InstantiateNote(int row, float startTime, in Dictionary<int, int> thisRow)
+    private void InstantiateNote(int row, in Dictionary<int, int> thisRow)
     {
         Note note;
 
@@ -223,44 +219,6 @@ public class LevelPlayer : MonoBehaviour
 
         Level.S.noteList.Add(note);
     }
-
-    //풀링 사용 전 함수
-    //private void InstantiateNote(int row, float startTime, in Dictionary<int, int> thisRow)
-    //{
-    //    Note note;
-
-    //    note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
-
-    //    int angle = thisRow[KEY.ANGLE];
-
-    //    if (angle > 0)
-    //    {
-    //        angle = angle % 360;
-    //    }
-    //    else
-    //    {
-    //        angle = 360 + (angle % -360);
-    //    }
-
-    //    float timing;
-
-    //    if (PlayerSetting.S.editerMode == true)
-    //    {
-    //        timing = (thisRow[KEY.TIMING] * 0.001f) - startTime;
-    //    }
-    //    else
-    //    {
-    //        timing = (thisRow[KEY.TIMING] * 0.001f) + Level.S.startDelay;// + PlayerSetting.S.noteOffset;
-    //    }
-
-    //    float spawnDis = Level.S.noteSpeed * timing;
-
-    //    //timing += Level.S.startDelay;
-
-    //    note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, spawnDis, thisRow[KEY.NOTE_TYPE]);
-
-    //    Level.S.noteList.Add(note);
-    //}
 
     private void EventExecute()
     {
@@ -336,7 +294,8 @@ public class LevelPlayer : MonoBehaviour
             {
                 bgPos = mainCam.transform.position;
                 bgPos.z = 0;
-                //bg.transform.position = bgPos;
+
+                BackgroundManager.S.transform.position = bgPos;
             }
 
             yield return null;
@@ -345,24 +304,28 @@ public class LevelPlayer : MonoBehaviour
 
     private IEnumerator CAMERA_ZOOM()
     {
-        float targetScale = thisRow[KEY.VALUE[0]];
+        float targetScale = camSize * (thisRow[KEY.VALUE[0]] / 100f);
         int type = thisRow[KEY.EVENT_TYPE];
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
 
         float startScale = mainCam.orthographicSize;
 
+        Vector2 bgScale = BackgroundManager.S.transform.localScale;
+        Vector2 targetBgScale = BackgroundManager.S.transform.localScale * (thisRow[KEY.VALUE[0]] / 100f);
         float t = 0;
         float p = 0;
 
-        while(t <= 1)
+
+        while (t <= 1)
         {
             t += Time.deltaTime / duration;
 
             p = LerpValue(t, type);
 
-            mainCam.orthographicSize = Mathf.Lerp(startScale, startScale * (targetScale / 100f), p);
+            mainCam.orthographicSize = Mathf.Lerp(startScale, targetScale, p);
 
+            //BackgroundManager.S.transform.localScale = Vector2.Lerp(bgScale, targetBgScale, p);
 
             yield return null;
         }
@@ -398,6 +361,12 @@ public class LevelPlayer : MonoBehaviour
             p = LerpValue(t, type);
 
             mainCam.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(startAngle, targetAngle, p));
+
+
+            if(withBG == true)
+            {
+                BackgroundManager.S.transform.eulerAngles = mainCam.transform.eulerAngles;
+            }
 
             yield return null;
         }

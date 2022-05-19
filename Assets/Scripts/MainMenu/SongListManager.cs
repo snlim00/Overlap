@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class SongListManager : MonoBehaviour
 {
-    private List<Dictionary<int, string>> songList = new List<Dictionary<int, string>>();
+    public static List<Dictionary<int, string>> songList = new List<Dictionary<int, string>>();
 
     private Camera mainCam;
 
@@ -37,6 +37,8 @@ public class SongListManager : MonoBehaviour
     private bool isSliding = false;
     private Coroutine corSlide;
     #endregion
+
+    private int selectedNum;
 
     #region 레벨 플레이 관련 변수
     [SerializeField] private Button[] difBtn;
@@ -74,6 +76,17 @@ public class SongListManager : MonoBehaviour
     void Update()
     {
         Scroll();
+
+        if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (selectedNum + 1 < itemList.Length)
+                Select(selectedNum + 1, 0.15f);
+        }
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (selectedNum - 1 >= 0)
+                Select(selectedNum - 1, 0.15f);
+        }
     }
 
     #region 아이템 생성
@@ -194,6 +207,8 @@ public class SongListManager : MonoBehaviour
 
     private void Select(int num, float duration = 0.05f)
     {
+        selectedNum = num;
+
         StartCoroutine(MoveSelectedItem(num, duration));
 
         LightingItem(num);
@@ -208,6 +223,7 @@ public class SongListManager : MonoBehaviour
         }
 
         BackgroundManager.S.SetBgImage(levelName);
+
     }
 
     private IEnumerator MoveSelectedItem(int num, float duration)

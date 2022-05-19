@@ -49,6 +49,9 @@ public class TouchManager : MonoBehaviour
 
             corEndHolding = StartCoroutine(EndHolding());
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+            GameManager.ResultScene();
     }
 
     private IEnumerator EndHolding()
@@ -106,23 +109,8 @@ public class TouchManager : MonoBehaviour
                     checkedNoteCount += 1;
                 }
             }
-            //판정 범위를 이미 지나간 노트인지 확인하고 리스트에 추가
             else if (Level.S.noteList[i].timing <= LevelPlayer.timer - Level.S.judgRange[JUDG.MISS])
             {
-                //for (int j = 0; j < Level.S.noteList.Count; ++j)
-                //{
-                //    if (Level.S.noteList[j].timing <= LevelPlayer.timer - Level.S.judgRange[JUDG.MISS])//-Level.S.judgRange[JUDG.MISS])
-                //    {
-                //        //Debug.Log(Level.S.noteList[j].timing - LevelPlayer.timer);
-                //        missedNoteList.Add(Level.S.noteList[j]);
-                //    }
-                //    else
-                //    {
-                //        Debug.Log("A");
-                //        break;
-                //    }
-                //}
-                //Debug.Log(missedNoteList.Count);
                 continue;
             }
             //판정 범위보다 뒤에 있는 노트를 마주치면 체크 종료
@@ -131,36 +119,6 @@ public class TouchManager : MonoBehaviour
                 break;
             }
         }
-
-        //if(checkedNoteCount > 0)
-        //{
-        //    for (int j = 0; j < Level.S.noteList.Count; ++j)
-        //    {
-        //        if (Level.S.noteList[j].timing <= LevelPlayer.timer - Level.S.judgRange[JUDG.MISS])//-Level.S.judgRange[JUDG.MISS])
-        //        {
-        //            //Debug.Log(Level.S.noteList[j].timing - LevelPlayer.timer);
-        //            missedNoteList.Add(Level.S.noteList[j]);
-        //        }
-        //        else
-        //        {
-        //            //Debug.Log("A");
-        //            break;
-        //        }
-        //    }
-        //    Debug.Log(missedNoteList.Count);
-        //}
-
-        ////판정 범위를 이미 지나간 노트를 미스 처리(단, 이번 터치로 클리어한 노트가 있을 경우에만 처리)
-        //if (missedNoteList.Count > 0)
-        //{
-        //    for (int i = missedNoteList.Count - 1; i >= 0; --i)
-        //    {
-        //        //Debug.Log("Missnote");
-        //        missedNoteList[i].Clear(JUDG.MISS);
-        //    }
-
-        //    GameInfo.S.ClearNote(JUDG.MISS);
-        //}
 
         clearedNoteList.Clear();
     }
