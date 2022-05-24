@@ -77,7 +77,8 @@ public class Level : MonoBehaviour
         List<Dictionary<string, object>> tempLevel = CSVReader.Read(this.levelName + "_" + DIF.FindName(dif));
 
         //레벨 파일 변환
-        //ConvertLevel(tempLevel);
+        level.Clear();
+        noteList.Clear();
         CSVReader.ConvertDicInt(tempLevel, ref level, KEY.FindName);
 
         //레벨 파일에서 필요한 값 저장

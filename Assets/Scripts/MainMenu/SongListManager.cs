@@ -48,6 +48,7 @@ public class SongListManager : MonoBehaviour
     //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
     private void Start()
     {
+        songList.Clear();
 
         //interval = (Screen.height * interval) / 634;
         //textSize = (Screen.height * textSize) / 634;
