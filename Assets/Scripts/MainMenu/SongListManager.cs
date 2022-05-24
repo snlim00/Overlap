@@ -343,7 +343,7 @@ public class SongListManager : MonoBehaviour
     {
         Button btn = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
 
-        GameManager.StartGame(btn.gameObject.name, DIF.FindValue(btn.tag));
+        SceneManager.S.StartGame(btn.gameObject.name, DIF.FindValue(btn.tag));
     }
     #endregion
 }

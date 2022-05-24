@@ -152,7 +152,7 @@ public class LevelPlayer : MonoBehaviour
         }
 
         Debug.Log("END");
-        GameManager.ResultScene();
+        SceneManager.S.ResultScene();
         isCorNoteTimer = false;
     }
 

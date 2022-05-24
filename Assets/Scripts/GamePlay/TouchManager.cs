@@ -51,7 +51,7 @@ public class TouchManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.R))
-            GameManager.ResultScene();
+            SceneManager.S.ResultScene();
     }
     
     private IEnumerator EndHolding()
