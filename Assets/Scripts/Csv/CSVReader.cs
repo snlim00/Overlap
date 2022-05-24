@@ -81,7 +81,7 @@ public class CSVReader
         }
     }
 
-    public static void ConvertDIcString(List<Dictionary<string, object>> dic, ref List<Dictionary<int, string>> original, A FindName)
+    public static void ConvertDicString(List<Dictionary<string, object>> dic, ref List<Dictionary<int, string>> original, A FindName)
     {
         Dictionary<int, string> temp;
 

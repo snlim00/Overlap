@@ -93,9 +93,11 @@ public class SongListManager : MonoBehaviour
     #region 아이템 생성
     private void AllItemGeneration()
     {
+        songList.Clear();
+
         List<Dictionary<string, object>> temp = CSVReader.Read("SongList");
 
-        CSVReader.ConvertDIcString(temp, ref songList, SONG_LIST_KEY.FindName);
+        CSVReader.ConvertDicString(temp, ref songList, SONG_LIST_KEY.FindName);
 
         itemList = new TMP_Text[songList.Count];
 
