@@ -64,7 +64,7 @@ public class ResultManager : MonoBehaviour
         if (GameInfo.S.score <= Convert.ToInt32(SongListManager.songList[selectedNum][dif]))
             return false;
 
-        SongListManager.songList[selectedNum][dif] = Math.Ceiling(GameInfo.S.score).ToString();
+        SongListManager.songList[selectedNum][dif] = GameInfo.S.score.ToString();
         WriteUserData();
 
         return true;
@@ -127,8 +127,6 @@ public class ResultManager : MonoBehaviour
 
             yield return null;
         }
-
-        Destroy(FindObjectOfType<GameInfo>().gameObject);
     }
 
     private Color SetColorAlpha(Color color, float a)

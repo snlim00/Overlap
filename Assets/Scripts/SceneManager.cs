@@ -20,6 +20,7 @@ public class SceneManager : MonoBehaviour
     public void MainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.MAIN_MENU);
+        
     }
 
     public void StartGame(string levelName, int dif)

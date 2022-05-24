@@ -177,8 +177,6 @@ public class LevelPlayer : MonoBehaviour
 
     private void NoteGeneration(int startRow = 0)
     {
-        Debug.Log("NoteGen");
-
         for(int row = startRow; row < Level.S.level.Count; ++row)
         {
             Dictionary<int, int> thisRow = Level.S.level[row];
@@ -202,7 +200,6 @@ public class LevelPlayer : MonoBehaviour
 
     private void InstantiateNote(int row, in Dictionary<int, int> thisRow)
     {
-        Debug.Log("NG");
         Note note;
 
         note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
@@ -233,6 +230,28 @@ public class LevelPlayer : MonoBehaviour
         //        SetSpeed(thisRow);
         //        break;
         //}
+    }
+
+    private float LerpValue(float t, int type)
+    {
+        float p = 0;
+
+        switch (type)
+        {
+            case 0:
+                p = t;
+                break;
+
+            case 1:
+                p = t * t;
+                break;
+
+            case 2:
+                p = -((2 * t - 1) * (2 * t - 1)) + 1;
+                break;
+        }
+
+        return p;
     }
 
     private float BeatToDuration(float beat)
@@ -266,7 +285,7 @@ public class LevelPlayer : MonoBehaviour
         {
             t += Time.deltaTime / duration;
 
-            p = Utility.LerpValue(t, type);
+            p = LerpValue(t, type);
 
             mainCam.transform.position = Vector3.Lerp(startPos, targetPos, p);
 
@@ -302,7 +321,7 @@ public class LevelPlayer : MonoBehaviour
         {
             t += Time.deltaTime / duration;
 
-            p = Utility.LerpValue(t, type);
+            p = LerpValue(t, type);
 
             mainCam.orthographicSize = Mathf.Lerp(startScale, targetScale, p);
 
@@ -339,7 +358,7 @@ public class LevelPlayer : MonoBehaviour
         {
             t += Time.deltaTime / duration;
 
-            p = Utility.LerpValue(t, type);
+            p = LerpValue(t, type);
 
             mainCam.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(startAngle, targetAngle, p));
 

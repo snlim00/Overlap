@@ -76,10 +76,8 @@ public class Level : MonoBehaviour
         //레벨명_난이도 의 파일 탐색
         List<Dictionary<string, object>> tempLevel = CSVReader.Read(this.levelName + "_" + DIF.FindName(dif));
 
-
-        level.Clear();
-        noteList.Clear();
         //레벨 파일 변환
+        //ConvertLevel(tempLevel);
         CSVReader.ConvertDicInt(tempLevel, ref level, KEY.FindName);
 
         //레벨 파일에서 필요한 값 저장
