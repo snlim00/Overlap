@@ -48,7 +48,6 @@ public class SongListManager : MonoBehaviour
     //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
     private void Start()
     {
-        songList.Clear();
 
         //interval = (Screen.height * interval) / 634;
         //textSize = (Screen.height * textSize) / 634;
@@ -94,9 +93,11 @@ public class SongListManager : MonoBehaviour
     #region 아이템 생성
     private void AllItemGeneration()
     {
+        songList.Clear();
+
         List<Dictionary<string, object>> temp = CSVReader.Read("SongList");
 
-        CSVReader.ConvertDIcString(temp, ref songList, SONG_LIST_KEY.FindName);
+        CSVReader.ConvertDicString(temp, ref songList, SONG_LIST_KEY.FindName);
 
         itemList = new TMP_Text[songList.Count];
 
