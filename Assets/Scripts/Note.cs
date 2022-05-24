@@ -66,7 +66,6 @@ public class Note : MonoBehaviour
         //MISS 판정범위 밖으로 벗어나면 그냥 MISS처리
         if (timing <= LevelPlayer.timer - Level.S.judgRange[JUDG.MISS])
         {
-            Debug.Log("D");
             Clear(JUDG.MISS);
         }
     }
