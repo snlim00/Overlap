@@ -68,7 +68,7 @@ public static class DIF
                 return I;
 
             default:
-                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
+                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다." + name);
                 return -1;
         }
     }
@@ -365,7 +365,11 @@ public static class SONG_LIST_KEY
 
     public const int E_SCORE = 6, N_SCORE = 7, H_SCORE = 8, X_SCORE = 9;
 
-    public const int COUNT = 10;
+    public const int E_RATE = 10, N_RATE = 11, H_RATE = 12, X_RATE = 13;
+
+    public const int E_COMBO = 14, N_COMBO = 15, H_COMBO = 16, X_COMBO = 17;
+
+    public const int COUNT = 18;
 
     public static string FindName(int value)
     {
@@ -400,6 +404,30 @@ public static class SONG_LIST_KEY
 
             case X_SCORE:
                 return nameof(X_SCORE);
+
+            case E_RATE:
+                return nameof(E_RATE);
+
+            case N_RATE:
+                return nameof(N_RATE);
+
+            case H_RATE:
+                return nameof(H_RATE);
+
+            case X_RATE:
+                return nameof(X_RATE);
+
+            case E_COMBO:
+                return nameof(E_COMBO);
+
+            case N_COMBO:
+                return nameof(N_COMBO);
+
+            case H_COMBO:
+                return nameof(H_COMBO);
+
+            case X_COMBO:
+                return nameof(X_COMBO);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 65f502a64c0d46643be994e366099a99
+guid: 94c07d1ccb5969245b2bc41528b1e9ba
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,9 +9,8 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - SUIT
-  fallbackFontReferences:
-  - {fileID: 12800000, guid: 107dde7c43630ef4e81fc7d85243ce96, type: 3}
+  - NanumSquare_ac
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
