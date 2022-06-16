@@ -105,17 +105,17 @@ public class ResultManager : MonoBehaviour
 
             float alpha = Mathf.Lerp(0, 1, t);
 
-            score.color = SetColorAlpha(score.color, alpha);
-            combo.color = SetColorAlpha(combo.color, alpha);
-            accuracy.color = SetColorAlpha(accuracy.color, alpha);
+            score.color = Utility.SetColorAlpha(score.color, alpha);
+            combo.color = Utility.SetColorAlpha(combo.color, alpha);
+            accuracy.color = Utility.SetColorAlpha(accuracy.color, alpha);
 
-            perfect.color = SetColorAlpha(perfect.color, alpha);
-            good.color = SetColorAlpha(good.color, alpha);
-            miss.color = SetColorAlpha(miss.color, alpha);
+            perfect.color = Utility.SetColorAlpha(perfect.color, alpha);
+            good.color = Utility.SetColorAlpha(good.color, alpha);
+            miss.color = Utility.SetColorAlpha(miss.color, alpha);
 
             for (int i = 0; i < textArr.Length; ++i)
             {
-                textArr[i].color = SetColorAlpha(textArr[i].color, alpha);
+                textArr[i].color = Utility.SetColorAlpha(textArr[i].color, alpha);
             }
 
             score.text = Mathf.Lerp(0, GameInfo.S.score, t * t).ToString("f0");
@@ -131,13 +131,7 @@ public class ResultManager : MonoBehaviour
         Destroy(FindObjectOfType<GameInfo>().gameObject);
     }
 
-    private Color SetColorAlpha(Color color, float a)
-    {
-        Color rc = color;
-        rc.a = a;
-
-        return rc;
-    }
+    
 
     public void WriteUserData()
     {

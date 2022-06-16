@@ -25,4 +25,12 @@ public class Utility : MonoBehaviour
 
         return p;
     }
+
+    public static Color SetColorAlpha(Color color, float a)
+    {
+        Color rc = color;
+        rc.a = a;
+
+        return rc;
+    }
 }
