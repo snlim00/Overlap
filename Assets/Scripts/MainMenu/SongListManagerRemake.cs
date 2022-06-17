@@ -163,9 +163,6 @@ public class SongListManagerRemake : MonoBehaviour
         {
             combo.text = "Combo : " + songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_COMBO")];
         }
-
-
-
         t = 0;
         while (t <= 1)
 
