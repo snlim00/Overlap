@@ -26,9 +26,12 @@ public class ResultManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    float acc;
     // Start is called before the first frame update
     void Start()
     {
+        acc = ((100f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
+
         ShowResult();
 
         SaveResult();
@@ -55,16 +58,24 @@ public class ResultManager : MonoBehaviour
     
     private bool SaveResult()
     {
-        int selectedNum = SongListManager.selectedNum;
-        int dif = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
+        int selectedNum = SongListManagerRemake.selectedSongNum;
+        int scoreData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
+        int accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
+        int comboData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._COMBO);
 
-        if (SongListManager.songList[selectedNum][dif] == "")
-            SongListManager.songList[selectedNum][dif] = "0";
+        if (SongListManagerRemake.songList[selectedNum][scoreData] == "")
+            SongListManagerRemake.songList[selectedNum][scoreData] = "0";
 
-        if (GameInfo.S.score <= Convert.ToInt32(SongListManager.songList[selectedNum][dif]))
+        if (GameInfo.S.score <= Convert.ToInt32(SongListManagerRemake.songList[selectedNum][scoreData]))
             return false;
 
-        SongListManager.songList[selectedNum][dif] = Math.Ceiling(GameInfo.S.score).ToString();
+        SongListManagerRemake.songList[selectedNum][scoreData] = Math.Ceiling(GameInfo.S.score).ToString();
+        SongListManagerRemake.songList[selectedNum][accuracyData] = acc.ToString("f2");
+        SongListManagerRemake.songList[selectedNum][comboData] = GameInfo.S.combo.ToString();
+
+        Debug.Log(Math.Ceiling(GameInfo.S.score).ToString());
+        Debug.Log(acc.ToString("f2"));
+        Debug.Log(GameInfo.S.combo.ToString());
         WriteUserData();
 
         return true;
@@ -92,7 +103,6 @@ public class ResultManager : MonoBehaviour
         audioSource.Play();
 
         int missCount = Level.S.noteCount - GameInfo.S.perfect - GameInfo.S.good;
-        float acc = ((100f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
 
         yield return new WaitForSeconds(1f);
 
@@ -150,11 +160,11 @@ public class ResultManager : MonoBehaviour
             writer.WriteRow(colums);
             colums.Clear();
 
-            for (int i = 0; i < SongListManager.songList.Count; ++i)
+            for (int i = 0; i < SongListManagerRemake.songList.Count; ++i)
             {
                 for (int j = 0; j < SONG_LIST_KEY.COUNT; ++j)
                 {
-                    colums.Add(SongListManager.songList[i][j].ToString());
+                    colums.Add(SongListManagerRemake.songList[i][j].ToString());
                 }
 
                 writer.WriteRow(colums);

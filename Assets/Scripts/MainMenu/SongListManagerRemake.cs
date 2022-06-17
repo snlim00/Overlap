@@ -14,17 +14,17 @@ public class SongListManagerRemake : MonoBehaviour
 
     [SerializeField] private WaveEffect waveEffect;
 
-    #region 레벨 플레이 관련 변수
+    #region 곡 선택 관련 변수
     [SerializeField] private TMP_Text songName;
     [SerializeField] private TMP_Text producer;
     [SerializeField] private TMP_Text score;
     [SerializeField] private TMP_Text rate;
     [SerializeField] private TMP_Text combo;
-    #endregion
 
-    #region 곡 선택 관련 변수
+    [SerializeField] private GameObject[] arrow;
+
     private int selectedDif = DIF.E;
-    private int selectedSongNum = 0;
+    public static int selectedSongNum = 0;
     #endregion
 
     //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
@@ -39,13 +39,18 @@ public class SongListManagerRemake : MonoBehaviour
 
         ReadSongList();
 
-        SelectSong(0);
+        SelectSong(selectedSongNum);
     }
 
     // Update is called once per frame
     void Update()
     {
         ChangeSong();
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartGame();
+        }
     }
 
     private void ReadSongList()
@@ -72,6 +77,8 @@ public class SongListManagerRemake : MonoBehaviour
         StartCoroutine(btn.PressBtn());
 
         SpawnCircle(selectedDif);
+
+        ShowData(selectedSongNum);
     }
     #endregion
 
@@ -83,34 +90,61 @@ public class SongListManagerRemake : MonoBehaviour
     #region 곡 선택
     private void ChangeSong()
     {
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            selectedSongNum -= 1;
-
-            if(selectedSongNum < 0)
-            {
-                selectedSongNum = 0;
-                return;
-            }
-
-            SelectSong(selectedSongNum);
+            LeftSongSelect();
         }
-        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            selectedSongNum += 1;
-
-            if (selectedSongNum > songList.Count - 1)
-            {
-                selectedSongNum = songList.Count - 1;
-                return;
-            }
-
-            SelectSong(selectedSongNum);
+            RightSongSelect();
         }
+    }
+
+    public void LeftSongSelect()
+    {
+        selectedSongNum -= 1;
+
+        if (selectedSongNum < 0)
+        {
+            selectedSongNum = 0;
+            return;
+        }
+
+        SelectSong(selectedSongNum);
+    }
+
+    public void RightSongSelect()
+    {
+        selectedSongNum += 1;
+
+        if (selectedSongNum > songList.Count - 1)
+        {
+            selectedSongNum = songList.Count - 1;
+            return;
+        }
+
+        SelectSong(selectedSongNum);
     }
 
     private void SelectSong(int num)
     {
+        if (selectedSongNum <= 0)
+        {
+            arrow[0].SetActive(false);
+            arrow[1].SetActive(true);
+        }
+        else if (selectedSongNum >= songList.Count - 1)
+        {
+            arrow[0].SetActive(true);
+            arrow[1].SetActive(false);
+        }
+        else
+        {
+            arrow[0].SetActive(true);
+            arrow[1].SetActive(true);
+        }
+
+
         string levelName = Level.RemoveSapce(songList[num][SONG_LIST_KEY.SONG_NAME]);
 
         StartCoroutine(ChangeBackground(num, levelName));
@@ -133,41 +167,10 @@ public class SongListManagerRemake : MonoBehaviour
         }
 
         BackgroundManager.S.SetBgImage(levelName);
-        songName.text = songList[num][SONG_LIST_KEY.SONG_NAME];
-        producer.text = "Artist. " + songList[num][SONG_LIST_KEY.ARTIST];
+        ShowData(num);
 
-        string scoreData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_SCORE")];
-        if(scoreData == "")
-        {
-            score.text = "Score : -,---,---";
-        }
-        else
-        {
-            score.text = "Score : " + String.Format("{0:#,###}", Convert.ToInt32(songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_SCORE")]));
-        }
-
-        string rateData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_RATE")];
-        if (rateData == "")
-        {
-            rate.text = "Rate : --.--%";
-        }
-        else
-        {
-            rate.text = "Rate : " + songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_RATE")] + "%";
-        }
-
-        string comboData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_COMBO")];
-        if (comboData == "")
-        {
-            combo.text = "Combo : ----";
-        }
-        else
-        {
-            combo.text = "Combo : " + songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + "_COMBO")];
-        }
         t = 0;
         while (t <= 1)
-
         {
             t += Time.deltaTime / changeDuration;
 
@@ -176,5 +179,46 @@ public class SongListManagerRemake : MonoBehaviour
             yield return null;
         }
     }
+
+    private void ShowData(int num)
+    {
+        songName.text = songList[num][SONG_LIST_KEY.SONG_NAME];
+        producer.text = "Artist. " + songList[num][SONG_LIST_KEY.ARTIST];
+
+        string scoreData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._SCORE)];
+        if (scoreData == "")
+        {
+            score.text = "Score : -,---,---";
+        }
+        else
+        {
+            score.text = "Score : " + String.Format("{0:#,###}", Convert.ToInt32(songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._SCORE)]));
+        }
+
+        string rateData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._RATE)];
+        if (rateData == "")
+        {
+            rate.text = "Rate : --.--%";
+        }
+        else
+        {
+            rate.text = "Rate : " + songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._RATE)] + "%";
+        }
+
+        string comboData = songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._COMBO)];
+        if (comboData == "")
+        {
+            combo.text = "Combo : ----";
+        }
+        else
+        {
+            combo.text = "Combo : " + songList[num][SONG_LIST_KEY.FindValue(DIF.FindName(selectedDif) + SONG_LIST_KEY._COMBO)];
+        }
+    }
     #endregion
+
+    public void StartGame()
+    {
+        SceneManager.S.StartGame(songList[selectedSongNum][SONG_LIST_KEY.SONG_NAME], selectedDif);
+    }
 }

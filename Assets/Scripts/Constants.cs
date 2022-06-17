@@ -357,6 +357,10 @@ public static class NOTE_INFO_TYPE
 
 public static class SONG_LIST_KEY
 {
+    public const string _SCORE = nameof(_SCORE);
+    public const string _RATE = nameof(_RATE);
+    public const string _COMBO = nameof(_COMBO);
+
     public const int SONG_NAME = 0;
 
     public const int ARTIST = 1;

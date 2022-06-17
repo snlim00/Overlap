@@ -80,7 +80,7 @@ public class WaveEffect : MonoBehaviour
     private IEnumerator _SpawnWave(int dif, float size, float alpha)
     {
         float t = 0;
-        Debug.Log(alpha);
+        //Debug.Log(alpha);
         Image wave = InstantiateWave();
 
         while(t <= 1)
