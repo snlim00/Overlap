@@ -90,6 +90,7 @@ public class SongListManagerRemake : MonoBehaviour
             if(selectedSongNum < 0)
             {
                 selectedSongNum = 0;
+                return;
             }
 
             SelectSong(selectedSongNum);
@@ -101,6 +102,7 @@ public class SongListManagerRemake : MonoBehaviour
             if (selectedSongNum > songList.Count - 1)
             {
                 selectedSongNum = songList.Count - 1;
+                return;
             }
 
             SelectSong(selectedSongNum);
