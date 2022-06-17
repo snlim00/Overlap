@@ -6,7 +6,7 @@ public class BackgroundManager : MonoBehaviour
 {
     public static BackgroundManager S = null;
 
-    private SpriteRenderer spr;
+    public SpriteRenderer spr;
 
     public Vector2 defaultScale;
 

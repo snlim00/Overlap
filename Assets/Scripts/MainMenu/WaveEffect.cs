@@ -11,7 +11,9 @@ public class WaveEffect : MonoBehaviour
 
     [SerializeField] private Color[] colors;
 
-    private float waveDuration = 0.55f;
+    private float waveDuration = 0.5f;
+
+    private float maxSize = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -46,40 +48,52 @@ public class WaveEffect : MonoBehaviour
             }
 
             wave.color = Utility.SetColorAlpha(colors[dif], t);
-            wave.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(10, 10), Utility.LerpValue(t, 1));
+            wave.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(maxSize, maxSize), Utility.LerpValue(t, 1));
             //Debug.Log(Utility.LerpValue(t, 1));
             yield return null;
         }
 
-        Destroy(lastWave);
+        t = 0;
+        while (t <= 1)
+        {
+            t += Time.deltaTime / 0.3f;
+
+            wave.transform.localScale = Vector2.Lerp(new Vector2(10, 10), new Vector2(maxSize * 1.1f, maxSize * 1.1f), Utility.LerpValue(t, 2));
+            yield return null;
+        }
+
+        if (lastWave != null)
+            Destroy(lastWave.gameObject);
     }
 
     public IEnumerator SpawnWave(int dif)
     {
-        for(int i = 0; i < 3; ++i)
+        yield return new WaitForSeconds(0.3f);
+
+        for(int i = 0; i < 8; ++i)
         {
-            yield return new WaitForSeconds(0.18f);
-            StartCoroutine(_SpawnWave(dif));
+            yield return new WaitForSeconds(0.33f - (i / 50f));
+            StartCoroutine(_SpawnWave(dif, maxSize * 0.7f - (i * 0.7f), 1 / (i + 1f)));
         }
     }
 
-    private IEnumerator _SpawnWave(int dif)
+    private IEnumerator _SpawnWave(int dif, float size, float alpha)
     {
         float t = 0;
-        Debug.Log("spawnwave");
+        Debug.Log(alpha);
         Image wave = InstantiateWave();
 
         while(t <= 1)
         {
-            t += Time.deltaTime / (waveDuration);
+            t += Time.deltaTime / (waveDuration * 1.1f);
 
-            wave.color = Utility.SetColorAlpha(colors[dif], Utility.LerpValue(t ,2));
-            wave.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(8, 8), Utility.LerpValue(t, 0));
+            wave.color = Utility.SetColorAlpha(colors[dif], Utility.LerpValue(t, 2) * alpha);
+            wave.transform.localScale = Vector2.Lerp(Vector2.zero, new Vector2(size, size), Utility.LerpValue(t, 0));
             
             yield return null;
         }
 
-        Destroy(wave);
+        Destroy(wave.gameObject);
     }
 
     private Image InstantiateWave()

@@ -5,37 +5,15 @@ using UnityEngine.EventSystems;
 
 public class ButtonEffect : MonoBehaviour
 {
-    private WaveEffect waveEffect;
-
-    private GameObject edge;
-
     private bool isPressing = false;
 
-    // Start is called before the first frame update
-    void Start()
+    public IEnumerator PressBtn()
     {
-        waveEffect = FindObjectOfType<WaveEffect>();
-
-        edge = transform.parent.gameObject;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnClick()
-    {
-        if(isPressing == false)
+        if(isPressing == true)
         {
-            waveEffect.StartCoroutine(waveEffect.SpawnCircle(DIF.FindValue(EventSystem.current.currentSelectedGameObject.tag)));
-            StartCoroutine(PressBtn());
+            yield break;
         }
-    }
 
-    private IEnumerator PressBtn()
-    {
         isPressing = true;
 
         float t = 0;

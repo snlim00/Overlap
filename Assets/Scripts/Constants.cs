@@ -469,6 +469,30 @@ public static class SONG_LIST_KEY
             case nameof(X_SCORE):
                 return X_SCORE;
 
+            case nameof(E_RATE):
+                return E_RATE;
+
+            case nameof(N_RATE):
+                return N_RATE;
+
+            case nameof(H_RATE):
+                return H_RATE;
+
+            case nameof(X_RATE):
+                return X_RATE;
+
+            case nameof(E_COMBO):
+                return E_COMBO;
+
+            case nameof(N_COMBO):
+                return N_COMBO;
+
+            case nameof(H_COMBO):
+                return H_COMBO;
+
+            case nameof(X_COMBO):
+                return X_COMBO;
+
             default:
                 Debug.LogError("FindValue: 해당 값을 가진 변수를 찾을 수 없습니다." + name);
                 return -1;
