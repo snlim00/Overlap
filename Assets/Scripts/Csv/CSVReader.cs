@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 public class CSVReader
@@ -12,8 +13,32 @@ public class CSVReader
 
     public static List<Dictionary<string, object>> Read(string file)
     {
+        //string file = "";
+
+        //for(int i = 0; i < fileName.Length; ++i)
+        //{
+        //    file = String.Concat(file, "_", fileName);
+        //}
+
+
         var list = new List<Dictionary<string, object>>();
         TextAsset data = Resources.Load(file) as TextAsset;
+
+        Debug.Log(file);
+        
+        Debug.Log(data.text);
+
+
+        //StreamReader streamReader = new StreamReader("Assets/Levels/Resources/SongList.txt");
+
+        //streamReader.Read();
+
+        //Debug.Log(streamReader.ReadToEnd());
+
+        //streamReader.Close();
+
+
+
 
         var lines = Regex.Split(data.text, LINE_SPLIT_RE);
 
@@ -81,8 +106,10 @@ public class CSVReader
         }
     }
 
-    public static void ConvertDicString(List<Dictionary<string, object>> dic, ref List<Dictionary<int, string>> original, A FindName)
+    public static List<Dictionary<int, string>> ConvertDicString(List<Dictionary<string, object>> dic, A FindName)
     {
+        List<Dictionary<int, string>> result = new List<Dictionary<int, string>>();
+
         Dictionary<int, string> temp;
 
         for (int i = 0; i < dic.Count; ++i)
@@ -104,7 +131,9 @@ public class CSVReader
                 temp[j] = value;
             }
 
-            original.Add(temp);
+            result.Add(temp);
         }
+
+        return result;
     }
 }

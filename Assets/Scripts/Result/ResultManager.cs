@@ -58,24 +58,23 @@ public class ResultManager : MonoBehaviour
     
     private bool SaveResult()
     {
-        int selectedNum = SongListManagerRemake.selectedSongNum;
+        int selectedNum = SongListManager.selectedSongNum;
         int scoreData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
         int accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
         int comboData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._COMBO);
 
-        if (SongListManagerRemake.songList[selectedNum][scoreData] == "")
-            SongListManagerRemake.songList[selectedNum][scoreData] = "0";
+        if (SongListManager.songList[selectedNum][scoreData] == "")
+            SongListManager.songList[selectedNum][scoreData] = "0";
 
-        if (GameInfo.S.score <= Convert.ToInt32(SongListManagerRemake.songList[selectedNum][scoreData]))
+        if (GameInfo.S.score <= Convert.ToInt32(SongListManager.songList[selectedNum][scoreData]))
             return false;
 
-        SongListManagerRemake.songList[selectedNum][scoreData] = Math.Ceiling(GameInfo.S.score).ToString();
-        SongListManagerRemake.songList[selectedNum][accuracyData] = acc.ToString("f2");
-        SongListManagerRemake.songList[selectedNum][comboData] = GameInfo.S.combo.ToString();
+        SongListManager.songList[selectedNum][scoreData] = Math.Ceiling(GameInfo.S.score).ToString();
+        SongListManager.songList[selectedNum][accuracyData] = acc.ToString("f2");
+        SongListManager.songList[selectedNum][comboData] = GameInfo.S.combo.ToString();
 
-        Debug.Log(Math.Ceiling(GameInfo.S.score).ToString());
-        Debug.Log(acc.ToString("f2"));
-        Debug.Log(GameInfo.S.combo.ToString());
+        Debug.Log(Math.Ceiling(GameInfo.S.score).ToString() + " / " + acc.ToString("f2") + " / " + GameInfo.S.combo.ToString());
+
         WriteUserData();
 
         return true;
@@ -160,11 +159,11 @@ public class ResultManager : MonoBehaviour
             writer.WriteRow(colums);
             colums.Clear();
 
-            for (int i = 0; i < SongListManagerRemake.songList.Count; ++i)
+            for (int i = 0; i < SongListManager.songList.Count; ++i)
             {
                 for (int j = 0; j < SONG_LIST_KEY.COUNT; ++j)
                 {
-                    colums.Add(SongListManagerRemake.songList[i][j].ToString());
+                    colums.Add(SongListManager.songList[i][j].ToString());
                 }
 
                 writer.WriteRow(colums);

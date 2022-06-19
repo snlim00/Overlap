@@ -177,7 +177,7 @@ public class LevelPlayer : MonoBehaviour
 
     private void NoteGeneration(int startRow = 0)
     {
-        Debug.Log("NoteGen");
+        //Debug.Log("NoteGen");
 
         for(int row = startRow; row < Level.S.level.Count; ++row)
         {
@@ -202,7 +202,7 @@ public class LevelPlayer : MonoBehaviour
 
     private void InstantiateNote(int row, in Dictionary<int, int> thisRow)
     {
-        Debug.Log("NG");
+        //Debug.Log("NG");
         Note note;
 
         note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();

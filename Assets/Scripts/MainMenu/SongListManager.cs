@@ -5,14 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.EventSystems;
+using System.IO;
 
-public class SongListManagerRemake : MonoBehaviour
+public class SongListManager : MonoBehaviour
 {
     public static List<Dictionary<int, string>> songList = new List<Dictionary<int, string>>();
 
     private Camera mainCam;
 
     [SerializeField] private WaveEffect waveEffect;
+
+    public static bool isFirststart = true;
 
     #region 곡 선택 관련 변수
     [SerializeField] private TMP_Text songName;
@@ -37,7 +40,11 @@ public class SongListManagerRemake : MonoBehaviour
     {
         mainCam = Camera.main;
 
-        ReadSongList();
+        if (isFirststart == true)
+        {
+            ReadSongList();
+            isFirststart = false;
+        }
 
         SelectSong(selectedSongNum);
     }
@@ -45,6 +52,11 @@ public class SongListManagerRemake : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if(Input.GetKeyDown(KeyCode.I))
+        //{
+        //    Init();
+        //}
+
         ChangeSong();
 
         if(Input.GetKeyDown(KeyCode.Space))
@@ -55,11 +67,21 @@ public class SongListManagerRemake : MonoBehaviour
 
     private void ReadSongList()
     {
-        songList.Clear();
+        //StreamReader streamReader = new StreamReader("Assets/Levels/Resources/SongList.txt");
+
+        //streamReader.Read();
+
+        //Debug.Log(streamReader.ReadToEnd());
+
+        //streamReader.Close();
+
+        Debug.Log("ReadSong");
 
         List<Dictionary<string, object>> temp = CSVReader.Read("SongList");
 
-        CSVReader.ConvertDicString(temp, ref songList, SONG_LIST_KEY.FindName);
+        songList = CSVReader.ConvertDicString(temp, SONG_LIST_KEY.FindName);
+
+        //Debug.Log(songList[0][SONG_LIST_KEY.X_SCORE]);
     }
 
     #region 버튼
