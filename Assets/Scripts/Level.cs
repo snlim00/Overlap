@@ -145,8 +145,9 @@ public class Level : MonoBehaviour
 
     public void WriteLevel()
     {
-        string a = ("Assets/Levels/" + levelName + "/Resources/" + levelName + "_" + DIF.FindName(levelDifficulty)) + ".csv";
-        using (var writer = new CsvFileWriter(a))
+        string path = ("Assets/Levels/" + levelName + "/Resources/" + levelName + "_" + DIF.FindName(levelDifficulty)) + ".csv";
+        Debug.Log(path);
+        using (var writer = new CsvFileWriter(path))
         {
             List<string> colums = new List<string>();
             string[] keyList = new string[KEY.COUNT];

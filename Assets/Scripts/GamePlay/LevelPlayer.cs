@@ -42,11 +42,17 @@ public class LevelPlayer : MonoBehaviour
         //audioSource.clip = Resources.Load<AudioClip>(Level.S.ReadLevel("MeteorStream", DIF.X));
 
         audioSource.clip = Resources.Load<AudioClip>(Level.S.levelName);
+        Debug.Log(Level.S.levelName);
         Level.S.songLength = audioSource.clip.length;
 
 
-        if(PlayerSetting.S.editerMode == false)
+        if (PlayerSetting.S.editerMode == false)
             GameStart();
+    }
+
+    void Start()
+    {
+        
     }
 
     public void GameStart(float startTimeRaito = 0)
