@@ -17,6 +17,7 @@ public class GameInfo : MonoBehaviour
     public int combo = 0;
     [SerializeField] private TMP_Text comboText;
 
+    public int sPerfect = 0;
     public int perfect = 0;
     public int good = 0;
 
@@ -38,6 +39,16 @@ public class GameInfo : MonoBehaviour
     {
         switch(judg)
         {
+            case JUDG.S_PERFECT:
+                score += perfectScore / Level.S.noteCount;
+
+                combo += 1;
+                sPerfect += 1;
+
+                if (combo > maxCombo)
+                    maxCombo = combo;
+                break;
+
             case JUDG.PERFECT:
                 score += perfectScore / Level.S.noteCount;
 

@@ -21,9 +21,13 @@ public class Level : MonoBehaviour
 
         Level.S = this;
 
-        judgRange = new float[3];
+        judgRange = new float[JUDG.COUNT];
+        this.judgRange[JUDG.PERFECT] = 66 * 0.001f; //판정 범위는 perfect를 기준으로 하여 일정 비율로 다른 판정 범위를 결정함.
+        this.judgRange[JUDG.S_PERFECT] = judgRange[JUDG.PERFECT] * 0.5f;
+        this.judgRange[JUDG.GOOD] = judgRange[JUDG.PERFECT] * 2;
+        this.judgRange[JUDG.MISS] = judgRange[JUDG.PERFECT] * 3f;
 
-        for(int i = 0; i < KEY.COUNT; ++i)
+        for (int i = 0; i < KEY.COUNT; ++i)
         {
             levelFormat[i] = -1;
         }
@@ -105,9 +109,6 @@ public class Level : MonoBehaviour
         this.offset = levelInfo[0][INFO_KEY.OFFSET] * 0.001f;
         this.startDelay = levelInfo[0][INFO_KEY.START_DELAY] * 0.001f;
         this.bpm = levelInfo[0][INFO_KEY.BPM];
-        this.judgRange[JUDG.PERFECT] = levelInfo[0][INFO_KEY.JUDG_RANGE] * 0.001f; //판정 범위는 perfect를 기준으로 하여 일정 비율로 다른 판정 범위를 결정함.
-        this.judgRange[JUDG.GOOD] = judgRange[JUDG.PERFECT] * 2;
-        this.judgRange[JUDG.MISS] = judgRange[JUDG.PERFECT] * 3f;
     }
 
     private void ReadLevelInfo()

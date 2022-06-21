@@ -57,7 +57,7 @@ public class TouchManager : MonoBehaviour
     private IEnumerator EndHolding()
     {
         isEndHolding = true;
-        yield return new WaitForSeconds(Level.S.judgRange[JUDG.PERFECT] * 0.5f);
+        yield return new WaitForSeconds(Level.S.judgRange[JUDG.S_PERFECT]);
 
         holding = false;
         isEndHolding = false;
@@ -76,7 +76,11 @@ public class TouchManager : MonoBehaviour
 
         //퍼펙트 판정인 노트가 있는지 확인
         //각 판정에 해당하는 노트가 있다면 다음 판정을 확인하지 않는 방식.
-        if (CheckJudg(JUDG.PERFECT) == true)
+        if(CheckJudg(JUDG.S_PERFECT) == true)
+        {
+            ClearNote(JUDG.S_PERFECT);
+        }
+        else if (CheckJudg(JUDG.PERFECT) == true)
         {
             ClearNote(JUDG.PERFECT);
         }

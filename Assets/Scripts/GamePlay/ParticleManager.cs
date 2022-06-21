@@ -11,9 +11,10 @@ public class ParticleManager : MonoBehaviour
     public Vector2 missTargetSize = new Vector2(0.25f, 0.25f); //퍼펙트 시 나타나는 이펙트의 목표 사이즈
     private Vector2 slideTargetSize = new Vector2(0.2f, 0.2f);
 
-    [SerializeField] private Color perfectEffectColor = new Color(0.5f, 0.5f, 1);
-    [SerializeField] private Color goodEffectColor = new Color(0.5f, 1, 0.5f);
-    [SerializeField] private Color missEffectColor = new Color(1, 0.2f, 0.2f);
+    [SerializeField] private Color sPerfectEffectColor;
+    [SerializeField] private Color perfectEffectColor;
+    [SerializeField] private Color goodEffectColor;
+    [SerializeField] private Color missEffectColor;
     private Color slideEffectColor;
 
     public void Start()
@@ -28,6 +29,11 @@ public class ParticleManager : MonoBehaviour
 
         switch (judg)
         {
+            case JUDG.S_PERFECT:
+                goCtrl.targetSize = perfectTargetSize;
+                go.GetComponent<SpriteRenderer>().color = sPerfectEffectColor;
+                break;
+
             case JUDG.PERFECT:
                 goCtrl.targetSize = perfectTargetSize;
                 go.GetComponent<SpriteRenderer>().color = perfectEffectColor;

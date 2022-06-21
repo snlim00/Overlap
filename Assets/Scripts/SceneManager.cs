@@ -76,7 +76,7 @@ public class SceneManager : MonoBehaviour
         }
 
         func();
-        Destroy(cover.gameObject);
+        //Destroy(cover.gameObject);
     }
 
     public void FadeOut(Color color, float duration)

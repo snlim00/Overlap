@@ -10,9 +10,12 @@ public static class TAG
 
 public static class JUDG
 {
-    public const int PERFECT = 0;
-    public const int GOOD = 1;
-    public const int MISS = 2;
+    public const int S_PERFECT = 0;
+    public const int PERFECT = 1;
+    public const int GOOD = 2;
+    public const int MISS = 3;
+
+    public const int COUNT = 4;
 }
 
 public static class DIF
@@ -321,7 +324,6 @@ public static class INFO_KEY
     public const int START_DELAY = 1;
     public const int BPM = 2;
     public const int NOTE_SPEED = 3;
-    public const int JUDG_RANGE = 4;
 
     public static string FindName(int value)
     {
@@ -338,9 +340,6 @@ public static class INFO_KEY
 
             case NOTE_SPEED:
                 return nameof(NOTE_SPEED);
-
-            case JUDG_RANGE:
-                return nameof(JUDG_RANGE);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");

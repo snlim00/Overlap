@@ -1194,6 +1194,7 @@ MonoBehaviour:
   perfectTargetSize: {x: 0.35, y: 0.35}
   goodTargetSize: {x: 0.3, y: 0.3}
   missTargetSize: {x: 0.25, y: 0.25}
+  sPerfectEffectColor: {r: 1, g: 0, b: 0, a: 1}
   perfectEffectColor: {r: 0.6039216, g: 0.8627451, b: 1, a: 1}
   goodEffectColor: {r: 1, g: 0.972549, b: 0.6039216, a: 1}
   missEffectColor: {r: 1, g: 0.5411765, b: 0.68235296, a: 1}
@@ -2147,6 +2148,7 @@ MonoBehaviour:
   scoreText: {fileID: 1066187588}
   combo: 0
   comboText: {fileID: 578172032}
+  sPerfect: 0
   perfect: 0
   good: 0
   maxCombo: 0

@@ -17,11 +17,11 @@ public class SlideNote : Note
     {
         Move();
 
-        if(TouchManager.holding == true && Mathf.Abs(timing - LevelPlayer.timer) <= Level.S.judgRange[JUDG.PERFECT] * 0.5f)
+        if(TouchManager.holding == true && Mathf.Abs(timing - LevelPlayer.timer) <= Level.S.judgRange[JUDG.S_PERFECT])
         {
             if(touchMgr.CheckAngle(transform.eulerAngles.z) == true)
             {
-                Clear(JUDG.PERFECT);
+                Clear(JUDG.S_PERFECT);
                 touchMgr.particleMgr.ParticleGeneration(-1);
             }
         }
