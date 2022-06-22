@@ -13,16 +13,16 @@ public class CSVReader
 
     public static List<Dictionary<string, object>> Read(params string[] path)
     {
-        string filePath = "";
+        //string filePath = PATH.ASSETS;
+        string filePath = Application.dataPath;
 
-        for(int i = 0; i < path.Length - 1; ++i)
+        for(int i = 0; i < path.Length; ++i)
         {
-            filePath += path[i] + "/";
+            filePath += "/" + path[i];
         }
-        filePath += path[path.Length - 1];
 
         StreamReader file = new StreamReader(filePath);
-
+        //Debug.Log(filePath);
 
         var list = new List<Dictionary<string, object>>();
         //TextAsset data = Resources.Load(file) as TextAsset;

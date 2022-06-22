@@ -265,7 +265,8 @@ public static class EVENT_NAME
     public static void ReadEventTypeName()
     {
         //List<Dictionary<string, object>> tempValues = CSVReader.Read("Assets/Levels/Resources/EventValues");
-        List<Dictionary<string, object>> tempValues = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, PATH.RESOURCES, "EventValues.csv");
+        List<Dictionary<string, object>> tempValues = CSVReader.Read(PATH.LEVELS, PATH.RESOURCES, "EventValues.csv");
+        //List<Dictionary<string, object>> tempValues = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, PATH.RESOURCES, "EventValues.csv");
 
         for (int i = 0; i < tempValues[0].Count; ++i)
         {

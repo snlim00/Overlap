@@ -77,7 +77,7 @@ public class TouchManager : MonoBehaviour
     {
         inputCount = Input.inputString.Length; //입력된 터치 수 확인
 
-        PlayTouchSFX();
+        //PlayTouchSFX();
 
         //주변 노트 가져오기
         GetAroundNote();

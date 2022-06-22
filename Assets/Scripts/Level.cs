@@ -79,7 +79,8 @@ public class Level : MonoBehaviour
         Debug.Log(this.levelName+"_"+DIF.FindName(dif));
         //레벨명_난이도 의 파일 탐색
         //string path = "Assets/Levels/" + this.levelName + "/Resources/" + this.levelName + "_" + DIF.FindName(dif) + ".csv";
-        List<Dictionary<string, object>> tempLevel = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(dif) + ".csv");
+        List<Dictionary<string, object>> tempLevel = CSVReader.Read(PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(dif) + ".csv");
+        //List<Dictionary<string, object>> tempLevel = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(dif) + ".csv");
 
 
         level.Clear();
@@ -116,7 +117,8 @@ public class Level : MonoBehaviour
     {
         //레벨 정보 파일 가져오기
         //List<Dictionary<string, object>> tempLevelInfo = CSVReader.Read(this.levelName + "_" + DIF.FindName(DIF.I));
-        List<Dictionary<string, object>> tempLevelInfo = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(DIF.I) + ".csv");
+        //List<Dictionary<string, object>> tempLevelInfo = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(DIF.I) + ".csv");
+        List<Dictionary<string, object>> tempLevelInfo = CSVReader.Read(PATH.LEVELS, this.levelName, PATH.RESOURCES, this.levelName + "_" + DIF.FindName(DIF.I) + ".csv");
 
         //레벨 정보 파일 자료형 변환 List<Dictionary<string, object>> -> List<Dictionary<int,int>>
         //ConvertLevelInfo(tempLevelInfo);

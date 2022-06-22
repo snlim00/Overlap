@@ -77,7 +77,8 @@ public class SongListManager : MonoBehaviour
 
         Debug.Log("ReadSong");
 
-        List<Dictionary<string, object>> temp = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, PATH.RESOURCES, "SongList.csv");
+        List<Dictionary<string, object>> temp = CSVReader.Read(PATH.LEVELS, PATH.RESOURCES, "SongList.csv");
+        //List<Dictionary<string, object>> temp = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, PATH.RESOURCES, "SongList.csv");
 
         songList = CSVReader.ConvertDicString(temp, SONG_LIST_KEY.FindName);
 
