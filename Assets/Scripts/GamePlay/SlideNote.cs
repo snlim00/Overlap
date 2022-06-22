@@ -22,7 +22,7 @@ public class SlideNote : Note
             if(touchMgr.CheckAngle(transform.eulerAngles.z) == true)
             {
                 Clear(JUDG.S_PERFECT);
-                touchMgr.particleMgr.ParticleGeneration(-1);
+                touchMgr.particleMgr.ParticleGeneration(JUDG.COUNT);
             }
         }
     }

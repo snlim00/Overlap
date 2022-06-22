@@ -17,7 +17,7 @@ public class SceneManager : MonoBehaviour
         S = this;
         //DontDestroyOnLoad(this.gameObject);
         coverCanvas = transform.GetChild(0).gameObject;
-        FadeOut(Color.black, 1);
+        FadeOut(Color.black, 1.5f);
     }
 
     public void ChangeScene()

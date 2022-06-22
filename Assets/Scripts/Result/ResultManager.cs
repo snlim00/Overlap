@@ -30,7 +30,7 @@ public class ResultManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        acc = ((100f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
+        acc = ((100f * GameInfo.S.sPerfect) + (80f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
 
         ShowResult();
 
@@ -128,7 +128,7 @@ public class ResultManager : MonoBehaviour
             }
 
             score.text = Mathf.Lerp(0, GameInfo.S.score, t * t).ToString("f0");
-            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect, t * t).ToString("f0");
+            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect + GameInfo.S.sPerfect, t * t).ToString("f0");
             good.text = Mathf.Lerp(0, GameInfo.S.good, t * t).ToString("f0");
             miss.text = Mathf.Lerp(0, missCount, t * t).ToString("f0");
             combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t * t).ToString("f0");

@@ -37,6 +37,8 @@ public class GameInfo : MonoBehaviour
 
     public void ClearNote(int judg)
     {
+        
+
         switch(judg)
         {
             case JUDG.S_PERFECT:

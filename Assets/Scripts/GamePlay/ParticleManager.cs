@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ParticleManager : MonoBehaviour
 {
+    [SerializeField] private GameObject[] paritclePref;
+
     [SerializeField] private GameObject CircleEffect;
 
     public Vector2 perfectTargetSize = new Vector2(0.35f, 0.35f); //퍼펙트 시 나타나는 이펙트의 목표 사이즈
@@ -24,40 +26,58 @@ public class ParticleManager : MonoBehaviour
 
     public void ParticleGeneration(int judg)
     {
-        GameObject go = Instantiate(CircleEffect) as GameObject;
-        CircleEffectController goCtrl = go.GetComponent<CircleEffectController>();
+        //int judg = 0;
 
-        switch (judg)
-        {
-            case JUDG.S_PERFECT:
-                goCtrl.targetSize = perfectTargetSize;
-                go.GetComponent<SpriteRenderer>().color = sPerfectEffectColor;
-                break;
+        ParticleSystem particle = Instantiate(paritclePref[judg]).GetComponent<ParticleSystem>();
 
-            case JUDG.PERFECT:
-                goCtrl.targetSize = perfectTargetSize;
-                go.GetComponent<SpriteRenderer>().color = perfectEffectColor;
+        particle.Play();
 
-                break;
-
-
-            case JUDG.GOOD:
-                goCtrl.targetSize = goodTargetSize;
-                go.GetComponent<SpriteRenderer>().color = goodEffectColor;
-
-                break;
-
-
-            case JUDG.MISS:
-                goCtrl.targetSize = missTargetSize;
-                go.GetComponent<SpriteRenderer>().color = missEffectColor;
-
-                break;
-
-            case -1:
-                goCtrl.targetSize = slideTargetSize;
-                go.GetComponent<SpriteRenderer>().color = slideEffectColor;
-                break;
-        }
+        RemoveParticle(particle.gameObject);
     }
+
+    private IEnumerator RemoveParticle(GameObject gameObject, float waitingTime = 2)
+    {
+        yield return new WaitForSeconds(waitingTime);
+
+        Destroy(gameObject);
+    }
+
+    //public void ParticleGeneration(int judg)
+    //{
+    //    GameObject go = Instantiate(CircleEffect) as GameObject;
+    //    CircleEffectController goCtrl = go.GetComponent<CircleEffectController>();
+
+    //    switch (judg)
+    //    {
+    //        case JUDG.S_PERFECT:
+    //            goCtrl.targetSize = perfectTargetSize;
+    //            go.GetComponent<SpriteRenderer>().color = sPerfectEffectColor;
+    //            break;
+
+    //        case JUDG.PERFECT:
+    //            goCtrl.targetSize = perfectTargetSize;
+    //            go.GetComponent<SpriteRenderer>().color = perfectEffectColor;
+
+    //            break;
+
+
+    //        case JUDG.GOOD:
+    //            goCtrl.targetSize = goodTargetSize;
+    //            go.GetComponent<SpriteRenderer>().color = goodEffectColor;
+
+    //            break;
+
+
+    //        case JUDG.MISS:
+    //            goCtrl.targetSize = missTargetSize;
+    //            go.GetComponent<SpriteRenderer>().color = missEffectColor;
+
+    //            break;
+
+    //        case -1:
+    //            goCtrl.targetSize = slideTargetSize;
+    //            go.GetComponent<SpriteRenderer>().color = slideEffectColor;
+    //            break;
+    //    }
+    //}
 }
