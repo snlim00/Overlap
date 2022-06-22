@@ -1704,6 +1704,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleMgr: {fileID: 856940894}
+  audioSourcePref: {fileID: 5503760601908455006, guid: 81a10101fa857164aaa77324f930460e, type: 3}
+  touchSFXPref: {fileID: 5503760601908455006, guid: 81a10101fa857164aaa77324f930460e, type: 3}
   hitNoteList: []
   inputCount: 0
   center: {fileID: 2088479318}

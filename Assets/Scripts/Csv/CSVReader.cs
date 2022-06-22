@@ -11,33 +11,25 @@ public class CSVReader
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static char[] TRIM_CHARS = { '\"' };
 
-    public static List<Dictionary<string, object>> Read(string file)
+    public static List<Dictionary<string, object>> Read(params string[] path)
     {
-        //string file = "";
+        string filePath = "";
 
-        //for(int i = 0; i < fileName.Length; ++i)
-        //{
-        //    file = String.Concat(file, "_", fileName);
-        //}
+        for(int i = 0; i < path.Length - 1; ++i)
+        {
+            filePath += path[i] + "/";
+        }
+        filePath += path[path.Length - 1];
 
-
-
-        StreamReader streamReader = new StreamReader("Assets/Levels/Resources/SongList.CSV");
-        streamReader.Read();
-        //Debug.Log(streamReader.ReadToEnd());
-        streamReader.Close();
+        StreamReader file = new StreamReader(filePath);
 
 
         var list = new List<Dictionary<string, object>>();
-        TextAsset data = Resources.Load(file) as TextAsset;
+        //TextAsset data = Resources.Load(file) as TextAsset;
 
-        Debug.Log(file);
-        
-        Debug.Log(data.text);
+        var lines = Regex.Split(file.ReadToEnd(), LINE_SPLIT_RE);
 
-
-
-        var lines = Regex.Split(data.text, LINE_SPLIT_RE);
+        file.Close();
 
         if (lines.Length <= 1) return list;
 

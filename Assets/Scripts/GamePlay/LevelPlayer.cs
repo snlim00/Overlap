@@ -249,11 +249,13 @@ public class LevelPlayer : MonoBehaviour
     }
 
     #region 레벨 이벤트 함수
-    private void SET_SPEED()
+    private IEnumerator SET_SPEED()
     {
         int speed = thisRow[KEY.VALUE[0]];
 
         Level.S.noteSpeed = speed;
+
+        yield break;
     }
 
     private IEnumerator CAMERA_MOVE()

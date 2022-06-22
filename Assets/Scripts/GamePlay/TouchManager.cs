@@ -6,10 +6,12 @@ public class TouchManager : MonoBehaviour
 {
     public ParticleManager particleMgr;
 
+    [SerializeField] private GameObject touchSFXPref;
+    private AudioSource[] touchSFXObj;
+    private int touchSFXObjCount = 20;
 
     [SerializeField] private List<Note> hitNoteList = new List<Note>();
     private List<Note> clearedNoteList = new List<Note>();
-
 
     [SerializeField] private int inputCount = 0;
 
@@ -20,10 +22,18 @@ public class TouchManager : MonoBehaviour
     private bool isEndHolding = false;
     private Coroutine corEndHolding;
 
+    private void Awake()
+    {
+        //TouchSFXGeneration();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        //AudioClip touchSFXClip = Resources.Load(Level.S.levelName + "_SFX") as AudioClip;
+
+        //for (int i = 0; i < touchSFXObj.Length; ++i)
+        //    touchSFXObj[i].clip = touchSFXClip;
     }
 
     // Update is called once per frame
@@ -66,6 +76,8 @@ public class TouchManager : MonoBehaviour
     private void Touch()
     {
         inputCount = Input.inputString.Length; //입력된 터치 수 확인
+
+        PlayTouchSFX();
 
         //주변 노트 가져오기
         GetAroundNote();
@@ -168,5 +180,28 @@ public class TouchManager : MonoBehaviour
         }
 
         particleMgr.ParticleGeneration(judg);
+    }
+
+    private void TouchSFXGeneration()
+    {
+        touchSFXObj = new AudioSource[touchSFXObjCount];
+
+        for(int i = 0; i < touchSFXObj.Length; ++i)
+        {
+            touchSFXObj[i] = Instantiate(touchSFXPref).GetComponent<AudioSource>();
+        }
+    }
+
+    private int poolingCount = 0;
+    private void PlayTouchSFX()
+    {
+        touchSFXObj[poolingCount].Play();
+
+        poolingCount += 1;
+
+        if(poolingCount >= touchSFXObjCount)
+        {
+            poolingCount = 0;
+        }
     }
 }

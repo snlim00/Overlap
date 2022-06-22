@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class PATH
+{
+    public const string ASSETS = "Assets";
+    public const string LEVELS = "Levels";
+    public const string RESOURCES = "Resources";
+
+    public const string SONG_LIST = "SongList";
+    public const string EVENT_VALUES = "EventValues";
+}
+
 public static class TAG
 {
     public const string NOTE = "Note";
@@ -24,7 +34,9 @@ public static class DIF
     public const int N = 1;
     public const int H = 2;
     public const int X = 3;
-    public const int I = 4;
+
+    public const int I = 9;
+    public const int SFX = 10;
 
     public static string FindName(int value)
     {
@@ -252,9 +264,10 @@ public static class EVENT_NAME
 
     public static void ReadEventTypeName()
     {
-        List<Dictionary<string, object>> tempValues = CSVReader.Read("EventValues");
+        //List<Dictionary<string, object>> tempValues = CSVReader.Read("Assets/Levels/Resources/EventValues");
+        List<Dictionary<string, object>> tempValues = CSVReader.Read(PATH.ASSETS, PATH.LEVELS, PATH.RESOURCES, "EventValues.csv");
 
-        for(int i = 0; i < tempValues[0].Count; ++i)
+        for (int i = 0; i < tempValues[0].Count; ++i)
         {
             Dictionary<int, string> temp = new Dictionary<int, string>();
 
