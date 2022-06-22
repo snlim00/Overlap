@@ -21,22 +21,19 @@ public class CSVReader
         //}
 
 
+
+        StreamReader streamReader = new StreamReader("Assets/Levels/Resources/SongList.CSV");
+        streamReader.Read();
+        //Debug.Log(streamReader.ReadToEnd());
+        streamReader.Close();
+
+
         var list = new List<Dictionary<string, object>>();
         TextAsset data = Resources.Load(file) as TextAsset;
 
         Debug.Log(file);
         
         Debug.Log(data.text);
-
-
-        //StreamReader streamReader = new StreamReader("Assets/Levels/Resources/SongList.txt");
-
-        //streamReader.Read();
-
-        //Debug.Log(streamReader.ReadToEnd());
-
-        //streamReader.Close();
-
 
 
 
