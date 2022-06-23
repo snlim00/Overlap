@@ -130,10 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2082660280144406467, guid: a1b8fb89d5247844095d7741662051f0, type: 3}
-      propertyPath: quitPopup
-      value: 
-      objectReference: {fileID: 2531316903347316213, guid: 42c7f05ecdbf4554ea56630d894a2582, type: 3}
     - target: {fileID: 3739224012534967358, guid: a1b8fb89d5247844095d7741662051f0, type: 3}
       propertyPath: m_Name
       value: SceneManager
