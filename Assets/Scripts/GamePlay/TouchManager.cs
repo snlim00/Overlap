@@ -24,16 +24,18 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
-        //TouchSFXGeneration();
+        TouchSFXGeneration();
+
+        AudioClip touchSFXClip = Resources.Load(Level.S.levelName + "_SFX") as AudioClip;
+
+        for (int i = 0; i < touchSFXObj.Length; ++i)
+            touchSFXObj[i].clip = touchSFXClip;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //AudioClip touchSFXClip = Resources.Load(Level.S.levelName + "_SFX") as AudioClip;
-
-        //for (int i = 0; i < touchSFXObj.Length; ++i)
-        //    touchSFXObj[i].clip = touchSFXClip;
+        
     }
 
     // Update is called once per frame
@@ -77,7 +79,7 @@ public class TouchManager : MonoBehaviour
     {
         inputCount = Input.inputString.Length; //입력된 터치 수 확인
 
-        //PlayTouchSFX();
+        PlayTouchSFX();
 
         //주변 노트 가져오기
         GetAroundNote();

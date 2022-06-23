@@ -146,3 +146,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coverObject: {fileID: 6188452584878928616, guid: c4ed2c8e15c6b314d910ff9f2a89c8b5, type: 3}
+  quitPopup: {fileID: 2531316903347316213, guid: 42c7f05ecdbf4554ea56630d894a2582, type: 3}

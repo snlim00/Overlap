@@ -242,6 +242,8 @@ public class EditorTouchManager : MonoBehaviour
     {
         float speed = -editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / levelPlayer.audioSource.clip.length * (Screen.width / 800f); ;
 
+        yield return new WaitForSecondsRealtime(1);
+
         while (true)
         {
             editorMgr.timeLine.transform.Translate(speed * Time.deltaTime, 0, 0);

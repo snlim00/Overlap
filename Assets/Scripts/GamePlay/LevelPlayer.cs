@@ -106,10 +106,14 @@ public class LevelPlayer : MonoBehaviour
 
         int row;
 
+
         if(PlayerSetting.S.editerMode == true)
         {
             if (startRow >= Level.S.level.Count)
                 yield break;
+
+
+            yield return new WaitForSecondsRealtime(1f);
 
             playStartTime = Time.time - startTime;
 
@@ -167,7 +171,8 @@ public class LevelPlayer : MonoBehaviour
         if(PlayerSetting.S.editerMode == true)
         {
             audioSource.time = startTime;
-            //yield return new WaitForSeconds(PlayerSetting.S.songOffset);
+            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSeconds(PlayerSetting.S.songOffset);
         }
         else
         {

@@ -15,14 +15,25 @@ public class CSVReader
     {
         //string filePath = PATH.ASSETS;
         string filePath = Application.dataPath;
+        //string filePath = Application.persistentDataPath;
 
         for(int i = 0; i < path.Length; ++i)
         {
             filePath += "/" + path[i];
         }
 
-        StreamReader file = new StreamReader(filePath);
-        //Debug.Log(filePath);
+        StreamReader file = null;
+        BuildDebug.S.Log(filePath);
+        try
+        {
+            file = new StreamReader(filePath);
+            //BuildDebug.S.Log();
+        }
+        catch
+        {
+            //BuildDebug.S.Log("readFailed");
+        }
+        Debug.Log(filePath);
 
         var list = new List<Dictionary<string, object>>();
         //TextAsset data = Resources.Load(file) as TextAsset;

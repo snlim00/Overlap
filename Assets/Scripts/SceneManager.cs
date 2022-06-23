@@ -12,12 +12,53 @@ public class SceneManager : MonoBehaviour
     private GameObject coverCanvas;
     [SerializeField] private GameObject coverObject;
 
+    [SerializeField] private GameObject quitPopup;
+
     private void Awake()
     {
         S = this;
         //DontDestroyOnLoad(this.gameObject);
         coverCanvas = transform.GetChild(0).gameObject;
         FadeOut(Color.black, 1.5f);
+
+
+
+        Application.wantsToQuit += asdf();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            Debug.Log("Quit");
+            Application.Quit();
+
+            Image popup = Instantiate(quitPopup).GetComponent<Image>();
+
+            popup.transform.SetParent(coverCanvas.transform);
+
+            popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
+
+            popup.transform.localScale = Vector2.one;
+        }
+    }
+
+    private bool asdf()
+    {
+        return true;
+    }
+
+    private void OnApplicationQuit()
+    {
+        //Application.CancelQuit();
+
+        Image popup = Instantiate(quitPopup).GetComponent<Image>();
+
+        popup.transform.SetParent(coverCanvas.transform);
+
+        popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
+
+        popup.transform.localScale = Vector2.one;
     }
 
     public void ChangeScene()
@@ -109,7 +150,7 @@ public class SceneManager : MonoBehaviour
         Image cover = Instantiate(coverObject).GetComponent<Image>();
         cover.transform.SetParent(coverCanvas.transform);
 
-        cover.transform.position = Vector2.zero;
+        cover.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
         cover.transform.localScale = Vector2.one * 2;
 
         return cover;
