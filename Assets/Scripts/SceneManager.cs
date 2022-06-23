@@ -23,7 +23,7 @@ public class SceneManager : MonoBehaviour
 
 
 
-        Application.wantsToQuit += asdf();
+        Application.wantsToQuit += () => { OnApplicationQuit(); return false; };
     }
 
     private void Update()
@@ -41,11 +41,6 @@ public class SceneManager : MonoBehaviour
 
             popup.transform.localScale = Vector2.one;
         }
-    }
-
-    private bool asdf()
-    {
-        return true;
     }
 
     private void OnApplicationQuit()
