@@ -70,10 +70,11 @@ public class WaveEffect : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        for(int i = 0; i < 8; ++i)
+        for(int i = 0; i < 6; ++i)
         {
             yield return new WaitForSeconds(0.33f - (i / 50f));
-            StartCoroutine(_SpawnWave(dif, maxSize * 0.7f - (i * 0.7f), 1 / (i + 1f)));
+
+            StartCoroutine(_SpawnWave(dif, maxSize * 0.7f - (i * 0.7f), 1 / (1 + i + 1f)));
         }
     }
 
