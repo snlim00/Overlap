@@ -162,7 +162,7 @@ public class LevelPlayer : MonoBehaviour
         }
 
         Debug.Log("END");
-        SceneManager.S.ResultScene();
+        SceneMgr.S.ResultScene();
         isCorNoteTimer = false;
     }
 

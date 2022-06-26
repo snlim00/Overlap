@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneManager : MonoBehaviour
+public class SceneMgr : MonoBehaviour
 {
-    public static SceneManager S = null;
+    public static SceneMgr S = null;
 
     private GameObject coverCanvas;
     [SerializeField] private GameObject coverObject;
@@ -26,34 +26,34 @@ public class SceneManager : MonoBehaviour
         Application.wantsToQuit += () => { OnApplicationQuit(); return false; };
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            Debug.Log("Quit");
-            Application.Quit();
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.LeftAlt))
+    //    {
+    //        Debug.Log("Quit");
+    //        Application.Quit();
 
-            Image popup = Instantiate(quitPopup).GetComponent<Image>();
+    //        Image popup = Instantiate(quitPopup).GetComponent<Image>();
 
-            popup.transform.SetParent(coverCanvas.transform);
+    //        popup.transform.SetParent(coverCanvas.transform);
 
-            popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
+    //        popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
 
-            popup.transform.localScale = Vector2.one;
-        }
-    }
+    //        popup.transform.localScale = Vector2.one;
+    //    }
+    //}
 
     private void OnApplicationQuit()
     {
-        //Application.CancelQuit();
+        ////Application.CancelQuit();
 
-        Image popup = Instantiate(quitPopup).GetComponent<Image>();
+        //Image popup = Instantiate(quitPopup).GetComponent<Image>();
 
-        popup.transform.SetParent(coverCanvas.transform);
+        //popup.transform.SetParent(coverCanvas.transform);
 
-        popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
+        //popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
 
-        popup.transform.localScale = Vector2.one;
+        //popup.transform.localScale = Vector2.one;
     }
 
     public void ChangeScene()

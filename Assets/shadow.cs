@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TitleManager : MonoBehaviour
+public class shadow : MonoBehaviour
 {
-
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +13,6 @@ public class TitleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
-            SceneMgr.S.MainMenu();
+        
     }
 }

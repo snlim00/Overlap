@@ -24,12 +24,7 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
-        TouchSFXGeneration();
-
-        AudioClip touchSFXClip = Resources.Load(Level.S.levelName + "_SFX") as AudioClip;
-
-        for (int i = 0; i < touchSFXObj.Length; ++i)
-            touchSFXObj[i].clip = touchSFXClip;
+        //TouchSFXGeneration();
     }
 
     // Start is called before the first frame update
@@ -63,7 +58,7 @@ public class TouchManager : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.R))
-            SceneManager.S.ResultScene();
+            SceneMgr.S.ResultScene();
     }
     
     private IEnumerator EndHolding()
@@ -79,7 +74,7 @@ public class TouchManager : MonoBehaviour
     {
         inputCount = Input.inputString.Length; //입력된 터치 수 확인
 
-        PlayTouchSFX();
+        //PlayTouchSFX();
 
         //주변 노트 가져오기
         GetAroundNote();
@@ -114,7 +109,6 @@ public class TouchManager : MonoBehaviour
         hitNoteList.Clear();
 
         int checkedNoteCount = 0;
-        List<Note> missedNoteList = new List<Note>();
 
         for(int i = 0; i < Level.S.noteList.Count; ++i)
         {
@@ -186,12 +180,17 @@ public class TouchManager : MonoBehaviour
 
     private void TouchSFXGeneration()
     {
+        AudioClip touchSFXClip = Resources.Load(Level.S.levelName + "_SFX") as AudioClip;
+
         touchSFXObj = new AudioSource[touchSFXObjCount];
 
         for(int i = 0; i < touchSFXObj.Length; ++i)
         {
             touchSFXObj[i] = Instantiate(touchSFXPref).GetComponent<AudioSource>();
+
+            touchSFXObj[i].clip = touchSFXClip;
         }
+            
     }
 
     private int poolingCount = 0;

@@ -57,9 +57,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: SUIT-Light
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -287776856
   material: {fileID: -3965158064121822320}
-  materialHashCode: 0
+  materialHashCode: 1819586696
   m_Version: 1.1.0
   m_SourceFontFileGUID: a1dcce3da50e6134fb6d2b8390fb9596
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: a1dcce3da50e6134fb6d2b8390fb9596, type: 3}

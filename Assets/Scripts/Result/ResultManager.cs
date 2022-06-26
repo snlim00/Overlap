@@ -7,7 +7,6 @@ using TMPro;
 
 public class ResultManager : MonoBehaviour
 {
-    [SerializeField] private Image cover;
     private Color black = new Color(0.2f, 0.2f, 0.2f, 0.7f);
     private Color none = new Color(0.2f, 0.2f, 0.2f, 0);
 
@@ -21,16 +20,25 @@ public class ResultManager : MonoBehaviour
     [SerializeField] private TMP_Text combo;
     [SerializeField] private TMP_Text accuracy;
 
+    private float acc;
+    private int selectedNum;
+    private int scoreData;
+    private int accuracyData;
+    private int comboData;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    float acc;
     // Start is called before the first frame update
     void Start()
     {
         acc = ((100f * GameInfo.S.sPerfect) + (80f * GameInfo.S.perfect) + (50f * GameInfo.S.good)) / Level.S.noteCount;
+        selectedNum = SongListManager.selectedSongNum;
+        scoreData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
+        accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
+        comboData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._COMBO);
 
         ShowResult();
 
@@ -58,11 +66,6 @@ public class ResultManager : MonoBehaviour
     
     private bool SaveResult()
     {
-        int selectedNum = SongListManager.selectedSongNum;
-        int scoreData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
-        int accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
-        int comboData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._COMBO);
-
         if (SongListManager.songList[selectedNum][scoreData] == "")
             SongListManager.songList[selectedNum][scoreData] = "0";
 
@@ -89,16 +92,6 @@ public class ResultManager : MonoBehaviour
     private IEnumerator BGFadeOut()
     {
         float t = 0;
-
-        while(t <= 1)
-        {
-            t += Time.deltaTime / 1;
-
-            cover.color = Color.Lerp(none, black, t);
-
-            yield return null;
-        }
-
         audioSource.Play();
 
         int missCount = Level.S.noteCount - GameInfo.S.perfect - GameInfo.S.good;
@@ -109,8 +102,6 @@ public class ResultManager : MonoBehaviour
         while (t <= 1)
         {
             t += Time.deltaTime / 1;
-
-            cover.color = Color.Lerp(black, none, t);
 
             float alpha = Mathf.Lerp(0, 1, t);
 

@@ -242,6 +242,6 @@ public class SongListManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.S.StartGame(songList[selectedSongNum][SONG_LIST_KEY.SONG_NAME], selectedDif);
+        SceneMgr.S.StartGame(songList[selectedSongNum][SONG_LIST_KEY.SONG_NAME], selectedDif);
     }
 }
