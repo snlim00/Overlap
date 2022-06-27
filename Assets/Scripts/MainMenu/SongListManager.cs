@@ -184,7 +184,7 @@ public class SongListManager : MonoBehaviour
         {
             t += Time.deltaTime / changeDuration;
 
-            BackgroundManager.S.spr.color = Utility.SetColorAlpha(BackgroundManager.S.spr.color, 1 - Utility.LerpValue(t, 1));
+            BackgroundManager.S.SetBgAlpha(1 - Utility.LerpValue(t, 1));
 
             yield return null;
         }
@@ -197,7 +197,7 @@ public class SongListManager : MonoBehaviour
         {
             t += Time.deltaTime / changeDuration;
 
-            BackgroundManager.S.spr.color = Utility.SetColorAlpha(BackgroundManager.S.spr.color, Utility.LerpValue(t, 1));
+            BackgroundManager.S.SetBgAlpha(Utility.LerpValue(t, 1));
 
             yield return null;
         }

@@ -258,8 +258,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288074748
+  m_fontColor: {r: 0.9882353, g: 0.827451, b: 0.5882353, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1291,8 +1291,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 217, y: 8}
-  m_SizeDelta: {x: 360.8749, y: 418.4063}
+  m_AnchoredPosition: {x: 217.2, y: -0.7}
+  m_SizeDelta: {x: 412.2712, y: 477.9964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &583064307
 MonoBehaviour:
@@ -1606,7 +1606,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.0000377, y: -2.999977}
+  m_AnchoredPosition: {x: -7.0000377, y: 3.6}
   m_SizeDelta: {x: 112.6183, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &723463387
@@ -1764,7 +1764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 333
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 04634c564b8f6084d99f9e42484ef74c, type: 2}
   m_sharedMaterial: {fileID: -8834079501217781860, guid: 04634c564b8f6084d99f9e42484ef74c, type: 2}
@@ -1773,8 +1773,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288074748
+  m_fontColor: {r: 0.9882353, g: 0.827451, b: 0.5882353, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1899,7 +1899,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
   m_sharedMaterial: {fileID: 2423825264280075798, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
@@ -2578,7 +2578,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
   m_sharedMaterial: {fileID: 2423825264280075798, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
@@ -3577,7 +3577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0000
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
   m_sharedMaterial: {fileID: 2423825264280075798, guid: 3b567e0317be0354c8c5d51301ca9130, type: 2}
@@ -4118,7 +4118,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 55.55%
+  m_text: 0%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 04634c564b8f6084d99f9e42484ef74c, type: 2}
   m_sharedMaterial: {fileID: -8834079501217781860, guid: 04634c564b8f6084d99f9e42484ef74c, type: 2}
@@ -4127,8 +4127,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288074748
+  m_fontColor: {r: 0.9882353, g: 0.827451, b: 0.5882353, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4272,7 +4272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: -110.5}
+  m_AnchoredPosition: {x: 0, y: -110.5}
   m_SizeDelta: {x: 301.47534, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1967290355
@@ -4506,7 +4506,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -4
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -4726,21 +4726,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c662d6a79a13a4fbc54cc7d670a369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difColorArr: []
+  difColorArr:
+  - {r: 0.6, g: 0.8588236, b: 0.97647065, a: 1}
+  - {r: 1, g: 0.9725491, b: 0.6039216, a: 1}
+  - {r: 1, g: 0.5411765, b: 0.68235296, a: 1}
+  - {r: 0.78431374, g: 0.62352943, b: 1, a: 1}
+  difNameArr:
+  - Easy
+  - Normal
+  - Hard
+  - Extreme
+  dif: {fileID: 386079703}
   textArr:
   - {fileID: 2045547236}
   - {fileID: 929601804}
   - {fileID: 386079703}
   - {fileID: 1206319955}
   - {fileID: 1772221689}
-  imageArr: []
+  - {fileID: 86555725}
+  - {fileID: 797157309}
+  - {fileID: 2133159993}
+  - {fileID: 1775498761}
+  - {fileID: 927937622}
+  - {fileID: 345496647}
+  - {fileID: 723463387}
+  - {fileID: 932407543}
+  imageArr:
+  - {fileID: 132167019}
+  - {fileID: 2025852591}
+  - {fileID: 583064307}
+  songName: {fileID: 2045547236}
+  artist: {fileID: 929601804}
   score: {fileID: 345496647}
+  bestScore: {fileID: 932407543}
   perfect: {fileID: 1052650843}
   good: {fileID: 839251997}
   miss: {fileID: 1307581637}
   combo: {fileID: 797157309}
   accuracy: {fileID: 1775498761}
-  dif: {fileID: 0}
+  rank: {fileID: 583064307}
+  rankSprite:
+  - {fileID: 21300000, guid: 9438c8ba79799ed4f821edc25b7510ae, type: 3}
+  - {fileID: 21300000, guid: e328c5f1f401af743827473d25672010, type: 3}
+  - {fileID: 21300000, guid: 1958b08d8c410244fa89849de35ab036, type: 3}
+  - {fileID: 21300000, guid: 4b43d75aea67ea142ad5b50f80f5fa10, type: 3}
+  - {fileID: 21300000, guid: 32f830aae5d387441bac3af25f1c7052, type: 3}
+  - {fileID: 21300000, guid: 23dcc99eff9fa9842b7ae3e7f2440423, type: 3}
 --- !u!82 &2127462390
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4905,8 +4936,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288074748
+  m_fontColor: {r: 0.9882353, g: 0.827451, b: 0.5882353, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

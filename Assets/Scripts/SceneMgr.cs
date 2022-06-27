@@ -23,7 +23,7 @@ public class SceneMgr : MonoBehaviour
 
 
 
-        Application.wantsToQuit += () => { OnApplicationQuit(); return false; };
+        //Application.wantsToQuit += () => { OnApplicationQuit(); return false; };
     }
 
     //private void Update()
@@ -43,28 +43,23 @@ public class SceneMgr : MonoBehaviour
     //    }
     //}
 
-    private void OnApplicationQuit()
-    {
-        ////Application.CancelQuit();
+    //private void OnApplicationQuit()
+    //{
+    //    Application.CancelQuit();
 
-        //Image popup = Instantiate(quitPopup).GetComponent<Image>();
+    //    Image popup = Instantiate(quitPopup).GetComponent<Image>();
 
-        //popup.transform.SetParent(coverCanvas.transform);
+    //    popup.transform.SetParent(coverCanvas.transform);
 
-        //popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
+    //    popup.transform.position = new Vector2(Screen.width, Screen.height) * 0.5f;
 
-        //popup.transform.localScale = Vector2.one;
-    }
-
-    public void ChangeScene()
-    {
-
-    }
+    //    popup.transform.localScale = Vector2.one;
+    //}
     
     public void MainMenu()
     {
         //UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.MAIN_MENU);
-        FadeIn(Color.black, 1, () => { UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.MAIN_MENU); });
+        FadeIn(Color.black, 1, () => { SceneManager.LoadScene(SCENE.MAIN_MENU); });
         
     }
 
@@ -74,12 +69,13 @@ public class SceneMgr : MonoBehaviour
 
         //UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.GAME_SCENE);
 
-        FadeIn(Color.black, 1, () => { UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.GAME_SCENE); });
+        FadeIn(Color.black, 1, () => { SceneManager.LoadScene(SCENE.GAME_SCENE); });
     }
 
     public void ResultScene()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(SCENE.RESULT_SCENE);
+        FadeIn(Color.black, 1, () => { SceneManager.LoadScene(SCENE.RESULT_SCENE); });
+        
 
         //GameInfo.S.ShowResult();
     }

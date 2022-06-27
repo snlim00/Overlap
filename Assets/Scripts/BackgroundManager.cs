@@ -6,9 +6,9 @@ public class BackgroundManager : MonoBehaviour
 {
     public static BackgroundManager S = null;
 
-    public SpriteRenderer spr;
+    private SpriteRenderer spr;
 
-    public Vector2 defaultScale;
+    private Vector2 defaultScale;
 
     private void Awake()
     {
@@ -45,5 +45,15 @@ public class BackgroundManager : MonoBehaviour
         transform.localScale = new Vector2(scale, scale);
 
         defaultScale = transform.localScale;
+    }
+
+    public void SetBgColor(Color color)
+    {
+        spr.color = color;
+    }
+
+    public void SetBgAlpha(float a)
+    {
+        spr.color = Utility.SetColorAlpha(spr.color, a);
     }
 }

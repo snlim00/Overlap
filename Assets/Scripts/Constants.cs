@@ -89,6 +89,100 @@ public static class DIF
     }
 }
 
+public static class RANK
+{
+    public const int F = 0;
+    public const int C = 1;
+    public const int B = 2;
+    public const int A = 3;
+    public const int S = 4;
+    public const int U = 5;
+
+    public static string FindName(int value)
+    {
+        switch (value)
+        {
+            case F:
+                return nameof(F);
+
+            case C:
+                return nameof(C);
+
+            case B:
+                return nameof(B);
+
+            case A:
+                return nameof(A);
+
+            case S:
+                return nameof(S);
+            
+            case U:
+                return nameof(U);
+
+            default:
+                Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다.");
+                return "";
+        }
+    }
+
+    public static int FindValue(string name)
+    {
+        switch (name)
+        {
+            case nameof(F):
+                return F;
+
+            case nameof(C):
+                return C;
+
+            case nameof(B):
+                return B;
+
+            case nameof(A):
+                return A;
+
+            case nameof(S):
+                return S;
+
+            case nameof(U):
+                return U;
+
+            default:
+                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다." + name);
+                return -1;
+        }
+    }
+
+    public static int SetRank(int score)
+    {
+        if (score == 1000000)
+        {
+            return RANK.U;
+        }
+        else if (score >= 980000)
+        {
+            return RANK.S;
+        }
+        else if(score >= 950000)
+        {
+            return RANK.A;
+        }
+        else if(score >= 920000)
+        {
+            return RANK.B;
+        }
+        else if(score >= 870000)
+        {
+            return RANK.C;
+        }
+        else
+        {
+            return RANK.F;
+        }
+    }
+}
+
 public static class KEY
 {
     public const int TIMING = 0;
