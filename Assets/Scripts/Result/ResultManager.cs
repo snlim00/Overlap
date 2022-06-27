@@ -7,12 +7,15 @@ using TMPro;
 
 public class ResultManager : MonoBehaviour
 {
-    private Color black = new Color(0.2f, 0.2f, 0.2f, 0.7f);
-    private Color none = new Color(0.2f, 0.2f, 0.2f, 0);
-
     private AudioSource audioSource;
 
+    [SerializeField] private Color[] difColorArr;
+    [SerializeField] private string[] difNameArr;
+    [SerializeField] private TMP_Text dif;
+
     [SerializeField] private TMP_Text[] textArr;
+    [SerializeField] private Image[] imageArr;
+
     [SerializeField] private TMP_Text score;
     [SerializeField] private TMP_Text perfect;
     [SerializeField] private TMP_Text good;
@@ -20,7 +23,11 @@ public class ResultManager : MonoBehaviour
     [SerializeField] private TMP_Text combo;
     [SerializeField] private TMP_Text accuracy;
 
+
+    //정확도
     private float acc;
+
+    //csv파일 위치
     private int selectedNum;
     private int scoreData;
     private int accuracyData;
@@ -40,28 +47,9 @@ public class ResultManager : MonoBehaviour
         accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
         comboData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._COMBO);
 
-        ShowResult();
+        StartCoroutine(ShowResult());
 
         SaveResult();
-    }
-
-    private void ShowResult()
-    {
-        for (int i = 0; i < textArr.Length; ++i)
-        {
-            textArr[i].color = new Color(textArr[i].color.r, textArr[i].color.g, textArr[i].color.b, 0);
-        }
-
-        Color color = new Color(1, 1, 1, 0);
-
-        score.color = color;
-        perfect.color = color;
-        good.color = color;
-        miss.color = color;
-        combo.color = color;
-        accuracy.color = color;
-
-        StartCoroutine(BGFadeOut());
     }
     
     private bool SaveResult()
@@ -83,55 +71,32 @@ public class ResultManager : MonoBehaviour
         return true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator ShowResult()
     {
-        
-    }
+        dif.text = difNameArr[Level.S.levelDifficulty];
+        dif.color = difColorArr[Level.S.levelDifficulty];
 
-    private IEnumerator BGFadeOut()
-    {
         float t = 0;
-        audioSource.Play();
 
-        int missCount = Level.S.noteCount - GameInfo.S.perfect - GameInfo.S.good;
-
-        yield return new WaitForSeconds(1f);
-
-        t = 0;
-        while (t <= 1)
+        while(t <= 1)
         {
-            t += Time.deltaTime / 1;
+            t += Time.deltaTime / 3f;
 
-            float alpha = Mathf.Lerp(0, 1, t);
-
-            score.color = Utility.SetColorAlpha(score.color, alpha);
-            combo.color = Utility.SetColorAlpha(combo.color, alpha);
-            accuracy.color = Utility.SetColorAlpha(accuracy.color, alpha);
-
-            perfect.color = Utility.SetColorAlpha(perfect.color, alpha);
-            good.color = Utility.SetColorAlpha(good.color, alpha);
-            miss.color = Utility.SetColorAlpha(miss.color, alpha);
-
-            for (int i = 0; i < textArr.Length; ++i)
+            for(int i = 0; i < textArr.Length; ++i)
             {
-                textArr[i].color = Utility.SetColorAlpha(textArr[i].color, alpha);
+                textArr[i].color = Utility.SetColorAlpha(textArr[i].color, t);
             }
 
-            score.text = Mathf.Lerp(0, GameInfo.S.score, t * t).ToString("f0");
-            perfect.text = Mathf.Lerp(0, GameInfo.S.perfect + GameInfo.S.sPerfect, t * t).ToString("f0");
-            good.text = Mathf.Lerp(0, GameInfo.S.good, t * t).ToString("f0");
-            miss.text = Mathf.Lerp(0, missCount, t * t).ToString("f0");
-            combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t * t).ToString("f0");
-            accuracy.text = Mathf.Lerp(0, acc, t * t).ToString("f2") + "%";
+            for(int i = 0; i < imageArr.Length; ++i)
+            {
+                imageArr[i].color = Utility.SetColorAlpha(imageArr[i].color, t);
+            }
+            
 
             yield return null;
         }
 
-        Destroy(FindObjectOfType<GameInfo>().gameObject);
     }
-
-    
 
     public void WriteUserData()
     {

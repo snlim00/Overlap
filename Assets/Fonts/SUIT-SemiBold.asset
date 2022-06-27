@@ -104,9 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: SUIT-SemiBold
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -516242303
   material: {fileID: -8834079501217781860}
-  materialHashCode: 0
+  materialHashCode: 1755554433
   m_Version: 1.1.0
   m_SourceFontFileGUID: 5df77bb27bb567a45a677dee3679d78e
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 5df77bb27bb567a45a677dee3679d78e, type: 3}
