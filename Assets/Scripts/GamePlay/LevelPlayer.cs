@@ -46,7 +46,7 @@ public class LevelPlayer : MonoBehaviour
         Level.S.songLength = audioSource.clip.length;
 
 
-        if (PlayerSetting.S.editerMode == false)
+        if (PlayerSetting.S.editorMode == false)
             GameStart();
     }
 
@@ -107,7 +107,7 @@ public class LevelPlayer : MonoBehaviour
         int row;
 
 
-        if(PlayerSetting.S.editerMode == true)
+        if(PlayerSetting.S.editorMode == true)
         {
             if (startRow >= Level.S.level.Count)
                 yield break;
@@ -137,7 +137,7 @@ public class LevelPlayer : MonoBehaviour
             //timer += Time.deltaTime;
             timer = Time.time - playStartTime - Level.S.startDelay;
 
-            if (PlayerSetting.S.editerMode == true)
+            if (PlayerSetting.S.editorMode == true)
                 timer += Level.S.startDelay;
 
             timerForDebug = timer;
@@ -168,7 +168,7 @@ public class LevelPlayer : MonoBehaviour
 
     private IEnumerator SongPlay(float startTime = 0)
     {
-        if(PlayerSetting.S.editerMode == true)
+        if(PlayerSetting.S.editorMode == true)
         {
             audioSource.time = startTime;
             yield return new WaitForSecondsRealtime(1f);

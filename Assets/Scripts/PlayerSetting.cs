@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class PlayerSetting : MonoBehaviour
 {
-    [SerializeField] private Texture2D cursorImg;
+    [SerializeField] private GameObject cursor;
 
-    public bool editerMode = true;
+    public bool editorMode = true;
 
     public static PlayerSetting S = null;
 
+    private Camera mainCam;
+
     void Awake()
     {
-        //cursorImg.Reinitialize((int)(cursorImg.width * 0.5f), (int)(cursorImg.height * 0.5f));
-
-        //Cursor.
-
-
         if(S != null)
         {
             Destroy(this.gameObject);
@@ -24,12 +21,27 @@ public class PlayerSetting : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(cursor);
         PlayerSetting.S = this;
+
+        if (editorMode == false)
+        {
+            mainCam = Camera.main;
+            Cursor.visible = false;
+        }
+        else
+        {
+            cursor.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        
+        if(editorMode == false)
+        {
+            cursor.transform.position = mainCam.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 10);
+            Debug.Log(mainCam.ScreenToWorldPoint(Input.mousePosition));
+        }
     }
 
     public float songOffset;

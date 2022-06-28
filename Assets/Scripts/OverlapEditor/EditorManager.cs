@@ -32,7 +32,7 @@ public class EditorManager : MonoBehaviour
 
     void Start()
     {
-        if(PlayerSetting.S.editerMode == false)
+        if(PlayerSetting.S.editorMode == false)
         {
             for(int i = 0; i < editorObject.Length; ++i)
             {
@@ -49,7 +49,7 @@ public class EditorManager : MonoBehaviour
 
     public void Init()
     {
-        if(PlayerSetting.S.editerMode == true)
+        if(PlayerSetting.S.editorMode == true)
             InitEvent.Invoke();
     }
 }
