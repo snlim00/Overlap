@@ -7,8 +7,6 @@ using TMPro;
 
 public class ResultManager : MonoBehaviour
 {
-    [SerializeField] private Color[] difColorArr;
-    [SerializeField] private string[] difNameArr;
     [SerializeField] private TMP_Text dif;
 
     [SerializeField] private TMP_Text[] textArr;
@@ -52,12 +50,14 @@ public class ResultManager : MonoBehaviour
         if (SongListManager.songList[selectedNum][SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty).ToString() + "_SCORE")] != "")
         {
             bestScoreValue = SongListManager.songList[selectedNum][SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty).ToString() + "_SCORE")];
+            bestScore.text = String.Format("{0:#,###}", Convert.ToInt32(bestScoreValue));
         }
         else
         {
             bestScoreValue = "-,---,---";
+            bestScore.text = bestScoreValue;
         }
-        bestScore.text = bestScoreValue;
+        
 
         scoreData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + "_SCORE");
         accuracyData = SONG_LIST_KEY.FindValue(DIF.FindName(Level.S.levelDifficulty) + SONG_LIST_KEY._RATE);
@@ -96,8 +96,8 @@ public class ResultManager : MonoBehaviour
 
     private IEnumerator ShowResult()
     {
-        dif.text = difNameArr[Level.S.levelDifficulty];
-        dif.color = difColorArr[Level.S.levelDifficulty];
+        dif.text = DIF.NAME[Level.S.levelDifficulty];
+        dif.color = DIF.COLOR[Level.S.levelDifficulty];
 
         songName.text = SongListManager.songList[selectedNum][SONG_LIST_KEY.SONG_NAME];
         artist.text = "Artist. " + SongListManager.songList[selectedNum][SONG_LIST_KEY.ARTIST];
@@ -122,7 +122,7 @@ public class ResultManager : MonoBehaviour
                 imageArr[i].color = Utility.SetColorAlpha(imageArr[i].color, t);
             }
 
-            score.text = Mathf.Lerp(0, GameInfo.S.score, t * t).ToString("f0");
+            score.text = String.Format("{0:#,###}", Math.Ceiling(Mathf.Lerp(0, GameInfo.S.score, t * t)));
             combo.text = Mathf.Lerp(0, GameInfo.S.maxCombo, t * t).ToString("f0");
             accuracy.text = Mathf.Lerp(0, acc, t * t).ToString("f2") + "%";
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LevelPlayer : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class LevelPlayer : MonoBehaviour
     public Dictionary<int, int> thisRow;
 
     public float playStartTime;
+
+
+    [SerializeField] private TMP_Text songNameText;
+    [SerializeField] private TMP_Text difText;
 
     // Start is called before the first frame update
     void Awake()
@@ -52,7 +57,9 @@ public class LevelPlayer : MonoBehaviour
 
     void Start()
     {
-        
+        songNameText.text = SongListManager.songList[SongListManager.selectedSongNum][SONG_LIST_KEY.SONG_NAME];
+        difText.text = DIF.NAME[Level.S.levelDifficulty];
+        difText.color = DIF.COLOR[Level.S.levelDifficulty];
     }
 
     public void GameStart(float startTimeRaito = 0)

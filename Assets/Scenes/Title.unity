@@ -1517,3 +1517,4 @@ MonoBehaviour:
   noteSpeed: 10
   judgRange: []
   isPlaying: 0
+  editorStartDelay: 0.3

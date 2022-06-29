@@ -35,6 +35,9 @@ public static class DIF
     public const int H = 2;
     public const int X = 3;
 
+    public static readonly Color32[] COLOR = { new Color32(153, 219, 249, 255), new Color32(255, 248, 154, 255), new Color32(255, 134, 174, 255), new Color32(200, 159, 255, 255) };
+    public static readonly string[] NAME = { "Easy", "Normal", "Hard", "Extreme" };
+
     public const int I = 9;
     public const int SFX = 10;
 
