@@ -9,5 +9,7 @@ public class TitleManager : MonoBehaviour
     {
         if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
             SceneMgr.S.MainMenu();
+
+
     }
 }

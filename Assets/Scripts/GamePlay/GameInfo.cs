@@ -76,7 +76,7 @@ public class GameInfo : MonoBehaviour
                 break;
         }
 
-        scoreText.text = Convert.ToString(Math.Ceiling(score));
+        scoreText.text = String.Format("{0:#,###}", Math.Ceiling(score));
         comboText.text = combo.ToString();
     }
 }
