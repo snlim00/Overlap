@@ -82,7 +82,7 @@ public class SceneMgr : MonoBehaviour
 
     public void Retry()
     {
-        StartGame(Level.S.levelName, Level.S.levelDifficulty);
+        FadeIn(Color.black, 1, () => { StartGame(Level.S.levelName, Level.S.levelDifficulty); });
     }
 
     public void FadeIn(Color color, float duration, Action func)

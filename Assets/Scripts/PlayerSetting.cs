@@ -39,8 +39,7 @@ public class PlayerSetting : MonoBehaviour
     {
         if(editorMode == false)
         {
-            cursor.transform.position = mainCam.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 10);
-            Debug.Log(mainCam.ScreenToWorldPoint(Input.mousePosition));
+            cursor.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 10);
         }
     }
 

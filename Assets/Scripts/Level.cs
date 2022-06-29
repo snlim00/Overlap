@@ -49,6 +49,8 @@ public class Level : MonoBehaviour
 
     public Dictionary<int, int> levelFormat = new Dictionary<int, int>();
 
+    public float editorStartDelay = 0.1f;
+
     //선택된 레벨의 이름과 난이도
     public string levelName;
     public int levelDifficulty;

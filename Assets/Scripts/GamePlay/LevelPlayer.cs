@@ -113,8 +113,9 @@ public class LevelPlayer : MonoBehaviour
                 yield break;
 
 
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
 
+            Debug.Log(startTime);
             playStartTime = Time.time - startTime;
 
             row = startRow;
@@ -127,6 +128,7 @@ public class LevelPlayer : MonoBehaviour
             //yield return new WaitForSeconds(Level.S.startDelay);
         }
         Debug.Log("Start Timer: " + Time.time);
+        Debug.Log("Play Start Time: " + playStartTime);
 
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f + 0;
 
@@ -171,7 +173,7 @@ public class LevelPlayer : MonoBehaviour
         if(PlayerSetting.S.editorMode == true)
         {
             audioSource.time = startTime;
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
             yield return new WaitForSeconds(PlayerSetting.S.songOffset);
         }
         else
