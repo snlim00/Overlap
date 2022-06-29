@@ -35,7 +35,7 @@ public static class DIF
     public const int H = 2;
     public const int X = 3;
 
-    public static readonly Color32[] COLOR = { new Color32(153, 219, 249, 255), new Color32(255, 248, 154, 255), new Color32(255, 134, 174, 255), new Color32(200, 159, 255, 255) };
+    public static readonly Color32[] COLOR = { new Color32(153, 219, 249, 255), new Color32(255, 248, 154, 255), new Color32(255, 134, 174, 255), new Color32(184, 146, 236, 255) };
     public static readonly string[] NAME = { "Easy", "Normal", "Hard", "Extreme" };
 
     public const int I = 9;
@@ -357,7 +357,10 @@ public static class EVENT_NAME
 
     public const int SET_BG_SCALE = 5;
 
-    public const int COUNT = 6;
+    public const int BIT_CAM = 6;
+
+    public const int COUNT = 7;
+
 
     public static void ReadEventTypeName()
     {
@@ -408,23 +411,13 @@ public static class EVENT_NAME
 
             case SET_BG_SCALE:
                 return nameof(SET_BG_SCALE);
+            
+            case BIT_CAM:
+                return nameof(BIT_CAM);
 
             default:
                 Debug.LogError("FindName: 해당 값을 가진 변수를 찾을 수 없습니다." + value);
                 return "";
-        }
-    }
-
-    public static int FindValue(string name)
-    {
-        switch (name)
-        {
-            case nameof(SET_SPEED):
-                return SET_SPEED;
-
-            default:
-                Debug.LogError("FindValue: 해당 이름을 가진 변수를 찾을 수 없습니다.");
-                return -1;
         }
     }
 }

@@ -136,4 +136,31 @@ public class CSVReader
 
         return result;
     }
+
+    public static void ConvertDicFloat(List<Dictionary<string, object>> dic, ref List<Dictionary<int, float>> original, A FindName)
+    {
+        Dictionary<int, float> temp;
+
+        for (int i = 0; i < dic.Count; ++i)
+        {
+            temp = new Dictionary<int, float>();
+
+            for (int j = 0; j < dic[0].Count; ++j)
+            {
+                float value;
+                try
+                {
+                    value = (float)Convert.ToDouble(dic[i][FindName(j)]);
+                }
+                catch
+                {
+                    value = -1;
+                }
+
+                temp[j] = value;
+            }
+
+            original.Add(temp);
+        }
+    }
 }

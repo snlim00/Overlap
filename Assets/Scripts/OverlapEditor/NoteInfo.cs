@@ -27,7 +27,7 @@ public class NoteInfo
             case NOTE_INFO_TYPE.INPUT_FIELD:
                 inputField = info.transform.GetChild(1).GetComponent<InputField>();
 
-                inputField.contentType = InputField.ContentType.IntegerNumber;
+                inputField.contentType = InputField.ContentType.DecimalNumber;
 
                 inputField.onEndEdit.AddListener((data) => { TLNoteManager.SetEditInputFieldNow(false); });
 
@@ -68,7 +68,7 @@ public class NoteInfo
         gameObject = info;
     }
 
-    public void SetInfo(int value)
+    public void SetInfo(float value)
     {
         if(type == 0)
         {
@@ -76,15 +76,15 @@ public class NoteInfo
         }
         else
         {
-            dropdown.value = value + 1;
+            dropdown.value = (int)value + 1;
         }
     }
 
-    public int GetInfo()
+    public float GetInfo()
     {
         if(type == 0)
         {
-            return Convert.ToInt32(inputField.text);
+            return (float)Convert.ToDouble(inputField.text);
         }
         else
         {

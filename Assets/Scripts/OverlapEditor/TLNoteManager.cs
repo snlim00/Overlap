@@ -63,7 +63,7 @@ public class TLNoteManager : MonoBehaviour
 
     private TimeLineNote TLNoteGeneration(int row)
     {
-        TimeLineNote tlNote = InstantiateTLNote(Level.S.level[row][KEY.NOTE_TYPE]);
+        TimeLineNote tlNote = InstantiateTLNote((int)Level.S.level[row][KEY.NOTE_TYPE]);
 
         tlNote.Setting(Level.S.level[row]);
 
@@ -82,7 +82,7 @@ public class TLNoteManager : MonoBehaviour
 
         tlNote.GetComponent<Button>().onClick.AddListener(delegate { NoteSelect(); });
 
-        tlNote.Setting(new Dictionary<int, int>(Level.S.levelFormat));
+        tlNote.Setting(new Dictionary<int, float>(Level.S.levelFormat));
         
         editorMgr.tlNoteList.Add(tlNote);
 
@@ -94,7 +94,7 @@ public class TLNoteManager : MonoBehaviour
         for (int row = 0; row < editorMgr.tlNoteList.Count; ++row)
         {
             TimeLineNote tlNote = editorMgr.tlNoteList[row];
-            SetTLNotePosition(tlNote, editorMgr.gridList[tlNote.info[KEY.GRID_NUM]]);
+            SetTLNotePosition(tlNote, editorMgr.gridList[(int)tlNote.info[KEY.GRID_NUM]]);
         }
     }
 
@@ -400,7 +400,7 @@ public class TLNoteManager : MonoBehaviour
 
         Destroy(tlNote.gameObject);
 
-        editorMgr.gridList[tlNote.info[KEY.GRID_NUM]].isHaveNote = false;
+        editorMgr.gridList[(int)tlNote.info[KEY.GRID_NUM]].isHaveNote = false;
     }
     #endregion
 
@@ -453,7 +453,7 @@ public class TLNoteManager : MonoBehaviour
     {
         SetInfoValue(tlNote.info);
 
-        HideUselessInfo(tlNote.info[KEY.NOTE_TYPE]);
+        HideUselessInfo((int)tlNote.info[KEY.NOTE_TYPE]);
 
         SetValueName(tlNote.info);
     }
@@ -478,7 +478,7 @@ public class TLNoteManager : MonoBehaviour
         }
     }
 
-    private void SetInfoValue(in Dictionary<int, int> info)
+    private void SetInfoValue(in Dictionary<int, float> info)
     {
         for (int i = noteInfoStartNum; i < KEY.COUNT; ++i)
         {
@@ -486,7 +486,7 @@ public class TLNoteManager : MonoBehaviour
         }
     }
 
-    private void SetValueName(Dictionary<int, int> info)
+    private void SetValueName(Dictionary<int, float> info)
     {
         if (info[KEY.NOTE_TYPE] != NOTE_TYPE.EVENT || noteInfo[KEY.EVENT_NAME].GetInfo() == EVENT_NAME.NONE)
         {
@@ -495,7 +495,7 @@ public class TLNoteManager : MonoBehaviour
 
         for(int i = 0; i < KEY.VALUE.Length; ++i)
         {
-            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[info[KEY.EVENT_NAME]][i]);
+            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[(int)info[KEY.EVENT_NAME]][i]);
         }
     }
 
@@ -506,7 +506,7 @@ public class TLNoteManager : MonoBehaviour
 
         for (int i = 0; i < KEY.VALUE.Length; ++i)
         {
-            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[noteInfo[KEY.EVENT_NAME].GetInfo()][i]);
+            noteInfo[i + KEY.VALUE[0]].SetName(EVENT_NAME.VALUES[(int)noteInfo[KEY.EVENT_NAME].GetInfo()][i]);
         }
     }
 
@@ -529,6 +529,6 @@ public class TLNoteManager : MonoBehaviour
     {
         editInputFieldNow = value;
 
-        Debug.Log(value);
+        //Debug.Log(value);
     }
 }

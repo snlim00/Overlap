@@ -222,7 +222,7 @@ public class EditorTouchManager : MonoBehaviour
 
         float startTimeRaito = tlSlider.value / tlSlider.maxValue;
 
-        Debug.Log(startTimeRaito);
+        //Debug.Log(startTimeRaito);
 
         levelPlayer.GameStart(startTimeRaito);
 
@@ -244,7 +244,7 @@ public class EditorTouchManager : MonoBehaviour
     {
         float speed = -editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / levelPlayer.audioSource.clip.length * (Screen.width / 800f);
 
-        yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
+        yield return new WaitForSecondsRealtime(Level.S.editorStartDelay + 0.5f);
 
         while (true)
         {

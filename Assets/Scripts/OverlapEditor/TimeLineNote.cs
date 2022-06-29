@@ -9,7 +9,7 @@ public class TimeLineNote : MonoBehaviour
 
     public int num;
 
-    public Dictionary<int, int> info;
+    public Dictionary<int, float> info;
 
     [HideInInspector] public Image image;
 
@@ -24,7 +24,7 @@ public class TimeLineNote : MonoBehaviour
         defaultColor = image.color;
     }
 
-    public void Setting(Dictionary<int, int> info)
+    public void Setting(Dictionary<int, float> info)
     {
         this.info = info;
     }

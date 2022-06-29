@@ -1427,7 +1427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursor: {fileID: 128298296}
   editorMode: 1
-  songOffset: 0
+  songOffset: -0.075
   noteOffset: 0
 --- !u!1 &367135073234598947
 GameObject:
@@ -1506,7 +1506,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noteList: []
-  editorStartDelay: 0.5
   levelName: 
   levelDifficulty: 0
   noteCount: 0

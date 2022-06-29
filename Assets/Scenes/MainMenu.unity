@@ -951,18 +951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06eca03b5778314438b7429fd9d100b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPref: {fileID: 3580829456801645581, guid: ceffa6cd4eb458941a8237ec607a9ff7, type: 3}
-  canScroll: 1
-  difBtn:
-  - {fileID: 2030552003}
-  - {fileID: 1431333447}
-  - {fileID: 562419148}
-  - {fileID: 1755204036}
-  bestScore:
-  - {fileID: 774070576}
-  - {fileID: 1748210485}
-  - {fileID: 13532494}
-  - {fileID: 1919717299}
 --- !u!1 &405958830
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,7 +2268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.62352943, b: 1, a: 1}
+  m_Color: {r: 0.7254902, g: 0.57254905, b: 0.9254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3058,7 +3046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.78431374, g: 0.62352943, b: 1, a: 1}
+  m_Color: {r: 0.7216034, g: 0.5712887, b: 0.9245283, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5634,5 +5622,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7704c903abed5c45b1fc45a2ba1e587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 0}
-  defaultScale: {x: 0, y: 0}

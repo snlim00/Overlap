@@ -909,7 +909,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 2852126720
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1670,7 +1670,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 2852126720
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2701,8 +2701,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2852126720
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3029,11 +3029,11 @@ MonoBehaviour:
   - {fileID: 543233845408928514, guid: 013fc5e770b1e8b4b9684059055cdf4f, type: 3}
   - {fileID: 543233845408928514, guid: af5556c810940b648b99e674c3817a32, type: 3}
   - {fileID: 543233845408928514, guid: ebc57d3d129c2064ab14f2aceceebe1b, type: 3}
+  songNameText: {fileID: 1973886257}
+  difText: {fileID: 1625111574}
   audioSource: {fileID: 0}
   timerForDebug: 0
   playStartTime: 0
-  songNameText: {fileID: 1973886257}
-  difText: {fileID: 1625111574}
 --- !u!4 &1915597299
 Transform:
   m_ObjectHideFlags: 0
@@ -3315,8 +3315,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 2852126720
-  m_fontColor: {r: 0, g: 0, b: 0, a: 0.6666667}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

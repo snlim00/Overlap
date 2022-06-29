@@ -8,8 +8,8 @@ public class LevelPlayer : MonoBehaviour
 {
     [SerializeField] private GameObject[] notePref;
 
-    private EditorManager editorMgr;
-
+    [SerializeField] private TMP_Text songNameText;
+    [SerializeField] private TMP_Text difText;
 
     public AudioSource audioSource;
 
@@ -24,20 +24,14 @@ public class LevelPlayer : MonoBehaviour
     public static float timer { get; private set; } = 0;
     public float timerForDebug;
     public static float startTime;
-    public Dictionary<int, int> thisRow;
+    public Dictionary<int, float> thisRow;
 
     public float playStartTime;
-
-
-    [SerializeField] private TMP_Text songNameText;
-    [SerializeField] private TMP_Text difText;
 
     // Start is called before the first frame update
     void Awake()
     {
         playStartTime = Time.time;
-
-        editorMgr = FindObjectOfType<EditorManager>();
 
         audioSource = GetComponent<AudioSource>();
 
@@ -64,9 +58,10 @@ public class LevelPlayer : MonoBehaviour
 
     public void GameStart(float startTimeRaito = 0)
     {
-        BackgroundManager.S.SetBgImage(Level.S.levelName, 0);   
+        BackgroundManager.S.SetBgImage(Level.S.levelName, 0);
 
-        float startTime = audioSource.clip.length * startTimeRaito;
+        float startTime = (audioSource.clip.length * startTimeRaito) - 0.5f;
+        Debug.Log("startTime: " + startTime);
         int startRow = 0;
 
         mainCam.orthographicSize = camSize;
@@ -122,11 +117,12 @@ public class LevelPlayer : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
 
-            Debug.Log(startTime);
+            //Debug.Log(startTime);
+
             playStartTime = Time.time - startTime;
 
             row = startRow;
-        }
+        } 
         else
         {
             row = 0;
@@ -134,8 +130,6 @@ public class LevelPlayer : MonoBehaviour
             //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침 -> 음악 재생을 늦추는 방식으로 오프셋 맞추기)
             //yield return new WaitForSeconds(Level.S.startDelay);
         }
-        Debug.Log("Start Timer: " + Time.time);
-        Debug.Log("Play Start Time: " + playStartTime);
 
         float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f + 0;
 
@@ -189,7 +183,7 @@ public class LevelPlayer : MonoBehaviour
             yield return new WaitForSeconds(Level.S.startDelay + PlayerSetting.S.songOffset);
             //Debug.Log(Level.S.startDelay);
         }
-        Debug.Log("Start Song: " + Time.time);
+        //Debug.Log("Start Song: " + Time.time);
 
         audioSource.Play();
         //Debug.Log("audioSource Start");
@@ -198,10 +192,11 @@ public class LevelPlayer : MonoBehaviour
     private void NoteGeneration(int startRow = 0)
     {
         //Debug.Log("NoteGen");
-
+        
+        Debug.Log("startRow: " + startRow);
         for(int row = startRow; row < Level.S.level.Count; ++row)
         {
-            Dictionary<int, int> thisRow = Level.S.level[row];
+            Dictionary<int, float> thisRow = Level.S.level[row];
             
             if (thisRow[KEY.TYPE] == TYPE.NOTE) //노트 생성
             {
@@ -220,14 +215,14 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    private void InstantiateNote(int row, in Dictionary<int, int> thisRow)
+    private void InstantiateNote(int row, in Dictionary<int, float> thisRow)
     {
         //Debug.Log("NG");
         Note note;
 
-        note = Instantiate(notePref[thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
+        note = Instantiate(notePref[(int)thisRow[KEY.NOTE_TYPE]]).GetComponent<Note>();
 
-        int angle = thisRow[KEY.ANGLE];
+        int angle = (int)thisRow[KEY.ANGLE];
 
         if(angle > 0)
         {
@@ -238,14 +233,16 @@ public class LevelPlayer : MonoBehaviour
             angle = 360 + (angle % -360);
         }
 
-        note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, thisRow[KEY.NOTE_TYPE]);
+        note.Execute(row, angle, thisRow[KEY.TIMING] * 0.001f, (int)thisRow[KEY.NOTE_TYPE]);
 
         Level.S.noteList.Add(note);
     }
 
     private void EventExecute()
     {
-        StartCoroutine(EVENT_NAME.FindName(thisRow[KEY.EVENT_NAME]));
+        //StartCoroutine(EVENT_NAME.FindName((int)thisRow[KEY.EVENT_NAME]));
+
+        Invoke(EVENT_NAME.FindName((int)thisRow[KEY.EVENT_NAME]), 0);
 
         //switch (thisRow[KEY.EVENT_NAME]) //각 이벤트 호출
         //{
@@ -263,28 +260,31 @@ public class LevelPlayer : MonoBehaviour
     }
 
     #region 레벨 이벤트 함수
-    private IEnumerator SET_SPEED()
+    private void SET_SPEED()
     {
-        int speed = thisRow[KEY.VALUE[0]];
+        int speed = (int)thisRow[KEY.VALUE[0]];
 
         Level.S.noteSpeed = speed;
-
-        yield break;
     }
 
-    private IEnumerator CAMERA_MOVE()
+    private void CAMERA_MOVE()
     {
         Vector3 targetPos = new Vector3(thisRow[KEY.VALUE[0]], thisRow[KEY.VALUE[1]], -10);
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
-        int type = thisRow[KEY.EVENT_TYPE];
+        int type = (int)thisRow[KEY.EVENT_TYPE];
 
+        StartCoroutine(_CameraMove(targetPos, withBG, type, duration));
+    }
+
+    private IEnumerator _CameraMove(Vector3 targetPos, bool withBG, int type, float duration)
+    {
         Vector3 startPos = mainCam.transform.position;
         Vector3 bgPos;
         float t = 0;
         float p = 0;
 
-        while(t <= 1)
+        while (t <= 1)
         {
             t += Time.deltaTime / duration;
 
@@ -293,7 +293,7 @@ public class LevelPlayer : MonoBehaviour
             mainCam.transform.position = Vector3.Lerp(startPos, targetPos, p);
 
 
-            if(withBG == true)
+            if (withBG == true)
             {
                 bgPos = mainCam.transform.position;
                 bgPos.z = 0;
@@ -305,13 +305,20 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    private IEnumerator CAMERA_ZOOM()
+    private void CAMERA_ZOOM()
     {
-        float targetScale = camSize * (thisRow[KEY.VALUE[0]] / 100f);
-        int type = thisRow[KEY.EVENT_TYPE];
-        float duration = BeatToDuration(thisRow[KEY.DURATION]);
+        float targetScale = thisRow[KEY.VALUE[0]];
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
 
+        int type = (int)thisRow[KEY.EVENT_TYPE];
+        float duration = BeatToDuration(thisRow[KEY.DURATION]);
+
+        StartCoroutine(_CameraZoom(targetScale, withBG, type, duration));
+    }
+
+    private IEnumerator _CameraZoom(float targetScale, bool withBG, int type, float duration)
+    {
+        targetScale = camSize * (targetScale / 100f);
         float startScale = mainCam.orthographicSize;
 
         Vector2 bgScale = BackgroundManager.S.transform.localScale;
@@ -334,17 +341,17 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    private IEnumerator CAMERA_ROTATE()
+    private void CAMERA_ROTATE()
     {
-        bool relative = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
         float targetAngle;
+        bool relative = Convert.ToBoolean(thisRow[KEY.VALUE[1]]);
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
-        int type = thisRow[KEY.EVENT_TYPE];
+
+        int type = (int)thisRow[KEY.EVENT_TYPE];
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
 
         float startAngle = mainCam.transform.eulerAngles.y;
             
-
         if(relative == true)
         {
             targetAngle = startAngle + thisRow[KEY.VALUE[0]];
@@ -354,10 +361,15 @@ public class LevelPlayer : MonoBehaviour
             targetAngle = thisRow[KEY.VALUE[0]];
         }
 
+        StartCoroutine(_CameraRotate(targetAngle, withBG, type, startAngle, duration));
+    }
+
+    private IEnumerator _CameraRotate(float targetAngle, bool withBG, int type, float startAngle, float duration)
+    {
         float t = 0;
         float p = 0;
 
-        while(t <= 1)
+        while (t <= 1)
         {
             t += Time.deltaTime / duration;
 
@@ -366,7 +378,7 @@ public class LevelPlayer : MonoBehaviour
             mainCam.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(startAngle, targetAngle, p));
 
 
-            if(withBG == true)
+            if (withBG == true)
             {
                 BackgroundManager.S.transform.eulerAngles = mainCam.transform.eulerAngles;
             }
@@ -375,13 +387,51 @@ public class LevelPlayer : MonoBehaviour
         }
     }
 
-    private IEnumerator SET_BG_IMAGE()
+    private void SET_BG_IMAGE()
     {
-        int num = thisRow[KEY.VALUE[0]];
+        int num = (int)thisRow[KEY.VALUE[0]];
 
         BackgroundManager.S.SetBgImage(Level.S.levelName, num);
+    }
 
-        yield break;
+    private void BIT_CAM()
+    {
+        float interval = BeatToDuration(thisRow[KEY.VALUE[0]]);
+        float zoomScale = thisRow[KEY.VALUE[1]];
+        float rotateScale = thisRow[KEY.VALUE[2]];
+        bool rotationRotate = Convert.ToBoolean(thisRow[KEY.VALUE[3]]);
+        float effectDuration = BeatToDuration(thisRow[KEY.VALUE[4]]);
+
+        Debug.Log(thisRow[KEY.DURATION]);
+        float duration = BeatToDuration(thisRow[KEY.DURATION]);
+
+        StartCoroutine(_BitCam(interval, zoomScale, rotateScale, rotationRotate, effectDuration, duration));
+    }
+
+    private IEnumerator _BitCam(float interval, float zoomScale, float rotateScale, bool rotationRotate, float effectDuration, float duration)
+    {
+        float t1 = 0;
+        float t2 = 1;
+
+        int rotDir = 1;
+
+        while (t1 <= 1)
+        {
+            t1 += Time.deltaTime / duration;
+            t2 += Time.deltaTime / interval;
+
+            if (t2 >= 1)
+            {
+                if(rotationRotate == true)
+                    rotDir *= -1;
+
+                t2 -= 1;
+                StartCoroutine(_CameraZoom(zoomScale, false, 2, effectDuration));
+                StartCoroutine(_CameraRotate(mainCam.transform.eulerAngles.z + (rotateScale * rotDir), false, 2, mainCam.transform.eulerAngles.z, effectDuration));
+            }
+
+            yield return null;
+        }
     }
     #endregion
 }

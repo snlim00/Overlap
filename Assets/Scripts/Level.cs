@@ -42,14 +42,12 @@ public class Level : MonoBehaviour
     }
 
 
-    public List<Dictionary<int, int>> level = new List<Dictionary<int, int>>(); //Timing을 기반으로 하는 레벨 파일을 담아둠
+    public List<Dictionary<int, float>> level = new List<Dictionary<int, float>>(); //Timing을 기반으로 하는 레벨 파일을 담아둠
     public List<Dictionary<int, int>> levelInfo = new List<Dictionary<int, int>>(); //레벨의 기본 정보들을 담아둠 (오프셋, 딜레이, BPM 등)
 
     public List<Note> noteList = new List<Note>();
 
-    public Dictionary<int, int> levelFormat = new Dictionary<int, int>();
-
-    public float editorStartDelay = 0.1f;
+    public Dictionary<int, float> levelFormat = new Dictionary<int, float>();
 
     //선택된 레벨의 이름과 난이도
     public string levelName;
@@ -90,7 +88,7 @@ public class Level : MonoBehaviour
         level.Clear();
         noteList.Clear();
         //레벨 파일 변환
-        CSVReader.ConvertDicInt(tempLevel, ref level, KEY.FindName);
+        CSVReader.ConvertDicFloat(tempLevel, ref level, KEY.FindName);
 
         //레벨 파일에서 필요한 값 저장
         //노트 개수 세기
