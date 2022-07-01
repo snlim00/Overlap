@@ -60,7 +60,7 @@ public class LevelPlayer : MonoBehaviour
     {
         BackgroundManager.S.SetBgImage(Level.S.levelName, 0);
 
-        float startTime = (audioSource.clip.length * startTimeRaito) - 0.5f;
+        float startTime = audioSource.clip.length * startTimeRaito;
         Debug.Log("startTime: " + startTime);
         int startRow = 0;
 
@@ -76,11 +76,13 @@ public class LevelPlayer : MonoBehaviour
             }
         }
 
-
-        NoteGeneration(startRow);
+        playStartTime = Time.time - startTime;
+        timer = Time.time - playStartTime - Level.S.startDelay;
 
         corNoteTimer = StartCoroutine(NoteTimer(startTime, startRow));
         StartCoroutine(SongPlay(startTime));
+
+        NoteGeneration(startRow);
     }
 
     public void GameStop()
@@ -115,7 +117,7 @@ public class LevelPlayer : MonoBehaviour
                 yield break;
 
 
-            yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
+            //yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
 
             //Debug.Log(startTime);
 
@@ -126,17 +128,25 @@ public class LevelPlayer : MonoBehaviour
         else
         {
             row = 0;
-            timer = 0; 
+            timer = 0;
             //startDelay 대기 후 타이머 실행 (offset을 해당 타이머에서 적용하면 변속과 이벤트의 타이밍에도 영향을 미침 -> 음악 재생을 늦추는 방식으로 오프셋 맞추기)
             //yield return new WaitForSeconds(Level.S.startDelay);
         }
 
-        float lastNoteTiming = Level.S.level[Level.S.level.Count - 1][KEY.TIMING] * 0.001f + 0;
+        timer = Time.time - playStartTime - Level.S.startDelay;
 
-        thisRow = Level.S.level[row]; 
+        thisRow = Level.S.level[row];
 
         while (timer < audioSource.clip.length)// && row < Level.S.level.Count)
         {
+            if (thisRow[KEY.TYPE] != TYPE.EVENT)
+            {
+                ++row;
+                continue;
+            }
+
+            Debug.Log(row);
+
             //timer += Time.deltaTime;
             timer = Time.time - playStartTime - Level.S.startDelay;
 
@@ -160,7 +170,6 @@ public class LevelPlayer : MonoBehaviour
                 }
             }
             
-
             yield return null;
         }
 
@@ -174,7 +183,7 @@ public class LevelPlayer : MonoBehaviour
         if(PlayerSetting.S.editorMode == true)
         {
             audioSource.time = startTime;
-            yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
+            //yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
             yield return new WaitForSeconds(PlayerSetting.S.songOffset);
         }
         else
@@ -184,7 +193,8 @@ public class LevelPlayer : MonoBehaviour
             //Debug.Log(Level.S.startDelay);
         }
         //Debug.Log("Start Song: " + Time.time);
-
+        //audioSource.time = Mathf.Min(audioSource.time, audioSource.clip.length - 0.01f);
+        Debug.Log(audioSource.time);
         audioSource.Play();
         //Debug.Log("audioSource Start");
     }
@@ -273,7 +283,6 @@ public class LevelPlayer : MonoBehaviour
         bool withBG = Convert.ToBoolean(thisRow[KEY.VALUE[2]]);
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
         int type = (int)thisRow[KEY.EVENT_TYPE];
-
         StartCoroutine(_CameraMove(targetPos, withBG, type, duration));
     }
 
@@ -312,6 +321,7 @@ public class LevelPlayer : MonoBehaviour
 
         int type = (int)thisRow[KEY.EVENT_TYPE];
         float duration = BeatToDuration(thisRow[KEY.DURATION]);
+        Debug.Log(timer);
 
         StartCoroutine(_CameraZoom(targetScale, withBG, type, duration));
     }

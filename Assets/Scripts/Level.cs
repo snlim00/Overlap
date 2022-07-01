@@ -69,7 +69,7 @@ public class Level : MonoBehaviour
 
     public int isPlaying = PLAY_INFO.STOPPED;
 
-    public float editorStartDelay = 0.3f;
+    //public float editorStartDelay = 0.1f;
 
     //레벨의 이름과 난이도를 받아 레벨을 읽어옴
     public void ReadLevel(string levelName, int dif)

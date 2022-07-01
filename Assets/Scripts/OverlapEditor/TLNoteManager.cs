@@ -417,6 +417,12 @@ public class TLNoteManager : MonoBehaviour
         {
             //interval만큼 나누고 ms단위로 변환해주기 위해 위해 1000을 곱해줌.
             editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(((editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval) * 1000)/* + editorMgr.offset*/);
+
+
+            if (editorMgr.tlNoteList[i].info[KEY.TYPE] == TYPE.EVENT)
+                Debug.Log(editorMgr.tlNoteList[i].info[KEY.GRID_NUM] + " / " + editorMgr.tlNoteList[i].info[KEY.TIMING]);
+
+
             Level.S.level.Add(editorMgr.tlNoteList[i].info);
         }
         Debug.Log("Saved!");
@@ -425,6 +431,18 @@ public class TLNoteManager : MonoBehaviour
 
 
     #region 노트 정보 변경 관련 함수
+    public void MoveSelectedNote(int dir)
+    {
+        GridManager gridMgr = FindObjectOfType<GridManager>();
+
+        for(int i = 0; i < editorMgr.selectedNoteList.Count; ++i)
+        {
+            editorMgr.selectedNoteList[i].info[KEY.GRID_NUM] += (gridMgr.maxBeat / gridMgr.beat[gridMgr.selectedBeat]) * dir;
+        }
+
+        SetAllTLNotePosition();
+    }
+
     private void AllInfoUIGeneration()
     {
         for(int i = noteInfoStartNum; i < KEY.COUNT; ++i)

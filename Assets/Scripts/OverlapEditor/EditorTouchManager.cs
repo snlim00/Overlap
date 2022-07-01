@@ -91,6 +91,15 @@ public class EditorTouchManager : MonoBehaviour
                 LevelStop();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            tlNoteMgr.MoveSelectedNote(-1);
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            tlNoteMgr.MoveSelectedNote(1);
+        }
     }
 
     #region 에디트 모드 On/Off 관련 함수
@@ -244,7 +253,7 @@ public class EditorTouchManager : MonoBehaviour
     {
         float speed = -editorMgr.gridList[editorMgr.gridList.Count - 1].transform.localPosition.x / levelPlayer.audioSource.clip.length * (Screen.width / 800f);
 
-        yield return new WaitForSecondsRealtime(Level.S.editorStartDelay + 0.5f);
+        //yield return new WaitForSecondsRealtime(Level.S.editorStartDelay + 0.5f);
 
         while (true)
         {

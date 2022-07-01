@@ -22,9 +22,9 @@ public class GridManager : MonoBehaviour
     //비트 나눗수 관련 변수
     public int selectedBeat = 2;
     public float[] beat = { 1, 2, 4, 8, 16, 32 };
-    public const float minBeat = 1f;
-    public const float maxBeat = 32f;
-    public const float defaultBeat = 4f;
+    public float minBeat = 1f;
+    public float maxBeat = 32f;
+    public float defaultBeat = 4f;
 
     void Awake()
     {
