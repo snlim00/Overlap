@@ -419,8 +419,8 @@ public class TLNoteManager : MonoBehaviour
             editorMgr.tlNoteList[i].info[KEY.TIMING] = Convert.ToInt32(((editorMgr.tlNoteList[i].transform.localPosition.x / editorMgr.interval) * 1000)/* + editorMgr.offset*/);
 
 
-            if (editorMgr.tlNoteList[i].info[KEY.TYPE] == TYPE.EVENT)
-                Debug.Log(editorMgr.tlNoteList[i].info[KEY.GRID_NUM] + " / " + editorMgr.tlNoteList[i].info[KEY.TIMING]);
+            //if (editorMgr.tlNoteList[i].info[KEY.TYPE] == TYPE.EVENT)
+            //    Debug.Log(editorMgr.tlNoteList[i].info[KEY.GRID_NUM] + " / " + editorMgr.tlNoteList[i].info[KEY.TIMING]);
 
 
             Level.S.level.Add(editorMgr.tlNoteList[i].info);
