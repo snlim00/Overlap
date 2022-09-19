@@ -24,13 +24,7 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
-        //TouchSFXGeneration();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        TouchSFXGeneration();
     }
 
     // Update is called once per frame
@@ -73,7 +67,7 @@ public class TouchManager : MonoBehaviour
     private void Touch()
     {
         inputCount = Input.inputString.Length; //입력된 터치 수 확인
-
+        Debug.Log("Touch: " + Time.time);
         //PlayTouchSFX();
 
         //주변 노트 가져오기
@@ -204,5 +198,7 @@ public class TouchManager : MonoBehaviour
         {
             poolingCount = 0;
         }
+
+        Debug.Log("SFX: " + Time.time);
     }
 }

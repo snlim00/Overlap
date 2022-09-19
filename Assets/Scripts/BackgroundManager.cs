@@ -56,4 +56,11 @@ public class BackgroundManager : MonoBehaviour
     {
         spr.color = Utility.SetColorAlpha(spr.color, a);
     }
+
+    public void SetBgScale(float scale)
+    {
+        scale *= 0.01f;
+
+        transform.localScale = defaultScale * scale;
+    }
 }

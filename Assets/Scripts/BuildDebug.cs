@@ -22,17 +22,17 @@ public class BuildDebug : MonoBehaviour
 
     public void Log(string text)
     {
-        TMP_Text msg = Instantiate(textPref).GetComponent<TMP_Text>();
+        //TMP_Text msg = Instantiate(textPref).GetComponent<TMP_Text>();
 
-        msg.transform.SetParent(transform);
+        //msg.transform.SetParent(transform);
 
-        msg.transform.localScale = Vector3.one;
+        //msg.transform.localScale = Vector3.one;
 
-        msg.transform.position = Camera.main.ViewportToScreenPoint(new Vector3(0.8f, 0.2f, 0));
+        //msg.transform.position = Camera.main.ViewportToScreenPoint(new Vector3(0.8f, 0.2f, 0));
 
-        msg.text = text;
+        //msg.text = text;
 
-        StartCoroutine(RemoveText(msg.gameObject));
+        //StartCoroutine(RemoveText(msg.gameObject));
     }
 
     private IEnumerator RemoveText(GameObject go)

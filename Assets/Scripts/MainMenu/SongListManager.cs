@@ -28,6 +28,8 @@ public class SongListManager : MonoBehaviour
 
     private int selectedDif = DIF.E;
     public static int selectedSongNum = 0;
+
+    [SerializeField] private Image[] button;
     #endregion
 
     //BackGroundManager보다 느리게 초기화 되어야 함. (Select 때문에)
@@ -173,6 +175,42 @@ public class SongListManager : MonoBehaviour
         StartCoroutine(ChangeBackground(num, levelName));
 
         SpawnCircle(selectedDif);
+
+        if(levelName == "MeteorStream")
+        {
+            button[0].color = Utility.SetColorAlpha(button[0].color, 0);
+            button[1].color = Utility.SetColorAlpha(button[1].color, 0);
+            button[2].color = Utility.SetColorAlpha(button[2].color, 0);
+            button[3].color = Utility.SetColorAlpha(button[3].color, 1);
+
+            button[0].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[0].color, 0.6f);
+            button[1].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[1].color, 0.6f);
+            button[2].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[2].color, 0.6f);
+            button[3].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[3].color, 1);
+
+            button[0].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[1].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[2].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[3].transform.GetChild(0).GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            button[0].color = Utility.SetColorAlpha(button[0].color, 0);
+            button[1].color = Utility.SetColorAlpha(button[1].color, 0);
+            button[2].color = Utility.SetColorAlpha(button[2].color, 0);
+            button[3].color = Utility.SetColorAlpha(button[3].color, 0);
+
+            button[0].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[0].color, 0.6f);
+            button[1].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[1].color, 0.6f);
+            button[2].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[2].color, 0.6f);
+            button[3].transform.GetChild(0).GetComponent<Image>().color = Utility.SetColorAlpha(button[3].color, 0.6f);
+
+            button[0].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[1].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[2].transform.GetChild(0).GetComponent<Button>().interactable = false;
+            button[3].transform.GetChild(0).GetComponent<Button>().interactable = false;
+
+        }
     }
 
     private float changeDuration = 0.15f;

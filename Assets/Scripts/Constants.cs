@@ -171,11 +171,11 @@ public static class RANK
         {
             return RANK.A;
         }
-        else if(score >= 920000)
+        else if(score >= 850000)
         {
             return RANK.B;
         }
-        else if(score >= 870000)
+        else if(score >= 700000)
         {
             return RANK.C;
         }

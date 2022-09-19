@@ -16,7 +16,7 @@ public class LevelPlayer : MonoBehaviour
     private Camera mainCam;
     private const float camSize = 5;
 
-    
+
     //게임을 진행하는 코루틴들
     private bool isCorNoteTimer = false;
     private Coroutine corNoteTimer;
@@ -91,16 +91,16 @@ public class LevelPlayer : MonoBehaviour
     {
         audioSource.Stop();
 
-        if(isCorNoteTimer == true)
+        if (isCorNoteTimer == true)
         {
             isCorNoteTimer = false;
             StopCoroutine(corNoteTimer);
         }
 
 
-        for(int i = 0; i < Level.S.noteList.Count; ++i)
+        for (int i = 0; i < Level.S.noteList.Count; ++i)
         {
-            if(Level.S.noteList[i] != null)
+            if (Level.S.noteList[i] != null)
                 Destroy(Level.S.noteList[i].gameObject);
         }
         Level.S.noteList.Clear();
@@ -113,7 +113,7 @@ public class LevelPlayer : MonoBehaviour
         int row = 0;
 
 
-        if(PlayerSetting.S.editorMode == true)
+        if (PlayerSetting.S.editorMode == true)
         {
             if (startRow >= Level.S.level.Count)
                 yield break;
@@ -126,7 +126,7 @@ public class LevelPlayer : MonoBehaviour
             playStartTime = Time.time - startTime;
 
             row = startRow;
-        } 
+        }
         else
         {
             row = 0;
@@ -149,17 +149,20 @@ public class LevelPlayer : MonoBehaviour
 
             timerForDebug = timer;
 
-            if (thisRow[KEY.TYPE] == TYPE.EVENT)
+            if (row < Level.S.level.Count - 1)
             {
-                if (timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
+                if (thisRow[KEY.TYPE] == TYPE.EVENT)
                 {
-                    EventExecute(thisRow);
+                    if (timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
+                    {
+                        EventExecute(thisRow);
+                        thisRow = Level.S.level[++row];
+                    }
+                }
+                else
+                {
                     thisRow = Level.S.level[++row];
                 }
-            }
-            else
-            {
-                thisRow = Level.S.level[++row];
             }
 
             //if (timer >= thisRow[KEY.TIMING] * 0.001) //타이머가 다음 행의 TIMING에 도달하면 실행
@@ -173,7 +176,7 @@ public class LevelPlayer : MonoBehaviour
 
             //    ++row;
             //}
-            
+
             yield return null;
         }
 
@@ -184,7 +187,7 @@ public class LevelPlayer : MonoBehaviour
 
     private IEnumerator SongPlay(float startTime = 0)
     {
-        if(PlayerSetting.S.editorMode == true)
+        if (PlayerSetting.S.editorMode == true)
         {
             audioSource.time = startTime;
             //yield return new WaitForSecondsRealtime(Level.S.editorStartDelay);
@@ -206,22 +209,22 @@ public class LevelPlayer : MonoBehaviour
     private void NoteGeneration(int startRow = 0)
     {
         //Debug.Log("NoteGen");
-        
+
         //Debug.Log("startRow: " + startRow);
-        for(int row = startRow; row < Level.S.level.Count; ++row)
+        for (int row = startRow; row < Level.S.level.Count; ++row)
         {
             Dictionary<int, float> thisRow = Level.S.level[row];
-            
+
             if (thisRow[KEY.TYPE] == TYPE.NOTE) //노트 생성
             {
-                if(thisRow[KEY.NOTE_TYPE] == NOTE_TYPE.DOUBLE)
+                if (thisRow[KEY.NOTE_TYPE] == NOTE_TYPE.DOUBLE)
                 {
-                    for(int i = 0; i < 2; ++i)
+                    for (int i = 0; i < 2; ++i)
                     {
                         InstantiateNote(row, thisRow);
                     }
                 }
-                else if(thisRow[KEY.TYPE] != NOTE_TYPE.EVENT)
+                else if (thisRow[KEY.TYPE] != NOTE_TYPE.EVENT)
                 {
                     InstantiateNote(row, thisRow);
                 }
@@ -238,7 +241,7 @@ public class LevelPlayer : MonoBehaviour
 
         int angle = (int)thisRow[KEY.ANGLE];
 
-        if(angle > 0)
+        if (angle > 0)
         {
             angle = angle % 360;
         }
@@ -374,8 +377,8 @@ public class LevelPlayer : MonoBehaviour
         float duration = BeatToDuration(_thisRow[KEY.DURATION]);
 
         float startAngle = mainCam.transform.eulerAngles.y;
-            
-        if(relative == true)
+
+        if (relative == true)
         {
             targetAngle = startAngle + _thisRow[KEY.VALUE[0]];
         }
@@ -415,6 +418,31 @@ public class LevelPlayer : MonoBehaviour
         int num = (int)_thisRow[KEY.VALUE[0]];
 
         BackgroundManager.S.SetBgImage(Level.S.levelName, num);
+    }
+
+    private void SET_BG_SCALE()
+    {
+        float scale = _thisRow[KEY.VALUE[0]];
+        int type = (int)_thisRow[KEY.EVENT_TYPE];
+        float duration = BeatToDuration(_thisRow[KEY.DURATION]);
+
+        StartCoroutine(_SetBgScale(scale, type, duration));
+    }
+
+    private IEnumerator _SetBgScale(float scale, int type, float duration)
+    {
+        float t = 0;
+
+        Vector2 startScale = BackgroundManager.S.transform.localScale * 100;
+
+        while(t <= 1)
+        {
+            t += Time.deltaTime / duration;
+
+            BackgroundManager.S.SetBgScale(Mathf.Lerp(startScale.x, scale, Utility.LerpValue(t, type)));
+
+            yield return null;
+        }
     }
 
     private void BIT_CAM()
